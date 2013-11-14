@@ -3,9 +3,9 @@ appForm.stores = (function(module) {
 
 
     //implementation
-    var fileSystemAvailable=false;
-    var _requestFileSystem=function(){}; //placeholder
-    var PERSISTENT=1; //placeholder
+    var fileSystemAvailable = false;
+    var _requestFileSystem = function() {}; //placeholder
+    var PERSISTENT = 1; //placeholder
 
     function LocalStorage() {
         appForm.stores.Store.call(this, "LocalStorage");
@@ -15,41 +15,41 @@ appForm.stores = (function(module) {
     LocalStorage.prototype.create = function(model, cb) {
         var key = _genKey(model);
         model.setLocalId(key);
-        this.update(model,cb);
-        
+        this.update(model, cb);
+
     }
     //read a model from local storage
     LocalStorage.prototype.read = function(localId, cb) {
-        var key=localId;
+        var key = localId;
         _fhData({
-            "act":"load",
-            "key":key
-        },cb,cb);
+            "act": "load",
+            "key": key
+        }, cb, cb);
     }
     //update a model
     LocalStorage.prototype.update = function(model, cb) {
-        var key=model.getLocalId();
-        var data=model.getProps();
+        var key = model.getLocalId();
+        var data = model.getProps();
         _fhData({
-            "act":"save",
-            "key":key,
-            "val":data
-        },cb,cb);
+            "act": "save",
+            "key": key,
+            "val": data
+        }, cb, cb);
     }
     //delete a model
     LocalStorage.prototype.delete = function(localId, cb) {
-        var key=localId;
+        var key = localId;
         _fhData({
-            "act":"remove",
-            "key":key
-        },cb,cb);
+            "act": "remove",
+            "key": key
+        }, cb, cb);
     }
-    LocalStorage.prototype.upsert=function(model,cb){
-        var key=model.getLocalId();
-        if (key==null){
-            this.create(model,cb);
-        }else{
-            this.update(model,cb);
+    LocalStorage.prototype.upsert = function(model, cb) {
+        var key = model.getLocalId();
+        if (key == null) {
+            this.create(model, cb);
+        } else {
+            this.update(model, cb);
         }
     }
 
@@ -72,16 +72,18 @@ appForm.stores = (function(module) {
     }
 
     //use different local storage model according to environment
-    function _fhData(){
-        if (fileSystemAvailable){
-            _fhFileData.apply({},arguments);
-        }else{
-            _fhLSData.apply({},arguments);
+    function _fhData() {
+        if (fileSystemAvailable) {
+            _fhFileData.apply({}, arguments);
+        } else {
+            _fhLSData.apply({}, arguments);
         }
     }
     //use $fh data
-    function _fhLSData(options,success,failure){
-        $fh.data(options,function(res){success(null,res);},failure);
+    function _fhLSData(options, success, failure) {
+        $fh.data(options, function(res) {
+            success(null, res);
+        }, failure);
     }
     //use file system
     function _fhFileData(options, success, failure) {
@@ -95,7 +97,7 @@ appForm.stores = (function(module) {
         }
 
         function filenameForKey(key, cb) {
-            key=key+$fh.app_props.appid ;
+            key = key + $fh.app_props.appid;
             console.log('filenameForKey: ' + key);
             $fh.hash({
                 algorithm: "MD5",
@@ -129,33 +131,45 @@ appForm.stores = (function(module) {
         }
 
         function save(key, value) {
+            var valStr = JSON.stringify(value);
+            var size=valStr.length;
             filenameForKey(key, function(hash) {
-                _requestFileSystem(PERSISTENT, 0, function gotFS(fileSystem) {
+                _requestFileSystem(PERSISTENT, size, function gotFS(fileSystem) {
                     fileSystem.root.getFile(hash, {
                         create: true
                     }, function gotFileEntry(fileEntry) {
                         fileEntry.createWriter(function gotFileWriter(writer) {
                             console.log('save: ' + key + ', ' + JSON.stringify(value).substring(0, 50) + '. Filename: ' + hash);
                             writer.onwrite = function(evt) {
-                                return success(null,{
+                                return success(null, {
                                     key: key,
                                     val: value
                                 });
                             };
-                            var valStr=JSON.stringify(value);
-                            try{
+
+                            try {
                                 //try to write a string
-                                writer.write(valStr);    
-                            }catch(e){
-                                var blob=new Blob([valStr],{type : 'text/plain'});
+                                writer.write(valStr);
+                            } catch (e) {
+                                var blob = new Blob([valStr], {
+                                    type: 'text/plain'
+                                });
                                 writer.write(blob);
                             }
-                            
+
                         }, function() {
                             fail('[save] Failed to create file writer');
                         });
-                    }, function() {
-                        fail('[save] Failed to getFile');
+                    }, function(err) {
+                        if (err.name == "QuotaExceededError") { //this happens only on browser. request for 1 gb storage
+                            var size = 1024 * 1024 * 1024;
+                            _requestQuote(size, function(err, size) {
+                                save(key, value);
+                            });
+                        } else {
+                            fail('[save] Failed to getFile:' + err.message);
+                        }
+
                     });
                 }, function() {
                     fail('[save] Failed to requestFileSystem');
@@ -171,7 +185,7 @@ appForm.stores = (function(module) {
                     fileSystem.root.getFile(hash, {}, function gotFileEntry(fileEntry) {
                         console.log('remove: ' + key + '. Filename: ' + hash);
                         fileEntry.remove(function() {
-                            return success(null,{
+                            return success(null, {
                                 key: key,
                                 val: null
                             });
@@ -204,7 +218,7 @@ appForm.stores = (function(module) {
                                     // Just use the result
                                 }
                                 console.log('load: ' + key + '. Filename: ' + hash + " value:" + evt.target.result);
-                                return success(null,{
+                                return success(null, {
                                     key: key,
                                     val: text
                                 });
@@ -215,7 +229,7 @@ appForm.stores = (function(module) {
                         });
                     }, function() {
                         // Success callback on key load failure
-                        success(null,{
+                        success(null, {
                             key: key,
                             val: null
                         });
@@ -239,20 +253,35 @@ appForm.stores = (function(module) {
             }
         }
     }
-    function _checkEnv(){
-        if (window.requestFileSystem){
-            _requestFileSystem=window.requestFileSystem;
-            fileSystemAvailable=true;
-        }else if (window.webkitRequestFileSystem){
-            _requestFileSystem=window.webkitRequestFileSystem;
-            fileSystemAvailable=true;
-        }else {
+
+    function _requestQuote(size, cb) {
+        if (navigator.webkitPersistentStorage) { //webkit browser
+            navigator.webkitPersistentStorage.requestQuota(size, function(size) {
+                cb(null, size);
+            }, function(err) {
+                cb(err, 0);
+            });
+        } else {
+            //PhoneGap does not need to do this.return directly.
+            cb(null, size);
+        }
+    }
+
+    function _checkEnv() {
+
+        if (window.requestFileSystem) {
+            _requestFileSystem = window.requestFileSystem;
+            fileSystemAvailable = true;
+        } else if (window.webkitRequestFileSystem) {
+            _requestFileSystem = window.webkitRequestFileSystem;
+            fileSystemAvailable = true;
+        } else {
             console.error("No filesystem available. Fallback use $fh.data for storage");
         }
-        if (window.LocalFileSystem){
-            PERSISTENT=window.LocalFileSystem.PERSISTENT;
-        }else if (window.PERSISTENT){
-            PERSISTENT=window.PERSISTENT;
+        if (window.LocalFileSystem) {
+            PERSISTENT = window.LocalFileSystem.PERSISTENT;
+        } else if (window.PERSISTENT) {
+            PERSISTENT = window.PERSISTENT;
         }
     }
     _checkEnv();

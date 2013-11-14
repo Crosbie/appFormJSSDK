@@ -6,7 +6,8 @@ describe("Local Storage store", function() {
         var Model = appForm.models.Model;
         var model = new Model();
         appForm.stores.localStorage.create(model, function(err, res) {
-
+            console.log(err);
+            console.log(res);
             assert(!err);
             assert(res);
             assert(res.key == model.getLocalId());
