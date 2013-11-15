@@ -5,6 +5,8 @@ var appForm=(function(module){
         if (typeof cb =="undefined"){
             cb=params;
         }
+        appForm.config=appForm.models.config;
+        appForm.config.init();
         cb();
     }
 

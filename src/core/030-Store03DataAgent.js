@@ -2,7 +2,7 @@ appForm.stores = (function(module) {
     var Store = appForm.stores.Store;
     //DataAgent is read only store
     module.DataAgent = DataAgent;
-    module.dataAgent=new DataAgent(appForm.stores.mBaaS,appForm.stores.localStorage); //default data agent
+    module.dataAgent=new DataAgent(appForm.stores.mBaaS,appForm.stores.localStorage); //default data agent uses mbaas as remote store, localstorage as local store
 
     
 
@@ -38,7 +38,8 @@ appForm.stores = (function(module) {
      * @return {[type]}         [description]
      */
     DataAgent.prototype.refreshRead = function(model, cb) {
-        that.remoteStore.read(model, function(err, res) {
+        var that=this;
+        this.remoteStore.read(model, function(err, res) {
             if (err) {
                 console.error(err);
                 cb(err);
