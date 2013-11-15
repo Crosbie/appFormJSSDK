@@ -16,7 +16,7 @@ appForm.models=(function(module){
     /**
      * read current form model from local or remote by form id
      */
-    Form.prototype.readById(cb){
+    Form.prototype.readById=function(cb){
         var that=this;
         appForm.stores.dataAgent.read(this,function(err,res){
             if (err || !res){

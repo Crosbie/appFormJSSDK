@@ -57,7 +57,7 @@ appForm.stores = (function(module) {
 
     //gen a key according to a model
     function _genKey(model) {
-        
+
     }
 
     //use different local storage model according to environment
@@ -77,17 +77,17 @@ appForm.stores = (function(module) {
     //use file system
     function _fhFileData(options, success, failure) {
         function fail(msg) {
-            console.log('fail: msg= ' + msg);
+            // console.log('fail: msg= ' + msg);
             if (typeof failure !== 'undefined') {
                 return failure(msg, {});
             } else {
-                console.log('failure: ' + msg);
+                // console.log('failure: ' + msg);
             }
         }
 
         function filenameForKey(key, cb) {
             key = key + $fh.app_props.appid;
-            console.log('filenameForKey: ' + key);
+            // console.log('filenameForKey: ' + key);
             $fh.hash({
                 algorithm: "MD5",
                 text: key
@@ -104,15 +104,15 @@ appForm.stores = (function(module) {
                             path += filename;
                         }
                         filename = path;
-                        console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
+                        // console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
                         return cb(filename);
                     }, function handleError(err) {
-                        console.warn('filenameForKey ignoring error=' + JSON.stringify(err));
-                        console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
+                        // console.warn('filenameForKey ignoring error=' + JSON.stringify(err));
+                        // console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
                         return cb(filename);
                     })
                 } else {
-                    console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
+                    // console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
                     return cb(filename);
                 }
 
@@ -128,7 +128,7 @@ appForm.stores = (function(module) {
                         create: true
                     }, function gotFileEntry(fileEntry) {
                         fileEntry.createWriter(function gotFileWriter(writer) {
-                            console.log('save: ' + key + ', ' + JSON.stringify(value).substring(0, 50) + '. Filename: ' + hash);
+                            // console.log('save: ' + key + ', ' + JSON.stringify(value).substring(0, 50) + '. Filename: ' + hash);
                             writer.onwrite = function(evt) {
                                 return success(null, valStr);
                             };
@@ -147,7 +147,7 @@ appForm.stores = (function(module) {
                             fail('[save] Failed to create file writer');
                         });
                     }, function(err) {
-                        if (err.name == "QuotaExceededError") { //this happens only on browser. request for 1 gb storage
+                        if (err.name == "QuotaExceededError" || err.code==10) { //this happens only on browser. request for 1 gb storage
                             var size = 1024 * 1024 * 1024;
                             _requestQuote(size, function(err, size) {
                                 save(key, value);
@@ -165,11 +165,11 @@ appForm.stores = (function(module) {
 
         function remove(key) {
             filenameForKey(key, function(hash) {
-                console.log('remove: ' + key + '. Filename: ' + hash);
+                // console.log('remove: ' + key + '. Filename: ' + hash);
 
                 _requestFileSystem(PERSISTENT, 0, function gotFS(fileSystem) {
                     fileSystem.root.getFile(hash, {}, function gotFileEntry(fileEntry) {
-                        console.log('remove: ' + key + '. Filename: ' + hash);
+                        // console.log('remove: ' + key + '. Filename: ' + hash);
                         fileEntry.remove(function() {
                             return success(null, null);
                         }, function() {
@@ -200,7 +200,7 @@ appForm.stores = (function(module) {
                                     // Swallow exception if not URLencoded
                                     // Just use the result
                                 }
-                                console.log('load: ' + key + '. Filename: ' + hash + " value:" + evt.target.result);
+                                // console.log('load: ' + key + '. Filename: ' + hash + " value:" + evt.target.result);
                                 return success(null, text);
                             };
                             reader.readAsText(file);
@@ -253,7 +253,7 @@ appForm.stores = (function(module) {
             _requestFileSystem = window.webkitRequestFileSystem;
             fileSystemAvailable = true;
         } else {
-            console.error("No filesystem available. Fallback use $fh.data for storage");
+            // console.error("No filesystem available. Fallback use $fh.data for storage");
         }
         if (window.LocalFileSystem) {
             PERSISTENT = window.LocalFileSystem.PERSISTENT;

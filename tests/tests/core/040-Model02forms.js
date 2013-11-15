@@ -6,15 +6,17 @@ describe("forms model",function(){
             assert(!err);
             var timeStamp2=model.getLocalUpdateTimeStamp();
             assert(timeStamp1!=timeStamp2);
+            done();
         });
     });
     it ("can load forms and refresh the model forcely from remote",function(done){
         var formsModel=appForm.models.forms;
         var timeStamp1=formsModel.getLocalUpdateTimeStamp();
-        formsModel.refresh(function(err,model){
+        formsModel.refresh(true, function(err,model){
             assert(!err);
             var timeStamp2=model.getLocalUpdateTimeStamp();
             assert(timeStamp1!=timeStamp2);
+            done();
         });
     });
 });

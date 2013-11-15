@@ -30,7 +30,7 @@ appForm.stores=(function(module){
     }
     
     function _getUrl(type){
-        var host=appForm.config.get("appId");
+        var host=appForm.config.get("cloudHost");
         var mBaaSBaseUrl=appForm.config.get("mbaasBaseUrl");
         var formUrls=appForm.config.get("formUrls");
         if (formUrls[type]){
@@ -38,6 +38,7 @@ appForm.stores=(function(module){
         }else{
             throw("type not found to get url:"+type);
         }   
+        
         return host+mBaaSBaseUrl+relativeUrl;
     }
     
