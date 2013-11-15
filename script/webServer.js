@@ -11,8 +11,8 @@ function initServer(){
     app.use("/src",express.static(srcDir));
     app.use("/test",express.static(testDir));
     app.use("/",express.static(rootDir));
-
-    app.listen(3001);    
+    require("./mockMBaaS.js")(app);
+    app.listen(3001);
 
     console.log("Web server started at port 3001");
     console.log("Visit: http://127.0.0.1:3001");

@@ -2,11 +2,23 @@
 appForm.web.ajax = (function(module) {
     module.get = get;
     var MAXIMUM_WAITING_TIME=30000;
+
+    function createXMLHttpRequest() {
+         try { return new XMLHttpRequest(); } catch(e) {}
+         try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {}
+         return null;
+     }
+
     function get(url, cb) {
         var xhReq = createXMLHttpRequest();
-        xhReq.open("GET", url, true);
+        if(!xhReq){
+            cb({error: 'XMLHttpRequest is not supported'}, null);
+        }
 
-        //This might be to much?
+        xhReq.open("get", url, true);
+        xhReq.send(null);
+
+        // //This might be to much?
         var requestTimer = setTimeout(function() {
             xhReq.abort();
         }, MAXIMUM_WAITING_TIME);
@@ -19,9 +31,9 @@ appForm.web.ajax = (function(module) {
             clearTimeout(requestTimer);
             var serverResponse = xhReq.responseText;
             if (xhReq.status !== 200) {
-                cb({error: 'Status not 200!', body:serverResponse}, null);
+                return cb({error: 'Status not 200!', body:serverResponse}, null);
             }
-            cb(null, {response: serverResponse});
+            return cb(null, {response: serverResponse});
         };
     }
 
