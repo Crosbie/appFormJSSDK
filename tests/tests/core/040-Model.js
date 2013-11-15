@@ -34,4 +34,6 @@ describe("Model",function(){
         model2.fromJSON(json);
         assert(model1.equalTo(model2));
     });
+
+    
 });

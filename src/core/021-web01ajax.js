@@ -1,7 +1,6 @@
 
 appForm.web.ajax = (function(module) {
     module.get = get;
-    var MAXIMUM_WAITING_TIME=30000;
 
     function createXMLHttpRequest() {
          try { return new XMLHttpRequest(); } catch(e) {}
@@ -21,7 +20,7 @@ appForm.web.ajax = (function(module) {
         // //This might be to much?
         var requestTimer = setTimeout(function() {
             xhReq.abort();
-        }, MAXIMUM_WAITING_TIME);
+        }, appForm.config.get("timeoutTime"));
 
         xhReq.onreadystatechange = function() {
             if (xhReq.readyState !== 4) {

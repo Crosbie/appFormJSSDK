@@ -11,9 +11,7 @@ appForm.stores=(function(module){
 
     }
     MBaaS.prototype.read=function(model,cb){
-        var type=model.get("_type");
-        //Add hot types here
-        var url=_getUrl(type);
+        var url=_getUrl(model);
         appForm.web.ajax.get(url,function(err,res){
             if (err){
                 cb(err);
@@ -29,7 +27,8 @@ appForm.stores=(function(module){
         
     }
     
-    function _getUrl(type){
+    function _getUrl(model){
+        var type=model.get("_type");
         var host=appForm.config.get("cloudHost");
         var mBaaSBaseUrl=appForm.config.get("mbaasBaseUrl");
         var formUrls=appForm.config.get("formUrls");
@@ -39,7 +38,13 @@ appForm.stores=(function(module){
             throw("type not found to get url:"+type);
         }   
         
-        return host+mBaaSBaseUrl+relativeUrl;
+        var url= host+mBaaSBaseUrl+relativeUrl;
+
+        switch (type){
+            case "form":
+                url=url.replace(":formId",model.get("_id"));
+        }
+        return url;
     }
     
 

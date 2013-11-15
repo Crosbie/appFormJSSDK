@@ -2,7 +2,7 @@ appForm.models=(function(module){
     var Model=appForm.models.Model;
     module.Form=Form;
 
-    function Form(formId){
+    function Form(formId,cb){
         if (!formId){
             throw ("Cannot initialise a form object without an id. id:"+formId);
         }
@@ -11,21 +11,13 @@ appForm.models=(function(module){
             "_id":formId,
             "_type":"form"
         });
+        if (typeof cb =="function"){
+            this.refresh(cb);
+        }
     }
     appForm.utils.extend(Form,Model);
-    /**
-     * read current form model from local or remote by form id
-     */
-    Form.prototype.readById=function(cb){
-        var that=this;
-        appForm.stores.dataAgent.read(this,function(err,res){
-            if (err || !res){
-                cb(err,that);
-            }else{
-                that.fromJSON(res);
-                cb(null,that);
-            }
-        });
+    Form.prototype.getLastUpdate=function(){
+        return this.get("lastUpdated");
     }
 
 

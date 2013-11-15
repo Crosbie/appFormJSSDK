@@ -7,12 +7,13 @@ appForm.models = (function(module) {
             "_type": null, // model type
             "_ludid": null //local unique id
         };
-        this.store = null;
+        
         if (typeof opt != "undefined") {
             for (var key in opt) {
                 this.props[key] = opt[key];
             }
         }
+        
     }
     Model.prototype.getProps = function() {
         return this.props;
@@ -70,6 +71,44 @@ appForm.models = (function(module) {
     }
     Model.prototype.getLocalUpdateTimeStamp=function(){
         return this.get("_localLastUpdate");
+    }
+    /**
+     * retrieve model from local or remote with data agent store.
+     * @param {boolean} fromRemote optional true--force from remote
+     * @param  {Function} cb (err,formsModel)
+     * @return {[type]}      [description]
+     */
+    Model.prototype.refresh=function(fromRemote,cb){
+        var dataAgent=this.getDataAgent();
+        var that=this;
+        if (typeof cb=="undefined"){
+            cb=fromRemote;
+            fromRemote=false;
+        }
+        if (fromRemote){
+            dataAgent.refreshRead(this,_handler);
+        }else{
+            dataAgent.read(this,_handler);
+        }
+
+        function _handler(err,res){
+            if (!err && res){
+                that.fromJSON(res);
+                cb(null,that);
+            }else{
+                cb(err,that);
+            }
+        }
+
+    }
+    Model.prototype.getDataAgent=function(){
+        if (!this.dataAgent){
+            this.setDataAgent(appForm.stores.dataAgent);
+        }
+        return this.dataAgent;
+    }
+    Model.prototype.setDataAgent=function(dataAgent){
+        this.dataAgent=dataAgent;
     }
 
 

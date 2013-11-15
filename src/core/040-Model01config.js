@@ -10,6 +10,7 @@ appForm.models=(function(module){
     appForm.utils.extend(Config,Model);
     Config.prototype.init=function(cb){
         this.set("appId",$fh.app_props.appid);
+        this.set("timeoutTime",30000);
         this._initMBaaS();
 
     }

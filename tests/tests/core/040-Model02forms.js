@@ -19,4 +19,19 @@ describe("forms model",function(){
             done();
         });
     });
+
+    it ("can load a formMeta data by its form id",function(){
+        var formsModel=appForm.models.forms;
+        var form=formsModel.getFormMetaById("527d4539639f521e0a000004");
+        assert(form);
+        assert(form._id=="527d4539639f521e0a000004");
+        assert(form.lastUpdated);
+    });
+
+    it ("should check if a form is up to date",function(done){
+        var form=new appForm.models.Form("527d4539639f521e0a000004",function(er r){
+            assert(!err);
+            
+        });
+    });
 });

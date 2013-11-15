@@ -53,7 +53,9 @@ appForm.stores = (function(module) {
             this.update(model, cb);
         }
     }
-
+    LocalStorage.prototype.switchFileSystem=function(isOn){
+        fileSystemAvailable=isOn;
+    }
 
     //gen a key according to a model
     function _genKey(model) {

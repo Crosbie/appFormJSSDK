@@ -9,38 +9,27 @@ appForm.models=(function(module){
         });
     }
     appForm.utils.extend(Forms,Model);
-    /**
-     * retrieve forms definition
-     * @param {boolean} fromRemote optional true--force from remote
-     * @param  {Function} cb (err,formsModel)
-     * @return {[type]}      [description]
-     */
-    Forms.prototype.refresh=function(fromRemote,cb){
-        var dataAgent=appForm.stores.dataAgent;
-        var that=this;
-        if (typeof cb=="undefined"){
-            cb=fromRemote;
-            fromRemote=false;
-        }
-        if (fromRemote){
-            dataAgent.refreshRead(this,_handler);
-        }else{
-            dataAgent.read(this,_handler);
-        }
-
-        function _handler(err,res){
-            if (!err && res){
-                that.fromJSON(res);
-                cb(null,that);
-            }else{
-                cb(err,that);
-            }
-        }
-
-    }
 
     Forms.prototype.isFormUpdated=function(formModel,cb){
+        var id=formModel.get("_id");
+        var formLastUpdate=formModel.getLastUpdate();
+        var formMeta=this.getFormMetaById(id);
+        if (formMeta){
+            return formLastUpdate==formMeta.lastUpdated;
+        }else{ //could have been deleted. leave it for now
+            return false;
+        }
+    }
 
+    Forms.prototype.getFormMetaById=function(formId){
+        var forms=this.get("forms");
+        for (var i=0;i<forms.length;i++){
+            var form=forms[i];
+            if (form._id == formId){
+                return form;
+            }
+        }
+        return null;
     }
 
     

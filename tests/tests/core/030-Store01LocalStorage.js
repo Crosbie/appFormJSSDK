@@ -1,4 +1,7 @@
 describe("Local Storage store", function() {
+    after(function() {
+        appForm.stores.localStorage.switchFileSystem(true);
+    })
     it("should be extending Store", function() {
         assert(appForm.stores.localStorage.name == "LocalStorage");
     });
@@ -6,6 +9,7 @@ describe("Local Storage store", function() {
         var Model = appForm.models.Model;
         var model = new Model();
         appForm.stores.localStorage.create(model, function(err, res) {
+
             assert(!err);
             assert(res);
             done();
@@ -45,10 +49,10 @@ describe("Local Storage store", function() {
         appForm.stores.localStorage.create(model, function(err, res) {
             appForm.stores.localStorage.delete(model, function(err, res) {
                 assert(!err);
-                assert(res==null);
+                assert(res == null);
                 appForm.stores.localStorage.read(model, function(err, res) {
                     assert(!err);
-                    assert(res== null);
+                    assert(res == null);
                     done();
                 });
 
@@ -57,7 +61,7 @@ describe("Local Storage store", function() {
         });
     });
 
-    it ("shoudl remove an non-existed instance",function(done){
+    it("shoudl remove an non-existed instance", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.setLocalId("unknownkey");
@@ -67,4 +71,26 @@ describe("Local Storage store", function() {
             done();
         });
     });
+
+
 });
+describe("Fallback use $fh data / how to forcely use $fh data", function() {
+        
+        before(function(){
+            appForm.stores.localStorage.switchFileSystem(false);
+        });
+        after(function() {
+            appForm.stores.localStorage.switchFileSystem(true);
+        });
+        it("how to forcely use $fh data / shoudl fall back use $fh data if failed use file system api", function(done) {
+
+            var Model = appForm.models.Model;
+            var model = new Model();
+            appForm.stores.localStorage.create(model, function(err, res) {
+
+                assert(!err);
+                assert(res);
+                done();
+            });
+        });
+    });
