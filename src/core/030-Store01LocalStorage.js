@@ -6,6 +6,7 @@ appForm.stores = (function(module) {
     var fileSystemAvailable = false;
     var _requestFileSystem = function() {}; //placeholder
     var PERSISTENT = 1; //placeholder
+    var utils=appForm.utils;
 
     function LocalStorage() {
         appForm.stores.Store.call(this, "LocalStorage");
@@ -13,14 +14,14 @@ appForm.stores = (function(module) {
     appForm.utils.extend(LocalStorage, appForm.stores.Store);
     //store a model to local storage
     LocalStorage.prototype.create = function(model, cb) {
-        var key = _genKey(model);
+        var key = utils.localId(model);
         model.setLocalId(key);
         this.update(model, cb);
 
     }
     //read a model from local storage
-    LocalStorage.prototype.read = function(localId, cb) {
-        var key = localId;
+    LocalStorage.prototype.read = function(model, cb) {
+        var key = model.getLocalId();
         _fhData({
             "act": "load",
             "key": key
@@ -37,8 +38,8 @@ appForm.stores = (function(module) {
         }, cb, cb);
     }
     //delete a model
-    LocalStorage.prototype.delete = function(localId, cb) {
-        var key = localId;
+    LocalStorage.prototype.delete = function(model, cb) {
+        var key = model.getLocalId();
         _fhData({
             "act": "remove",
             "key": key
@@ -56,19 +57,7 @@ appForm.stores = (function(module) {
 
     //gen a key according to a model
     function _genKey(model) {
-        var props = model.getProps();
-        var _id = props._id;
-        var _type = props._type;
-        var ts = (new Date()).getTime();
-        if (_id && _type) {
-            return _id + "_" + _type + "_" + ts;
-        } else if (_id) {
-            return _id + "_" + ts;
-        } else if (_type) {
-            return _type + "_" + ts;
-        } else {
-            return ts;
-        }
+        
     }
 
     //use different local storage model according to environment
@@ -82,7 +71,7 @@ appForm.stores = (function(module) {
     //use $fh data
     function _fhLSData(options, success, failure) {
         $fh.data(options, function(res) {
-            success(null, res);
+            success(null, res.val?res.val:null);
         }, failure);
     }
     //use file system
@@ -141,10 +130,7 @@ appForm.stores = (function(module) {
                         fileEntry.createWriter(function gotFileWriter(writer) {
                             console.log('save: ' + key + ', ' + JSON.stringify(value).substring(0, 50) + '. Filename: ' + hash);
                             writer.onwrite = function(evt) {
-                                return success(null, {
-                                    key: key,
-                                    val: value
-                                });
+                                return success(null, valStr);
                             };
 
                             try {
@@ -185,10 +171,7 @@ appForm.stores = (function(module) {
                     fileSystem.root.getFile(hash, {}, function gotFileEntry(fileEntry) {
                         console.log('remove: ' + key + '. Filename: ' + hash);
                         fileEntry.remove(function() {
-                            return success(null, {
-                                key: key,
-                                val: null
-                            });
+                            return success(null, null);
                         }, function() {
                             fail('[remove] Failed to remove file');
                         });
@@ -218,10 +201,7 @@ appForm.stores = (function(module) {
                                     // Just use the result
                                 }
                                 console.log('load: ' + key + '. Filename: ' + hash + " value:" + evt.target.result);
-                                return success(null, {
-                                    key: key,
-                                    val: text
-                                });
+                                return success(null, text);
                             };
                             reader.readAsText(file);
                         }, function() {
@@ -229,10 +209,7 @@ appForm.stores = (function(module) {
                         });
                     }, function() {
                         // Success callback on key load failure
-                        success(null, {
-                            key: key,
-                            val: null
-                        });
+                        success(null,null);
                     });
                 }, function() {
                     fail('[load] Failed to get fileSystem');

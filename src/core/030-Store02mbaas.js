@@ -1,9 +1,10 @@
 appForm.stores=(function(module){
-    module.mBaaS=new MBaaS();
-
     var Store=appForm.stores.Store;
+    
+    module.mBaaS=new MBaaS();
+    
     function MBaaS(){
-        //Store.call(this,"MBaaS");
+        Store.call(this,"MBaaS");
     }
     appForm.utils.extend(MBaaS,Store);
     MBaaS.prototype.create=function(model,cb){

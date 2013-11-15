@@ -6,13 +6,8 @@ describe("Local Storage store", function() {
         var Model = appForm.models.Model;
         var model = new Model();
         appForm.stores.localStorage.create(model, function(err, res) {
-            console.log(err);
-            console.log(res);
             assert(!err);
             assert(res);
-            assert(res.key == model.getLocalId());
-            assert(res.val);
-
             done();
         });
     });
@@ -22,12 +17,10 @@ describe("Local Storage store", function() {
         var model = new Model();
         model.set("hello", "world");
         appForm.stores.localStorage.create(model, function(err, res) {
-            var key = res.key;
-            appForm.stores.localStorage.read(key, function(err, res) {
+            appForm.stores.localStorage.read(model, function(err, res) {
                 assert(!err);
-                assert(res.key == key);
                 var model1 = new Model();
-                model1.fromJSONStr(res.val);
+                model1.fromJSONStr(res);
                 assert(model1.get("hello") == "world");
                 assert(model1.getLocalId() == model.getLocalId());
                 done();
@@ -36,10 +29,12 @@ describe("Local Storage store", function() {
     });
 
     it("should read an instance which does not exist", function(done) {
-        appForm.stores.localStorage.read("unknownkey", function(err, res) {
+        var Model = appForm.models.Model;
+        var model = new Model();
+        model.setLocalId("unknownkey");
+        appForm.stores.localStorage.read(model, function(err, res) {
             assert(!err);
-            assert(res.key == "unknownkey");
-            assert(res.val == null);
+            assert(res == null);
             done();
         });
     });
@@ -48,14 +43,12 @@ describe("Local Storage store", function() {
         var model = new Model();
         model.set("hello", "world");
         appForm.stores.localStorage.create(model, function(err, res) {
-            var key = res.key;
-            appForm.stores.localStorage.delete(key, function(err, res) {
+            appForm.stores.localStorage.delete(model, function(err, res) {
                 assert(!err);
-                assert(res.key == key);
-                appForm.stores.localStorage.read(key, function(err, res) {
+                assert(res==null);
+                appForm.stores.localStorage.read(model, function(err, res) {
                     assert(!err);
-                    assert(res.key == key);
-                    assert(res.val == null);
+                    assert(res== null);
                     done();
                 });
 
@@ -65,7 +58,10 @@ describe("Local Storage store", function() {
     });
 
     it ("shoudl remove an non-existed instance",function(done){
-        appForm.stores.localStorage.delete("unknownkey", function(err, res) {
+        var Model = appForm.models.Model;
+        var model = new Model();
+        model.setLocalId("unknownkey");
+        appForm.stores.localStorage.delete(model, function(err, res) {
             assert(err);
             assert(res);
             done();
