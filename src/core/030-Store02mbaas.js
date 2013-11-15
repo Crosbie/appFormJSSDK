@@ -14,7 +14,13 @@ appForm.stores=(function(module){
         var type=model.get("_type");
         //Add hot types here
         var url=_getUrl(type);
-        //appForm.web.ajax.get()
+        appForm.web.ajax.get(url,function(err,res){
+            if (err){
+                cb(err);
+            }else{
+                cb(null,res.response);
+            }
+        });
     }
     MBaaS.prototype.update=function(model,cb){
         
@@ -27,8 +33,12 @@ appForm.stores=(function(module){
         var host=appForm.config.get("appId");
         var mBaaSBaseUrl=appForm.config.get("mbaasBaseUrl");
         var formUrls=appForm.config.get("formUrls");
-        var relativeUrl=formUrls[type]?formUrls[type]:throw("type not found to get url:"+type);
-        return host+mbaasBaseUrl+relativeUrl;
+        if (formUrls[type]){
+            var relativeUrl=formUrls[type];    
+        }else{
+            throw("type not found to get url:"+type);
+        }   
+        return host+mBaaSBaseUrl+relativeUrl;
     }
     
 

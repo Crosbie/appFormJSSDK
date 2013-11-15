@@ -13,8 +13,10 @@ describe("Store Data agent", function() {
         });
 
         it ("should load from remote if local does not exists",function(done){
-            var model=new appForm.models.Model();
+            var model=appForm.models.forms;
             appForm.stores.dataAgent.read(model,function(err,res){
+                assert(!err);
+                assert(res);
                 done();
             });
         }); 

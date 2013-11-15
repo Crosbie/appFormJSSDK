@@ -9,5 +9,6 @@
   "030-Store03DataAgent",
   "040-Model",
   "040-Model01config",
-  "040-Model02forms"
+  "040-Model02forms",
+  "040-Model03Form"
  ];

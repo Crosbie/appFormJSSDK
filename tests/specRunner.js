@@ -26,7 +26,7 @@ require.config({
  var assert=chai.assert;
   require(requiredFiles, function(require) {
     appForm.init(function(){
-      mocha.run();  
+       mocha.run();  
     });
     
   });

@@ -68,6 +68,9 @@ appForm.models = (function(module) {
     Model.prototype.touch=function(){
         this.set("_localLastUpdate",(new Date()).getTime());
     }
+    Model.prototype.getLocalUpdateTimeStamp=function(){
+        return this.get("_localLastUpdate");
+    }
 
 
     return module;
