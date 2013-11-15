@@ -4,7 +4,6 @@ describe("Store Data agent", function() {
             var model=new appForm.models.Model();
             appForm.stores.localStorage.create(model,function(e,r1){
                 appForm.stores.dataAgent.read(model,function(err,res){
-                    console.log(err,res,r1)
                     assert(!err);
                     assert(res);
                     assert(res == r1);
@@ -13,7 +12,14 @@ describe("Store Data agent", function() {
             });
         });
 
-        
+        it ("should load from remote if local does not exists",function(done){
+            var model=new appForm.models.Model();
+            appForm.stores.dataAgent.read(model,function(err,res){
+                done();
+            });
+        }); 
+
+
     });
 
 });

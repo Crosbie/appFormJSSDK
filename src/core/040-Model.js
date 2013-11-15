@@ -40,6 +40,7 @@ appForm.models = (function(module) {
                 this.set(key, json[key]);
             }
         }
+        this.touch();
 
     }
     Model.prototype.fromJSONStr = function(jsonStr) {
@@ -63,6 +64,9 @@ appForm.models = (function(module) {
             }
         }
         return true;
+    }
+    Model.prototype.touch=function(){
+        this.set("_localLastUpdate",(new Date()).getTime());
     }
 
 

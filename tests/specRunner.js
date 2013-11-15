@@ -25,6 +25,9 @@ require.config({
   mocha.setup('bdd');
  var assert=chai.assert;
   require(requiredFiles, function(require) {
-    mocha.run();
+    appForm.init(function(){
+      mocha.run();  
+    });
+    
   });
  

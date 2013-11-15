@@ -7,5 +7,7 @@
   "030-Store01LocalStorage",
   "030-Store02mbaas",
   "030-Store03DataAgent",
-  "040-Model"
+  "040-Model",
+  "040-Model01config",
+  "040-Model02forms"
  ];

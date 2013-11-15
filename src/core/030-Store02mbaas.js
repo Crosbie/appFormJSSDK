@@ -11,7 +11,10 @@ appForm.stores=(function(module){
 
     }
     MBaaS.prototype.read=function(model,cb){
-        
+        var type=model.get("_type");
+        //Add hot types here
+        var url=_getUrl(type);
+        //appForm.web.ajax.get()
     }
     MBaaS.prototype.update=function(model,cb){
         
@@ -19,6 +22,15 @@ appForm.stores=(function(module){
     MBaaS.prototype.delete=function(model,cb){
         
     }
+    
+    function _getUrl(type){
+        var host=appForm.config.get("appId");
+        var mBaaSBaseUrl=appForm.config.get("mbaasBaseUrl");
+        var formUrls=appForm.config.get("formUrls");
+        var relativeUrl=formUrls[type]?formUrls[type]:throw("type not found to get url:"+type);
+        return host+mbaasBaseUrl+relativeUrl;
+    }
+    
 
     return module;
 })(appForm.stores || {});
