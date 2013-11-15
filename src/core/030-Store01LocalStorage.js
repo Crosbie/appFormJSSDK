@@ -57,7 +57,7 @@ appForm.stores = (function(module) {
 
     //gen a key according to a model
     function _genKey(model) {
-        
+
     }
 
     //use different local storage model according to environment
@@ -147,7 +147,7 @@ appForm.stores = (function(module) {
                             fail('[save] Failed to create file writer');
                         });
                     }, function(err) {
-                        if (err.name == "QuotaExceededError") { //this happens only on browser. request for 1 gb storage
+                        if (err.name == "QuotaExceededError" || err.code==10) { //this happens only on browser. request for 1 gb storage
                             var size = 1024 * 1024 * 1024;
                             _requestQuote(size, function(err, size) {
                                 save(key, value);
