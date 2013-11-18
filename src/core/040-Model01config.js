@@ -1,6 +1,6 @@
 appForm.models=(function(module){
     var Model=appForm.models.Model;
-    module.config=new Config();
+    
 
     function Config(){
         Model.call(this,{
@@ -40,7 +40,7 @@ appForm.models=(function(module){
             //TODO complete the list. 
         })
     }
-    
+    module.config=new Config();
 
     return module;
 })(appForm.models ||{});

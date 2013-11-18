@@ -1,10 +1,11 @@
 appForm.models=(function(module){
     var Model=appForm.models.Model;
-    module.forms=new Forms();
+    
 
     function Forms(){
         Model.call(this,{
             "_type":"forms",
+            "_ludid":"forms_list",
             "loaded":false
         });
     }
@@ -32,7 +33,11 @@ appForm.models=(function(module){
         return null;
     }
 
+    Forms.prototype.setLocalId=function(){
+        throw("forms id cannot be set programmly");
+    }
     
+    module.forms=new Forms();
 
     return module;
 })(appForm.models ||{});

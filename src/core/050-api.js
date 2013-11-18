@@ -51,3 +51,11 @@ appForm.api=(function(module){
 
     return module;
 })(appForm.api || {});
+//mockup $fh apis for Addons.
+if (typeof $fh == "undefined"){
+    $fh={};
+}
+if ($fh.forms==undefined){
+    $fh.forms=appForm.api;
+}
+

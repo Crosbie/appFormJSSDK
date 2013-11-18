@@ -30,7 +30,7 @@ describe("Form model", function() {
         });
     });
 
-    it("what if a form id is not found when trying to pop data", function(done) {
+    it("if form id is not found when trying to pop data, it will return error ", function(done) {
         var Form = appForm.models.Form;
         var form = new Form("somerandomformid", function(err, form) {
             console.log(err);

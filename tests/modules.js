@@ -14,9 +14,11 @@
   "040-Model01config",
   "040-Model02forms",
   "040-Model03Form",
-  "040-Model04File"
+  "040-Model04File",
+  "040-Model05submissions",
+  "040-Model06Submission"
  ],
  backbone:[
-  
+
  ]
 };

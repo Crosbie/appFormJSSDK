@@ -1,7 +1,5 @@
 appForm.stores = (function(module) {
-    module.localStorage = new LocalStorage();
-
-
+  
     //implementation
     var fileSystemAvailable = false;
     var _requestFileSystem = function() {}; //placeholder
@@ -9,6 +7,7 @@ appForm.stores = (function(module) {
     var utils=appForm.utils;
 
     function LocalStorage() {
+
         appForm.stores.Store.call(this, "LocalStorage");
     };
     appForm.utils.extend(LocalStorage, appForm.stores.Store);
@@ -61,6 +60,9 @@ appForm.stores = (function(module) {
     }
     LocalStorage.prototype.switchFileSystem=function(isOn){
         fileSystemAvailable=isOn;
+    }
+    LocalStorage.prototype.defaultStorage=function(){
+        _checkEnv();
     }
 
     //gen a key according to a model
@@ -268,7 +270,7 @@ appForm.stores = (function(module) {
     }
 
     function _checkEnv() {
-
+        // debugger;
         if (window.requestFileSystem) {
             _requestFileSystem = window.requestFileSystem;
             fileSystemAvailable = true;
@@ -276,6 +278,7 @@ appForm.stores = (function(module) {
             _requestFileSystem = window.webkitRequestFileSystem;
             fileSystemAvailable = true;
         } else {
+            fileSystemAvailable=false;
             // console.error("No filesystem available. Fallback use $fh.data for storage");
         }
         if (window.LocalFileSystem) {
@@ -284,7 +287,9 @@ appForm.stores = (function(module) {
             PERSISTENT = window.PERSISTENT;
         }
     }
+    // debugger;
     _checkEnv();
 
+    module.localStorage = new LocalStorage();
     return module;
 })(appForm.stores || {});

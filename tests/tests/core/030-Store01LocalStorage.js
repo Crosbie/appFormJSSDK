@@ -1,6 +1,6 @@
 describe("Local Storage store", function() {
     after(function() {
-        appForm.stores.localStorage.switchFileSystem(true);
+        appForm.stores.localStorage.defaultStorage();
     })
     it("should be extending Store", function() {
         assert(appForm.stores.localStorage.name == "LocalStorage");
@@ -80,7 +80,7 @@ describe("Fallback use $fh data / how to forcely use $fh data", function() {
         appForm.stores.localStorage.switchFileSystem(false);
     });
     after(function() {
-        appForm.stores.localStorage.switchFileSystem(true);
+        appForm.stores.localStorage.defaultStorage();
     });
     it("how to forcely use $fh data / shoudl fall back use $fh data if failed use file system api", function(done) {
 
