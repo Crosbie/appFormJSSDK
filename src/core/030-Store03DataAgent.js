@@ -15,7 +15,7 @@ appForm.stores = (function(module) {
     /**
      * Read from local store first, if not exists, read from remote store and store locally
      * @param  {[type]}   model [description]
-     * @param  {Function} cb    [description]
+     * @param  {Function} cb    (err,res,isFromRemote)
      * @return {[type]}         [description]
      */
     DataAgent.prototype.read = function(model, cb) {
@@ -27,7 +27,7 @@ appForm.stores = (function(module) {
                 }
                 that.refreshRead(model, cb);
             } else { //local loading succeed
-                cb(null,locRes);
+                cb(null,locRes,false);
             }
         });
     }
@@ -47,7 +47,11 @@ appForm.stores = (function(module) {
                 //update model from remote response
                 model.fromJSON(res);
                 //update local storage for the model
-                that.localStore.upsert(model,cb);
+                that.localStore.upsert(model,function(){
+                    var args=Array.prototype.slice.call(arguments,0);
+                    args.push(true);
+                    cb.apply({},args);
+                });
             }
         });
     }

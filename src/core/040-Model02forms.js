@@ -10,7 +10,7 @@ appForm.models=(function(module){
     }
     appForm.utils.extend(Forms,Model);
 
-    Forms.prototype.isFormUpdated=function(formModel,cb){
+    Forms.prototype.isFormUpdated=function(formModel){
         var id=formModel.get("_id");
         var formLastUpdate=formModel.getLastUpdate();
         var formMeta=this.getFormMetaById(id);

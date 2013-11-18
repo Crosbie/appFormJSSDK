@@ -2,7 +2,7 @@ var assert=chai.assert;
 
 describe("Utilities",function(){
 
-    it("should extend a class(function)",function(){
+    it("how to extend a class",function(){
         var parent=function(){};
         parent.prototype.method1=function(){};
         var child=function(){};
@@ -12,7 +12,7 @@ describe("Utilities",function(){
         assert(instance.method1==parent.prototype.method1);
     });
 
-    it ("should generate a local id",function(){
+    it ("how to generate a local id from a model",function(){
         var utils=appForm.utils;
         var Model=appForm.models.Model;
         var model=new Model;

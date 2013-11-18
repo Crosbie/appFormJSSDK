@@ -1,5 +1,5 @@
 describe("Form model", function() {
-    it("should ask for formid", function() {
+    it("how to initialise a form with a formid", function() {
         var Form = appForm.models.Form;
         var error = false;
         try {
@@ -18,7 +18,7 @@ describe("Form model", function() {
         }
         assert(!error);
     });
-    it("should initialise itself if a cb passed", function(done) {
+    it("how to initialise a form and pop data associated", function(done) {
         var Form = appForm.models.Form;
         var form = new Form("527d4539639f521e0a000004", function(err, form) {
             assert(!err);
@@ -30,7 +30,7 @@ describe("Form model", function() {
         });
     });
 
-    it("should callback an error if a formid is not valid", function(done) {
+    it("what if a form id is not found when trying to pop data", function(done) {
         var Form = appForm.models.Form;
         var form = new Form("somerandomformid", function(err, form) {
             console.log(err);

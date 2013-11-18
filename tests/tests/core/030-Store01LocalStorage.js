@@ -5,7 +5,7 @@ describe("Local Storage store", function() {
     it("should be extending Store", function() {
         assert(appForm.stores.localStorage.name == "LocalStorage");
     });
-    it("should store a model instance to localstorage", function(done) {
+    it("how to store a model instance to localstorage", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         appForm.stores.localStorage.create(model, function(err, res) {
@@ -16,7 +16,7 @@ describe("Local Storage store", function() {
         });
     });
 
-    it("should store a model instance and read the data back", function(done) {
+    it("how to store a model instance and read the data back", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.set("hello", "world");
@@ -32,7 +32,7 @@ describe("Local Storage store", function() {
         });
     });
 
-    it("should read an instance which does not exist", function(done) {
+    it("the response of reading an instance which does not exist", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.setLocalId("unknownkey");
@@ -42,7 +42,7 @@ describe("Local Storage store", function() {
             done();
         });
     });
-    it("should remove an existed instance", function(done) {
+    it("how to remove an existed instance", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.set("hello", "world");
@@ -61,7 +61,7 @@ describe("Local Storage store", function() {
         });
     });
 
-    it("shoudl remove an non-existed instance", function(done) {
+    it("the respons of removing an non-existed instance", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.setLocalId("unknownkey");
@@ -93,7 +93,7 @@ describe("Fallback use $fh data / how to forcely use $fh data", function() {
             done();
         });
     });
-    it("should store a model instance and read the data back", function(done) {
+    it("how to store a model instance and read the data back", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.set("hello", "world");
@@ -108,7 +108,7 @@ describe("Fallback use $fh data / how to forcely use $fh data", function() {
             });
         });
     });
-    it("should read an instance which does not exist", function(done) {
+    it("the response of reading an instance which does not exist", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.setLocalId("unknownkey");
@@ -118,14 +118,14 @@ describe("Fallback use $fh data / how to forcely use $fh data", function() {
             done();
         });
     });
-    it("should remove an existed instance", function(done) {
+    it("how to remove an existed instance", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.set("hello", "world");
         appForm.stores.localStorage.create(model, function(err, res) {
             
             appForm.stores.localStorage.delete(model, function(err, res) {
-                
+
                 assert(!err);
                 assert(res==null);
 
@@ -140,7 +140,7 @@ describe("Fallback use $fh data / how to forcely use $fh data", function() {
         });
     });
 
-    it("shoudl remove an non-existed instanc", function(done) {
+    it("the response of removing an non-existed instanc", function(done) {
         var Model = appForm.models.Model;
         var model = new Model();
         model.setLocalId("unknownkey");

@@ -1,17 +1,17 @@
 describe("Model",function(){
-    it ("should get and set properties",function(){
+    it ("how to get and set properties",function(){
         var model=new appForm.models.Model();
         model.set("hello","Model");
         assert(model.get("hello")=="Model");
     });
 
-    it ("should get and set local id",function(){
+    it ("how to get and set local id",function(){
         var model=new appForm.models.Model();
         model.setLocalId("aaa");
         assert(model.getLocalId()=="aaa");
     });
 
-    it ("should copy data from a json string",function(){
+    it ("how to convert a json string to model data",function(){
         var json={
             "item":"name",
             "hello":"world"
@@ -23,7 +23,7 @@ describe("Model",function(){
         assert(model.get("hello")=="world");
     });
 
-    it ("should check if two models data identical",function(){
+    it ("how to check if two models data identical",function(){
         var model1=new appForm.models.Model();
         var model2=new appForm.models.Model();
         var json={
