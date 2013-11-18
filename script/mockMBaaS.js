@@ -5,6 +5,7 @@ var allForms=require("./sampleData/getForm.json");
 function applyServer(app) {
     app.get("/mbaas/forms/:appId", _getForms);
     app.get("/mbaas/forms/:appId/:formId",_getForm);
+    app.post("/mbaas/forms",_postForms);
 }
 
 function _getForms(req, res) {
@@ -15,6 +16,12 @@ function _getForms(req, res) {
             "description": "I am a form",
             "lastUpdated":"2013-11-08T20:10:33.819Z"
         }]
+    });
+}
+function _postForms(req, res) {
+    res.json({
+        "status":"ok",
+        "body": req.body
     });
 }
 
