@@ -16,9 +16,9 @@ require.config({
  var requiredFiles=[];
  modules.forEach(function(name){
   //source file
-  requiredFiles.push("./src/core/"+name+".js");
+  requiredFiles.push("./src/**/"+name+".js");
   //test file
-  requiredFiles.push("./tests/core/"+name+".js");
+  requiredFiles.push("./tests/**/"+name+".js");
  });
 
   /*globals mocha */
@@ -26,7 +26,7 @@ require.config({
  var assert=chai.assert;
   require(requiredFiles, function(require) {
     appForm.init(function(){
-       mocha.run();  
+       mocha.run();
     });
     
   });
