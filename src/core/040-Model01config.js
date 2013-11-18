@@ -8,6 +8,7 @@ appForm.models=(function(module){
         });
     }
     appForm.utils.extend(Config,Model);
+    //call in appForm.init
     Config.prototype.init=function(cb){
         this.set("appId",$fh.app_props.appid);
         this.set("timeoutTime",30000);
