@@ -14,11 +14,12 @@ require.config({
 
 
  var requiredFiles=[];
- modules.forEach(function(name){
+ var coreModules=modules.core;
+ coreModules.forEach(function(name){
   //source file
-  requiredFiles.push("./src/**/"+name+".js");
+  requiredFiles.push("./src/core/"+name+".js");
   //test file
-  requiredFiles.push("./tests/**/"+name+".js");
+  requiredFiles.push("./tests/core/"+name+".js");
  });
 
   /*globals mocha */

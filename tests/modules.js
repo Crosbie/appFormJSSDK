@@ -1,6 +1,7 @@
 //register modules here
 
- var modules=[
+ var modules={
+  core:[
   "010-appForm",
   "020-utils",
   "021-web",
@@ -14,4 +15,8 @@
   "040-Model02forms",
   "040-Model03Form",
   "040-Model04File"
- ];
+ ],
+ backbone:[
+  
+ ]
+};
