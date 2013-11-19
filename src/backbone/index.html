@@ -5,7 +5,37 @@
 </head>
 
 <body>
-    <p>Content</p>
+    <div id="content">
+        <!-- <p>Content</p> -->
+    </div>
+
+    <script>
+        // Namespace
+        var App = App || {};
+        App.views = App.views || {};
+        App.collections = App.collections || {};
+    </script>
+
+    <!-- ======== Libs============ -->
+    <script src="./libs/jquery-1.10.2.min.js"></script>
+    <script src="../core/010-appForm.js"></script>
+    <script src="../core/050-api.js"></script>
+    <script src="./libs/underscore.js"></script>
+    <script src="./libs/backbone.js"></script>
+    <!-- ======== Models ============ -->
+    <script src=""></script>
+    <!-- ======== Templates ============ -->
+    <script src=""></script>
+    <!-- ======== Views ============ -->
+    <script src="./js/020-view01formView.js"></script>
+    <!-- ======== Router ============ -->
+    <script src="./js/080-router.js"></script>
+    <!-- ======== Script ============ -->
+    <script>
+        App.router = new App.Router();
+        Backbone.history.start();
+    </script>
+    
 </body>
 
 </html>
