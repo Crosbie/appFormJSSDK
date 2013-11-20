@@ -1,7 +1,5 @@
 appForm.stores = (function(module) {
-    module.localStorage = new LocalStorage();
-
-
+  
     //implementation
     var fileSystemAvailable = false;
     var _requestFileSystem = function() {}; //placeholder
@@ -9,6 +7,7 @@ appForm.stores = (function(module) {
     var utils=appForm.utils;
 
     function LocalStorage() {
+
         appForm.stores.Store.call(this, "LocalStorage");
     };
     appForm.utils.extend(LocalStorage, appForm.stores.Store);
@@ -22,19 +21,25 @@ appForm.stores = (function(module) {
     //read a model from local storage
     LocalStorage.prototype.read = function(model, cb) {
         var key = model.getLocalId();
-        _fhData({
-            "act": "load",
-            "key": key
-        }, cb, cb);
+        if (key!=null){
+            _fhData({
+                "act": "load",
+                "key": key.toString()
+            }, cb, cb);
+        }else{ //model does not exist in local storage if key is null.
+            cb(null,null);
+        }
+        
     }
     //update a model
     LocalStorage.prototype.update = function(model, cb) {
         var key = model.getLocalId();
         var data = model.getProps();
+        var dataStr=JSON.stringify(data);
         _fhData({
             "act": "save",
-            "key": key,
-            "val": data
+            "key": key.toString(),
+            "val": dataStr
         }, cb, cb);
     }
     //delete a model
@@ -42,7 +47,7 @@ appForm.stores = (function(module) {
         var key = model.getLocalId();
         _fhData({
             "act": "remove",
-            "key": key
+            "key": key.toString()
         }, cb, cb);
     }
     LocalStorage.prototype.upsert = function(model, cb) {
@@ -55,6 +60,9 @@ appForm.stores = (function(module) {
     }
     LocalStorage.prototype.switchFileSystem=function(isOn){
         fileSystemAvailable=isOn;
+    }
+    LocalStorage.prototype.defaultStorage=function(){
+        _checkEnv();
     }
 
     //gen a key according to a model
@@ -72,7 +80,18 @@ appForm.stores = (function(module) {
     }
     //use $fh data
     function _fhLSData(options, success, failure) {
+        // console.log(options);
         $fh.data(options, function(res) {
+            if (typeof res=="undefined"){
+                res={
+                    key:options.key,
+                    val:options.val
+                }
+            }
+            //unify the interfaces
+            if (options.act.toLowerCase()=="remove"){
+                success(null,null);
+            }
             success(null, res.val?res.val:null);
         }, failure);
     }
@@ -177,8 +196,12 @@ appForm.stores = (function(module) {
                         }, function() {
                             fail('[remove] Failed to remove file');
                         });
-                    }, function() {
-                        fail('[remove] Failed to getFile');
+                    }, function(err) {
+                        if (err.name=="NotFoundError" || err.code ==1){ //file not found
+                            success(null,null);
+                        }else{
+                             fail('[remove] Failed to getFile');
+                        }
                     });
                 }, function() {
                     fail('[remove] Failed to get fileSystem');
@@ -247,7 +270,7 @@ appForm.stores = (function(module) {
     }
 
     function _checkEnv() {
-
+        // debugger;
         if (window.requestFileSystem) {
             _requestFileSystem = window.requestFileSystem;
             fileSystemAvailable = true;
@@ -255,6 +278,7 @@ appForm.stores = (function(module) {
             _requestFileSystem = window.webkitRequestFileSystem;
             fileSystemAvailable = true;
         } else {
+            fileSystemAvailable=false;
             // console.error("No filesystem available. Fallback use $fh.data for storage");
         }
         if (window.LocalFileSystem) {
@@ -263,7 +287,9 @@ appForm.stores = (function(module) {
             PERSISTENT = window.PERSISTENT;
         }
     }
+    // debugger;
     _checkEnv();
 
+    module.localStorage = new LocalStorage();
     return module;
 })(appForm.stores || {});

@@ -3,7 +3,7 @@ describe("Config module",function(){
         return appForm.config;
     }
     
-    it ("should has general app info",function(){
+    it ("how to get config properties",function(){
         assert(config().get("appId"));
         assert(config().get("cloudHost"));
         assert(config().get("mbaasBaseUrl"));

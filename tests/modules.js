@@ -1,6 +1,7 @@
 //register modules here
 
- var modules=[
+ var modules={
+  core:[
   "010-appForm",
   "020-utils",
   "021-web",
@@ -13,5 +14,14 @@
   "040-Model01config",
   "040-Model02forms",
   "040-Model03Form",
-  "040-Model04File"
- ];
+  "040-Model04File",
+  "040-Model05submissions",
+  "040-Model06Submission"
+ ],
+ backbone:[
+ "010-app",
+ "030-model",
+ "040-view01formView",
+ "080-router"
+ ]
+};

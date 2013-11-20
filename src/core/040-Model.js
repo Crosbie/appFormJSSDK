@@ -1,6 +1,7 @@
 appForm.models = (function(module) {
     module.Model = Model;
-
+    
+    
     function Model(opt) {
         this.props = {
             "_id": null, // model id
@@ -13,6 +14,7 @@ appForm.models = (function(module) {
                 this.props[key] = opt[key];
             }
         }
+        this.touch();
         
     }
     Model.prototype.getProps = function() {
@@ -75,7 +77,7 @@ appForm.models = (function(module) {
     /**
      * retrieve model from local or remote with data agent store.
      * @param {boolean} fromRemote optional true--force from remote
-     * @param  {Function} cb (err,formsModel)
+     * @param  {Function} cb (err,currentModel)
      * @return {[type]}      [description]
      */
     Model.prototype.refresh=function(fromRemote,cb){
@@ -101,6 +103,43 @@ appForm.models = (function(module) {
         }
 
     }
+    /**
+     * Retrieve model from local storage store
+     * @param  {Function} cb (err, curModel)
+     * @return {[type]}      [description]
+     */
+    Model.prototype.loadLocal=function(cb){
+        var localStorage=appForm.stores.localStorage;
+        var that=this;
+        localStorage.read(this,function(err,res){
+            if (err){
+                cb(err);
+            }else{
+                if (res){
+                    that.fromJSON(res);    
+                }
+                cb(err,that);
+            }
+        });
+    }
+    /**
+     * save current model to local storage store
+     * @param  {Function} cb [description]
+     * @return {[type]}      [description]
+     */
+    Model.prototype.saveLocal=function(cb){
+        var localStorage=appForm.stores.localStorage;
+        localStorage.upsert(this,cb);
+    }
+    /**
+     * Remove current model from local storage store
+     * @param  {Function} cb [description]
+     * @return {[type]}      [description]
+     */
+    Model.prototype.clearLocal=function(cb){
+        var localStorage=appForm.stores.localStorage;
+        localStorage.delete(this,cb);
+    }
     Model.prototype.getDataAgent=function(){
         if (!this.dataAgent){
             this.setDataAgent(appForm.stores.dataAgent);
@@ -111,6 +150,6 @@ appForm.models = (function(module) {
         this.dataAgent=dataAgent;
     }
 
-
     return module;
+    
 })(appForm.models || {});

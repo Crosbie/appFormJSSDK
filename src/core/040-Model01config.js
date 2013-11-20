@@ -1,6 +1,6 @@
 appForm.models=(function(module){
     var Model=appForm.models.Model;
-    module.config=new Config();
+    
 
     function Config(){
         Model.call(this,{
@@ -8,6 +8,7 @@ appForm.models=(function(module){
         });
     }
     appForm.utils.extend(Config,Model);
+    //call in appForm.init
     Config.prototype.init=function(cb){
         this.set("appId",$fh.app_props.appid);
         this.set("timeoutTime",30000);
@@ -39,7 +40,7 @@ appForm.models=(function(module){
             //TODO complete the list. 
         })
     }
-    
+    module.config=new Config();
 
     return module;
 })(appForm.models ||{});
