@@ -13,7 +13,7 @@ describe("submissions model",function(){
     it ("how to register a submission to the list",function(done){
         var Form = appForm.models.Form;
         //load form
-        var form = new Form("527d4539639f521e0a000004", function(err, form) {
+        var form = new Form({formId:"527d4539639f521e0a000004"}, function(err, form) {
             assert(!err);
             var submission=appForm.models.submission.newInstance(form);
             var localId=submission.getLocalId();
@@ -34,7 +34,7 @@ describe("submissions model",function(){
     it ("how to get submission meta data from the list",function(done){
         var Form = appForm.models.Form;
         //load form
-        var form = new Form("527d4539639f521e0a000004", function(err, form) {
+        var form = new Form({formId:"527d4539639f521e0a000004"}, function(err, form) {
             assert(!err);
             var submission=appForm.models.submission.newInstance(form);
             var localId=submission.getLocalId();
@@ -52,5 +52,18 @@ describe("submissions model",function(){
         var metaList=appForm.models.submissions.findByFormId(formId);
         assert(metaList.length>0);
     });
-    
+    it ("how to get submission drafts ",function(){
+        var rtn=appForm.models.submissions.getDrafts();
+        assert(rtn);
+    });
+
+    it ("how to get a submission model from meta data",function(done){
+        var metaList=appForm.models.submissions.getSubmissionMetaList();
+        var meta=metaList[0];
+        appForm.models.submissions.getSubmissionByMeta(meta,function(err,submission){
+            assert(!err);
+            assert(submission.getLocalId()==meta._ludid);
+            done();
+        });
+    });
 });

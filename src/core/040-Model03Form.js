@@ -1,17 +1,24 @@
 appForm.models = (function(module) {
     var Model = appForm.models.Model;
     module.Form = Form;
+
+    var _forms={}; //cache of all forms. single instance for 1 formid
     /**
      * [Form description]
-     * @param {[type]}   formId     [description]
-     * @param {[type]}   fromRemote (optional) load form from remote
+     * @param {[type]}   params  {formId: string, fromRemote:boolean(false)}
      * @param {Function} cb         [description]
      */
-    function Form(formId, fromRemote, cb) {
+    function Form(params, cb) {
+        var formId=params.formId;
+        var fromRemote=params.fromRemote;
         if (!formId) {
+
             throw ("Cannot initialise a form object without an id. id:" + formId);
         }
-
+        if (_forms[formId]){ //found form object in mem return it.
+            cb(null,_forms[formId]);
+            return _forms[formId];
+        }
         Model.call(this, {
             "_id": formId,
             "_type": "form"
@@ -31,6 +38,7 @@ appForm.models = (function(module) {
                     console.error(e);
                     //TODO throw the error if in dev mode.
                 }
+                _forms[formId]=obj;
                 cb(err, obj);
             });
         } else {
@@ -126,6 +134,17 @@ appForm.models = (function(module) {
         }
     }
 
+    Form.prototype.newSubmission=function(){
+        return appForm.models.submission.newInstance(this);
+    }
+    Form.prototype.getFormId=function(){
+        return this.get("_id");
+    }
+    Form.prototype.removeFromCache=function(){
+        if (_forms[this.getFormId()]){
+            delete _forms[this.getFormId()];
+        }
+    }
 
     return module;
 })(appForm.models || {});

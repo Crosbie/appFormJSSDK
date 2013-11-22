@@ -26,7 +26,7 @@ appForm.models=(function(module){
         if (localId){
             var meta=this.findMetaByLocalId(localId);
             var submissions=this.get("submissions");
-            if (meta){ //existed, remove the old meta
+            if (meta){ //existed, remove the old meta and save the new one.
                 submissions.splice(submissions.indexOf(meta),1);
                 submissions.push(pruneData);
             }else{ // not existed, insert to the tail.
@@ -51,6 +51,7 @@ appForm.models=(function(module){
     Submissions.prototype.getSubmissions=function(){
         return this.get("submissions");
     }
+    Submissions.prototype.getSubmissionMetaList=Submissions.prototype.getSubmissions; //function alias
     Submissions.prototype.findMetaByLocalId=function(localId){
         var submissions=this.get("submissions");
         for (var i=0;i<submissions.length;i++){
@@ -84,8 +85,44 @@ appForm.models=(function(module){
             }
         });
     }
-    Submissions.prototype.getDrafts=function(cb){
-        
+    Submissions.prototype.getDrafts=function(){
+        return this.findByStatus("draft");            
+    }
+    Submissions.prototype.getPending=function(){
+        return this.findByStatus("pending");    
+    }
+    Submissions.prototype.getSubmitted=function(){
+        return this.findByStatus("submitted");
+    }
+    Submissions.prototype.getError=function(){
+        return this.findByStatus("error");
+    }
+    Submissions.prototype.getInProgress=function(){
+        return this.findByStatus("inprogress");
+    }
+    Submissions.prototype.findByStatus=function(status){
+        var submissions=this.get("submissions");
+        var rtn=[];
+        for (var i=0;i<submissions.length;i++){
+            if (submissions[i].status==status){
+                rtn.push(submissions[i]);
+            }
+        }
+        return rtn;
+    }
+    /**
+     * return a submission model object by the meta data passed in.
+     * @param  {[type]}   meta [description]
+     * @param  {Function} cb   [description]
+     * @return {[type]}        [description]
+     */
+    Submissions.prototype.getSubmissionByMeta=function(meta,cb){
+        var localId=meta["_ludid"];
+        if (localId){
+            appForm.models.submission.fromLocal(localId,cb);
+        }else{
+            throw ("local id not found for retrieving submission.")
+        }
     }
 
     module.submissions=new Submissions();

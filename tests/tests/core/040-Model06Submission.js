@@ -2,7 +2,7 @@ describe("Submission model", function() {
     it("how to create new submission from a form", function(done) {
         var Form = appForm.models.Form;
         //load form
-        var form = new Form("527d4539639f521e0a000004", function(err, form) {
+        var form = new Form({formId:"527d4539639f521e0a000004"}, function(err, form) {
             assert(!err);
             var submission = appForm.models.submission.newInstance(form);
             var localId = submission.getLocalId();
@@ -16,7 +16,7 @@ describe("Submission model", function() {
     it("how to load a submission from local storage without a form", function(done) {
         var Form = appForm.models.Form;
         //load form
-        var form = new Form("527d4539639f521e0a000004", function(err, form) {
+        var form = new Form({formId:"527d4539639f521e0a000004"}, function(err, form) {
             assert(!err);
             var submission = appForm.models.submission.newInstance(form);
             var localId = submission.getLocalId();
@@ -37,7 +37,7 @@ describe("Submission model", function() {
         var Form = appForm.models.Form;
         var error = false;
         //load form
-        var form = new Form("527d4539639f521e0a000004", function(err, form) {
+        var form = new Form({formId:"527d4539639f521e0a000004"}, function(err, form) {
             assert(!err);
             var submission = appForm.models.submission.newInstance(form);
             var localId = submission.getLocalId();
@@ -60,7 +60,7 @@ describe("Submission model", function() {
     it("how to store a draft,and find it from submissions list", function(done) {
         var Form = appForm.models.Form;
         //load form
-        var form = new Form("527d4539639f521e0a000004", function(err, form) {
+        var form = new Form({formId:"527d4539639f521e0a000004"}, function(err, form) {
             assert(!err);
             var submission = appForm.models.submission.newInstance(form);
             var localId = submission.getLocalId();
@@ -77,7 +77,17 @@ describe("Submission model", function() {
 
         });
     });
-
+    it ("submission model loaded from local should have only 1 reference",function(done){
+             var meta=appForm.models.submissions.findByFormId("527d4539639f521e0a000004")[0];
+            var localId=meta._ludid;
+            appForm.models.submission.fromLocal(localId,function(err,submission1){
+                appForm.models.submission.fromLocal(localId,function(err,submission2){
+                    assert(submission1 === submission2);
+                    done();
+                });
+                
+            });
+        });
     describe("comment", function() {
         it("how to add a comment to a submission with or without a user", function(done) {
             var meta=appForm.models.submissions.findByFormId("527d4539639f521e0a000004")[0];

@@ -36,6 +36,9 @@ appForm.models=(function(module){
     Forms.prototype.setLocalId=function(){
         throw("forms id cannot be set programmly");
     }
+    Forms.prototype.getFormsList=function(){
+        return this.get("forms");
+    }
     
     module.forms=new Forms();
 

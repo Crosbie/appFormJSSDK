@@ -2,69 +2,50 @@
  * FeedHenry License
  */
 
-appForm.api=(function(module){
-    module.getForms=getForms;
-    module.getForm=getForm;
-    module.saveDraft=saveDraft;
-    module.submitForm=submitForm;
-    module.getPending=getPending;
-    module.getSubmitted=getSubmitted;
-    module.getError=getError;
-    module.getInProgress=getInProgress;
-    module.getDrafts=getDrafts;
-    module.validate=validate;
-
-    function getForms(params, cb){
-
-    }
-
-    function getForm(params, cb){
-        
-    }
-
-    function saveDraft(params, cb){
-        
-    }
-
-    function submitForm(params, cb){
-        
-    }
-
-    function getPending(params, cb){
-        
-    }
-
-    function getSubmitted(params, cb){
-        
-    }
-
-    function getError(params, cb){
-        
-    }
-
-    function getInProgress(params, cb){
-        
-    }
-
-    function getDrafts(params, cb){
-        
+appForm.api = (function(module) {
+    module.getForms = getForms;
+    module.getForm = getForm;
+    module.getSubmissions = getSubmissions;
+    /**
+     * Retrieve forms model. It contains forms list. check forms model usage
+     * @param  {[type]}   params {fromRemote:boolean}
+     * @param  {Function} cb    (err, formsModel)
+     * @return {[type]}          [description]
+     */
+    function getForms(params, cb) {
+        var fromRemote = params.fromRemote;
+        if (fromRemote == undefined) {
+            fromRemote = false;
+        }
+        appForm.models.forms.refresh(fromRemote, cb);
     }
     /**
-     * Validate an input value with its field object
-     * @param  {[type]}   params {inputValue: val, field:fieldObject}
-     * @param  {Function} cb     (errMsg,isSucceed);
+     * Retrieve form model with specified form id.
+     * @param  {[type]}   params {formId: string, fromRemote:boolean}
+     * @param  {Function} cb     (err, formModel)
+     * @return {[type]}          [description]
      */
-    function validate(params,cb){
-
+    function getForm(params, cb) {
+        new appForm.models.Form(params, cb);
     }
+    /**
+     * Retrieve submissions list model from local storage
+     * @param  {[type]}   params {}
+     * @param  {Function} cb     (err,submissionsModel)
+     * @return {[type]}          [description]
+     */
+    function getSubmissions(params, cb) {
+        appForm.models.submissions.loadLocal(cb);
+    }
+    
+    //mockup $fh apis for Addons.
+    if (typeof $fh == "undefined") {
+        $fh = {};
+    }
+    if ($fh.forms == undefined) {
+        $fh.forms = appForm.api;
+    }
+
 
     return module;
 })(appForm.api || {});
-//mockup $fh apis for Addons.
-if (typeof $fh == "undefined"){
-    $fh={};
-}
-if ($fh.forms==undefined){
-    $fh.forms=appForm.api;
-}
-

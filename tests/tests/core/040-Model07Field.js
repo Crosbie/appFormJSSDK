@@ -3,7 +3,7 @@ describe("Field Model",function(){
     var form=null;
     it ("Field model is initialised when a form is initialised",function(done){
         var Form = appForm.models.Form;
-       new Form("527d4539639f521e0a000004", true, function(err, f) {
+       new Form({formId:"527d4539639f521e0a000004",fromRemote: true}, function(err, f) {
             form=f;
             fieldModel=form.getFieldModelById("527d4539639f521e0a000006");
             assert(fieldModel);

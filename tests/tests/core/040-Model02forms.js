@@ -29,7 +29,7 @@ describe("forms model",function(){
     });
 
     it ("how to test if a form model object is up to date / should check if a form is up to date",function(done){
-        var form=new appForm.models.Form("527d4539639f521e0a000004",function(err){
+        var form=new appForm.models.Form({formId:"527d4539639f521e0a000004"},function(err){
             assert(!err);
             var formsModel=appForm.models.forms;
             
