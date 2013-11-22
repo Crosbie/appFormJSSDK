@@ -141,7 +141,12 @@ appForm.stores = (function(module) {
         }
 
         function save(key, value) {
-            var valStr = JSON.stringify(value);
+            if (typeof value=="object"){
+                var valStr = JSON.stringify(value);    
+            }else{
+                var valStr=value;
+            }
+            
             var size=valStr.length;
             filenameForKey(key, function(hash) {
                 _requestFileSystem(PERSISTENT, size, function gotFS(fileSystem) {
@@ -149,26 +154,32 @@ appForm.stores = (function(module) {
                         create: true
                     }, function gotFileEntry(fileEntry) {
                         fileEntry.createWriter(function gotFileWriter(writer) {
-                            // console.log('save: ' + key + ', ' + JSON.stringify(value).substring(0, 50) + '. Filename: ' + hash);
-                            writer.onwrite = function(evt) {
+                            function _onFinished(evt){
                                 return success(null, valStr);
-                            };
-
-                            try {
-                                //try to write a string
-                                writer.write(valStr);
-                            } catch (e) {
-                                var blob = new Blob([valStr], {
-                                    type: 'text/plain'
-                                });
-                                writer.write(blob);
                             }
+                            function _onTruncated(){
+                                writer.onwrite=_onFinished;
+                                try {
+                                    //try to write a string
+                                    writer.write(valStr);
+                                } catch (e) {
+                                    var blob = new Blob([valStr], {
+                                        type: 'text/plain'
+                                    });
+                                    writer.write(blob);
+                                }
+                            }
+                            // console.log('save: ' + key + ', ' + JSON.stringify(value).substring(0, 50) + '. Filename: ' + hash);
+                            writer.onwrite = _onTruncated;
+                            writer.truncate(0);
+                            
 
                         }, function() {
                             fail('[save] Failed to create file writer');
                         });
                     }, function(err) {
                         if (err.name == "QuotaExceededError" || err.code==10) { //this happens only on browser. request for 1 gb storage
+                            //TODO configurable from cloud
                             var size = 1024 * 1024 * 1024;
                             _requestQuote(size, function(err, size) {
                                 save(key, value);

@@ -12,6 +12,7 @@ appForm.api=(function(module){
     module.getError=getError;
     module.getInProgress=getInProgress;
     module.getDrafts=getDrafts;
+    module.validate=validate;
 
     function getForms(params, cb){
 
@@ -47,6 +48,14 @@ appForm.api=(function(module){
 
     function getDrafts(params, cb){
         
+    }
+    /**
+     * Validate an input value with its field object
+     * @param  {[type]}   params {inputValue: val, field:fieldObject}
+     * @param  {Function} cb     (errMsg,isSucceed);
+     */
+    function validate(params,cb){
+
     }
 
     return module;

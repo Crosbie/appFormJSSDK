@@ -14,7 +14,8 @@ function _getForms(req, res) {
             "_id": "527d4539639f521e0a000004",
             "name": "testFieldsForm",
             "description": "I am a form",
-            "lastUpdated":"2013-11-08T20:10:33.819Z"
+            "lastUpdated":"2013-11-08T20:10:33.819Z",
+            "lastUpdatedTimestamp":1384800150848
         }]
     });
 }

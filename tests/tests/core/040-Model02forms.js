@@ -32,6 +32,7 @@ describe("forms model",function(){
         var form=new appForm.models.Form("527d4539639f521e0a000004",function(err){
             assert(!err);
             var formsModel=appForm.models.forms;
+            
             assert (formsModel.isFormUpdated(form));
             done();
         });

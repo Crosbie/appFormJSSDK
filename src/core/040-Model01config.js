@@ -11,6 +11,7 @@ appForm.models=(function(module){
     //call in appForm.init
     Config.prototype.init=function(cb){
         this.set("appId",$fh.app_props.appid);
+        this.set("env",$fh.app_props.mode?$fh.app_props.mode:"dev");
         this.set("timeoutTime",30000);
         this._initMBaaS();
 

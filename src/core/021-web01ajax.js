@@ -1,7 +1,12 @@
 appForm.web.ajax = (function(module) {
-    module.get = get;
+    module=typeof $fh!="undefined" && $fh.__ajax?$fh.__ajax:_myAjax;
+    module.get = get;       
     module.post = post;
 
+
+    function _myAjax(){
+        //TODO my ajax deifinition.
+    }
     function createXMLHttpRequest() {
         try {
             return new XMLHttpRequest();
