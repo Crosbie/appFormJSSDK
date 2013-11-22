@@ -19,6 +19,9 @@
   "040-Model06Submission"
  ],
  backbone:[
-
+ "010-app",
+ "030-model",
+ "040-view01formView",
+ "080-router"
  ]
 };

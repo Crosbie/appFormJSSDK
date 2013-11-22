@@ -15,11 +15,20 @@ require.config({
 
 var requiredFiles = [];
 var coreModules = modules.core;
+var backboneModules = modules.backbone;
+
 coreModules.forEach(function(name) {
   //source file
   requiredFiles.push("./src/core/" + name + ".js");
   //test file
   requiredFiles.push("./tests/core/" + name + ".js");
+});
+
+backboneModules.forEach(function(name) {
+  //source file
+  requiredFiles.push("./src/backbone/js/" + name + ".js");
+  //test file
+  requiredFiles.push("./tests/backbone/js/" + name + ".js");
 });
 
 /*globals mocha */
