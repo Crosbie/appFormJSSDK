@@ -2,7 +2,6 @@ FormListView = Backbone.View.extend({
   el: $('#fh_wufoo_form_list'),
 
   events: {
-    'click .settings': 'showDebugSettings',
     'click button.reload': 'reload'
   },
 
@@ -29,13 +28,10 @@ FormListView = Backbone.View.extend({
   },
 
   reload: function() {
-    var loadingView = new LoadingCollectionView();
-    loadingView.show("Attempting to reload forms");
     App.router.reload();
   },
 
   show: function () {
-    App.views.menu.markActive('.fh_wufoo_form_list');
     $(this.el).show();
   },
 
@@ -81,13 +77,5 @@ FormListView = Backbone.View.extend({
     var view = new ShowFormButtonView({model: form});
     this.views.push(view);
     $('ul', this.el).append(view.render().el);
-  },
-
-  showDebugSettings: function () {
-    App.views.menu.showDebugSettings();
-  },
-
-  showAbout: function () {
-    App.views.menu.showAbout();
   }
 });

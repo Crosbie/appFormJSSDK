@@ -465,6 +465,8 @@ FormModel = Backbone.Model.extend({
 
 });
 
+App.models.form = new FormModel();
+
 FormsCollection = Backbone.Collection.extend({
   model: FormModel,
   // form collection will only fetch minimum form details to populate models. Models will be fetched individually as full detail is required
@@ -472,7 +474,9 @@ FormsCollection = Backbone.Collection.extend({
   sync: FHBackboneDataActSyncFn,
 
   initialize: function () {
-    this.store.on('error', function () {});
+    $fh.form.getForms(function(){
+      // init collection
+    });
   }
 });
 

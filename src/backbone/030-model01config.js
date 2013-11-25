@@ -58,4 +58,4 @@ ConfigModel = Backbone.Model.extend({
   }
 });
 
-App.config = new ConfigModel();
+App.models.config = new ConfigModel();
