@@ -16,7 +16,7 @@ appForm.models=(function(module){
         var formLastUpdate=formModel.getLastUpdate();
         var formMeta=this.getFormMetaById(id);
         if (formMeta){
-            return formLastUpdate==formMeta.lastUpdated;
+            return formLastUpdate==formMeta.lastUpdatedTimestamp;
         }else{ //could have been deleted. leave it for now
             return false;
         }
@@ -35,6 +35,9 @@ appForm.models=(function(module){
 
     Forms.prototype.setLocalId=function(){
         throw("forms id cannot be set programmly");
+    }
+    Forms.prototype.getFormsList=function(){
+        return this.get("forms");
     }
     
     module.forms=new Forms();

@@ -20,6 +20,7 @@ describe("Local Storage store", function() {
         var Model = appForm.models.Model;
         var model = new Model();
         model.set("hello", "world");
+    
         appForm.stores.localStorage.create(model, function(err, res) {
             appForm.stores.localStorage.read(model, function(err, res) {
                 assert(!err);

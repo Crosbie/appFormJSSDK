@@ -21,8 +21,8 @@ appForm.models = (function(module) {
         return this.props;
     }
 
-    Model.prototype.get = function(key) {
-        return this.props[key];
+    Model.prototype.get = function(key,def) {
+        return typeof this.props[key]=="undefined"?def:this.props[key];
     }
 
     Model.prototype.set = function(key, val) {
@@ -54,25 +54,35 @@ appForm.models = (function(module) {
             console.error(e);
         }
     }
-    Model.prototype.equalTo = function(model) {
-        var props = model.getProps();
-        for (var key in this.props) {
-            if (this.props[key] != props[key]) {
-                return false;
-            }
-        }
-        for (var key in props) {
-            if (this.props[key] != props[key]) {
-                return false;
-            }
-        }
-        return true;
-    }
+    // not working properly for nested model data.
+    // Model.prototype.equalTo = function(model) {
+    //     var props = model.getProps();
+    //     for (var key in this.props) {
+    //         if (key=="_localLastUpdate"){
+    //             continue;
+    //         }
+    //         if (this.props[key] != props[key]) {
+    //             return false;
+    //         }
+    //     }
+    //     for (var key in props) {
+    //         if (key=="_localLastUpdate"){
+    //             continue;
+    //         }
+    //         if (this.props[key] != props[key]) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
     Model.prototype.touch=function(){
         this.set("_localLastUpdate",(new Date()).getTime());
     }
     Model.prototype.getLocalUpdateTimeStamp=function(){
         return this.get("_localLastUpdate");
+    }
+    Model.prototype.genLocalId=function(){
+        return appForm.utils.localId(this);
     }
     /**
      * retrieve model from local or remote with data agent store.

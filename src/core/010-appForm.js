@@ -9,6 +9,12 @@ var appForm=(function(module){
         appForm.config.init();
         cb();
     }
-
+    
+    // $fh.ready({}, function() {
+    //     appForms.init({},function(){
+    //         console.log("appForm is inited");
+    //     });
+    // });
     return module;
 })(appForm || {});
+

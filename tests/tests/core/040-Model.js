@@ -34,18 +34,6 @@ describe("Model", function() {
         assert(model.get("hello") == "world");
     });
 
-    it("how to check if two models data identical", function() {
-        var model1 = new appForm.models.Model();
-        var model2 = new appForm.models.Model();
-        var json = {
-            "item": "name",
-            "hello": "world"
-        }
-        model1.fromJSON(json);
-        model2.fromJSON(json);
-        assert(model1.equalTo(model2));
-    });
-
     it("how to save the model to local storage", function(done) {
         var model = new appForm.models.Model();
         model.set("name", "hello");
