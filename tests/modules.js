@@ -28,6 +28,7 @@
   "040-Model09fieldValidate",
   "040-Model10uploadManager",
   "040-Model11Rule",
+  "040-Model11ruleCheckFuncs",
   "050-api"
  ],
  backbone:[

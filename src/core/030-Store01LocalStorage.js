@@ -145,7 +145,7 @@ appForm.stores = (function(module) {
                     if (err) {
                         fail(err);
                     } else {
-                        success(null, hash);
+                        success(null, value);
                     }
                 });
             });

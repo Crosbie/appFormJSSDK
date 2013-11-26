@@ -7,5 +7,4 @@ if (typeof window =="undefined"){
 }
 //this is a partial js file which defines the start of appform SDK closure
 (function(_scope){
-    
     //start module
