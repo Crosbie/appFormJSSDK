@@ -88,6 +88,14 @@ describe("Model", function() {
             });
         });
     });
-
+    it ("how to emit an event and subscribe to it",function(done){
+        var model = new appForm.models.Model();
+        model.on("mockEvent",function(param1,param2){
+            assert(param1=="hello");
+            assert(param2=="world");
+            done();
+        });
+        model.emit("mockEvent","hello","world");
+    });
 
 });

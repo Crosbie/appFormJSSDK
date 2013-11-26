@@ -62,6 +62,7 @@ appForm.models = (function(module) {
         this.set("appCloudName", ""); //TODO check with eng
         this.set("comments", []);
         this.set("formFields", []);
+        this.transactionMode = false;
         this.genLocalId();
         var localId = this.getLocalId();
         _submissions[localId] = this;
@@ -171,21 +172,73 @@ appForm.models = (function(module) {
         var fieldModel = this.form.getFieldModelById(fieldId);
         var validateRes = appForm.models.fieldValidate.validate(inputValue, fieldModel);
         if (validateRes === true) {
+            if (this.transactionMode) {
+                if (!this.tmpFields[fieldId]){
+                    this.tmpFields[fieldId]=[];
+                }
+                this.tmpFields[fieldId].push(inputValue);
+                return true;
+            } else {
+                var targetArr = this.get("formFields");
+                for (var i = 0; i < targetArr.length; i++) {
+                    if (targetArr[i].fieldId == fieldId) {
+                        targetArr[i].fieldValues.push(fieldModel.processInput(inputValue));
+                        return true;
 
+                    }
+                }
+                //not found, create new entry
+                var newEntry = {
+                    "fieldId": fieldId,
+                    "fieldValues": [fieldModel.processInput(inputValue)]
+                }
+                targetArr.push(newEntry);
+                return true;
+            }
         } else {
             return validateRes;
         }
     }
     Submission.prototype.getInputValueByFieldId = function(fieldId) {
         var formFields = this.get("formFields", []);
+        var fieldModel = this.form.getFieldModelById(fieldId);
         for (var i = 0; i < formFields.length; i++) {
             var formField = formFields[i];
             if (formField.fieldId == fieldId) {
-                return formField;
+                return fieldModel.convertSubmission(formField["fieldValues"]);
             }
         }
         return null;
     }
+    /**
+     * Reset submission
+     * @return {[type]} [description]
+     */
+    Submission.prototype.reset = function() {
+        this.set("formFields", []);
+    }
+    Submission.prototype.startInputTransaction = function() {
+        this.transactionMode = true;
+        this.tmpFields = {};
+    }
+    Submission.prototype.endInputTransaction = function(succeed) {
+        this.transactionMode = false;
+        if (succeed) {
+            var tmpFields = this.tmpFields;
+            for (var fieldId in tmpFields){
+                var valArr=tmpFields[fieldId];
+                for (var i=0;i<valArr.length;i++){
+                    var val=valArr[i];
+                    this.addInputValue(fieldId,val);
+                }
+            }
+            this.tmpFields = {};
+        } else {
+            this.tmpFields = {};
+        }
+
+    }
+
     /**
      * get form model related to this submission.
      * @return {[type]} [description]

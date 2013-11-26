@@ -23,9 +23,15 @@ appForm.models=(function(module){
             if (!this[act] || typeof this[act]!="function"){
                 console.error("Validation method is not found:"+act);
             }else{
-                this[act](inputValue,validation[act]);
+                var res=this[act](inputValue,validation[act]);
+                if (res === true){
+                    continue;
+                }else{
+                    return res;
+                }
             }
         }
+        return true;
     }
 
     FieldValidate.prototype.min=function(inputValue, targetVal){

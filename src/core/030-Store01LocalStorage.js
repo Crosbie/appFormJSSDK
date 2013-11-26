@@ -1,11 +1,13 @@
-appForm.stores = (function(module) {
-  
-    //implementation
-    var fileSystemAvailable = false;
-    var _requestFileSystem = function() {}; //placeholder
-    var PERSISTENT = 1; //placeholder
-    var utils=appForm.utils;
+/**
+ * Local storage stores a model's json definition persistently.
+ */
 
+appForm.stores = (function(module) {
+
+    //implementation
+    var utils = appForm.utils;
+    var fileSystem = utils.fileSystem;
+    var _fileSystemAvailable = function() {}; //placeholder
     function LocalStorage() {
 
         appForm.stores.Store.call(this, "LocalStorage");
@@ -21,21 +23,21 @@ appForm.stores = (function(module) {
     //read a model from local storage
     LocalStorage.prototype.read = function(model, cb) {
         var key = model.getLocalId();
-        if (key!=null){
+        if (key != null) {
             _fhData({
                 "act": "load",
                 "key": key.toString()
             }, cb, cb);
-        }else{ //model does not exist in local storage if key is null.
-            cb(null,null);
+        } else { //model does not exist in local storage if key is null.
+            cb(null, null);
         }
-        
+
     }
     //update a model
     LocalStorage.prototype.update = function(model, cb) {
         var key = model.getLocalId();
         var data = model.getProps();
-        var dataStr=JSON.stringify(data);
+        var dataStr = JSON.stringify(data);
         _fhData({
             "act": "save",
             "key": key.toString(),
@@ -58,21 +60,24 @@ appForm.stores = (function(module) {
             this.update(model, cb);
         }
     }
-    LocalStorage.prototype.switchFileSystem=function(isOn){
-        fileSystemAvailable=isOn;
+    LocalStorage.prototype.switchFileSystem = function(isOn) {
+        _fileSystemAvailable = function() {
+            return isOn;
+        }
     }
-    LocalStorage.prototype.defaultStorage=function(){
-        _checkEnv();
+    LocalStorage.prototype.defaultStorage = function() {
+        _fileSystemAvailable = function() {
+            return fileSystem.isFileSystemAvailable;
+        }
     }
 
-    //gen a key according to a model
-    function _genKey(model) {
-
+    _fileSystemAvailable = function() {
+        return fileSystem.isFileSystemAvailable;
     }
 
     //use different local storage model according to environment
     function _fhData() {
-        if (fileSystemAvailable) {
+        if (_fileSystemAvailable()) {
             _fhFileData.apply({}, arguments);
         } else {
             _fhLSData.apply({}, arguments);
@@ -82,17 +87,17 @@ appForm.stores = (function(module) {
     function _fhLSData(options, success, failure) {
         // console.log(options);
         $fh.data(options, function(res) {
-            if (typeof res=="undefined"){
-                res={
-                    key:options.key,
-                    val:options.val
+            if (typeof res == "undefined") {
+                res = {
+                    key: options.key,
+                    val: options.val
                 }
             }
             //unify the interfaces
-            if (options.act.toLowerCase()=="remove"){
-                success(null,null);
+            if (options.act.toLowerCase() == "remove") {
+                success(null, null);
             }
-            success(null, res.val?res.val:null);
+            success(null, res.val ? res.val : null);
         }, failure);
     }
     //use file system
@@ -108,12 +113,11 @@ appForm.stores = (function(module) {
 
         function filenameForKey(key, cb) {
             key = key + $fh.app_props.appid;
-            // console.log('filenameForKey: ' + key);
-            $fh.hash({
-                algorithm: "MD5",
-                text: key
-            }, function(result) {
-                var filename = result.hashvalue + '.txt';
+            utils.md5(key, function(err, hash) {
+                if (err) {
+                    hash = key;
+                }
+                var filename = hash + ".txt";
                 if (typeof navigator.externalstorage !== "undefined") {
                     navigator.externalstorage.enable(function handleSuccess(res) {
                         var path = filename;
@@ -125,72 +129,24 @@ appForm.stores = (function(module) {
                             path += filename;
                         }
                         filename = path;
-                        // console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
                         return cb(filename);
                     }, function handleError(err) {
-                        // console.warn('filenameForKey ignoring error=' + JSON.stringify(err));
-                        // console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
                         return cb(filename);
                     })
                 } else {
-                    // console.log('filenameForKey key=' + key + ' , Filename: ' + filename);
                     return cb(filename);
                 }
-
             });
         }
 
         function save(key, value) {
-            if (typeof value=="object"){
-                var valStr = JSON.stringify(value);    
-            }else{
-                var valStr=value;
-            }
-            
-            var size=valStr.length;
             filenameForKey(key, function(hash) {
-                _requestFileSystem(PERSISTENT, size, function gotFS(fileSystem) {
-                    fileSystem.root.getFile(hash, {
-                        create: true
-                    }, function gotFileEntry(fileEntry) {
-                        fileEntry.createWriter(function gotFileWriter(writer) {
-                            function _onFinished(evt){
-                                return success(null, valStr);
-                            }
-                            function _onTruncated(){
-                                writer.onwrite=_onFinished;
-                                try {
-                                    //try to write a string
-                                    writer.write(valStr);
-                                } catch (e) {
-                                    var blob = new Blob([valStr], {
-                                        type: 'text/plain'
-                                    });
-                                    writer.write(blob);
-                                }
-                            }
-                            // console.log('save: ' + key + ', ' + JSON.stringify(value).substring(0, 50) + '. Filename: ' + hash);
-                            writer.onwrite = _onTruncated;
-                            writer.truncate(0);
-                            
-
-                        }, function() {
-                            fail('[save] Failed to create file writer');
-                        });
-                    }, function(err) {
-                        if (err.name == "QuotaExceededError" || err.code==10) { //this happens only on browser. request for 1 gb storage
-                            //TODO configurable from cloud
-                            var size = 1024 * 1024 * 1024;
-                            _requestQuote(size, function(err, size) {
-                                save(key, value);
-                            });
-                        } else {
-                            fail('[save] Failed to getFile:' + err.message);
-                        }
-
-                    });
-                }, function() {
-                    fail('[save] Failed to requestFileSystem');
+                fileSystem.save(hash, value, function(err, res) {
+                    if (err) {
+                        fail(err);
+                    } else {
+                        success(null, hash);
+                    }
                 });
             });
         }
@@ -198,57 +154,32 @@ appForm.stores = (function(module) {
         function remove(key) {
             filenameForKey(key, function(hash) {
                 // console.log('remove: ' + key + '. Filename: ' + hash);
-
-                _requestFileSystem(PERSISTENT, 0, function gotFS(fileSystem) {
-                    fileSystem.root.getFile(hash, {}, function gotFileEntry(fileEntry) {
-                        // console.log('remove: ' + key + '. Filename: ' + hash);
-                        fileEntry.remove(function() {
-                            return success(null, null);
-                        }, function() {
-                            fail('[remove] Failed to remove file');
-                        });
-                    }, function(err) {
-                        if (err.name=="NotFoundError" || err.code ==1){ //file not found
-                            success(null,null);
-                        }else{
-                             fail('[remove] Failed to getFile');
+                fileSystem.remove(hash, function(err) {
+                    if (err) {
+                        if (err.name == "NotFoundError" || err.code == 1) { //same respons of $fh.data if key not found.
+                            success(null, null);
+                        } else {
+                            fail(err);
                         }
-                    });
-                }, function() {
-                    fail('[remove] Failed to get fileSystem');
+                    } else {
+                        success(null, null);
+                    }
                 });
             });
         }
 
         function load(key) {
             filenameForKey(key, function(hash) {
-                _requestFileSystem(PERSISTENT, 0, function gotFS(fileSystem) {
-                    fileSystem.root.getFile(hash, {}, function gotFileEntry(fileEntry) {
-                        fileEntry.file(function gotFile(file) {
-                            var reader = new FileReader();
-                            reader.onloadend = function(evt) {
-                                var text = evt.target.result;
-                                // Check for URLencoded
-                                // PG 2.2 bug in readAsText()
-                                try {
-                                    text = decodeURIComponent(text);
-                                } catch (e) {
-                                    // Swallow exception if not URLencoded
-                                    // Just use the result
-                                }
-                                // console.log('load: ' + key + '. Filename: ' + hash + " value:" + evt.target.result);
-                                return success(null, text);
-                            };
-                            reader.readAsText(file);
-                        }, function() {
-                            fail('[load] Failed to getFile');
-                        });
-                    }, function() {
-                        // Success callback on key load failure
-                        success(null,null);
-                    });
-                }, function() {
-                    fail('[load] Failed to get fileSystem');
+                fileSystem.readAsText(hash, function(err, text) {
+                    if (err) {
+                        if (err.name == "NotFoundError" || err.code == 1) { //same respons of $fh.data if key not found.
+                            success(null, null);
+                        } else {
+                            fail(err);
+                        }
+                    } else {
+                        success(null, text);
+                    }
                 });
             });
         }
@@ -267,39 +198,7 @@ appForm.stores = (function(module) {
         }
     }
 
-    function _requestQuote(size, cb) {
-        if (navigator.webkitPersistentStorage) { //webkit browser
-            navigator.webkitPersistentStorage.requestQuota(size, function(size) {
-                cb(null, size);
-            }, function(err) {
-                cb(err, 0);
-            });
-        } else {
-            //PhoneGap does not need to do this.return directly.
-            cb(null, size);
-        }
-    }
 
-    function _checkEnv() {
-        // debugger;
-        if (window.requestFileSystem) {
-            _requestFileSystem = window.requestFileSystem;
-            fileSystemAvailable = true;
-        } else if (window.webkitRequestFileSystem) {
-            _requestFileSystem = window.webkitRequestFileSystem;
-            fileSystemAvailable = true;
-        } else {
-            fileSystemAvailable=false;
-            // console.error("No filesystem available. Fallback use $fh.data for storage");
-        }
-        if (window.LocalFileSystem) {
-            PERSISTENT = window.LocalFileSystem.PERSISTENT;
-        } else if (window.PERSISTENT) {
-            PERSISTENT = window.PERSISTENT;
-        }
-    }
-    // debugger;
-    _checkEnv();
 
     module.localStorage = new LocalStorage();
     return module;

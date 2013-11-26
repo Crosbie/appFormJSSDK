@@ -4,6 +4,7 @@
   core:[
   "010-appForm",
   "020-utils",
+  "020-utils01fileSystem",
   "021-web",
   "021-web01ajax",
   "030-Store",
@@ -24,12 +25,15 @@
   "040-Model07FieldNorthEast",
   "040-Model07FieldLatLong",
   "040-Model08Page",
-  "040-Model09fieldValidate"
+  "040-Model09fieldValidate",
+  "040-Model10uploadManager",
+  "040-Model11Rule",
+  "050-api"
  ],
  backbone:[
- "010-app",
- "030-model",
- "040-view01formView",
- "080-router"
+ // "010-app",
+ // "030-model",
+ // "040-view01formView",
+ // "080-router"
  ]
 };

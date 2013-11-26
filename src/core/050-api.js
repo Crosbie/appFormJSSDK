@@ -8,7 +8,7 @@ appForm.api = (function(module) {
     module.getSubmissions = getSubmissions;
     /**
      * Retrieve forms model. It contains forms list. check forms model usage
-     * @param  {[type]}   params {fromRemote:boolean}
+     * @param  {[type]}   params {fromRemote:boolean(false)}
      * @param  {Function} cb    (err, formsModel)
      * @return {[type]}          [description]
      */
@@ -21,7 +21,7 @@ appForm.api = (function(module) {
     }
     /**
      * Retrieve form model with specified form id.
-     * @param  {[type]}   params {formId: string, fromRemote:boolean}
+     * @param  {[type]}   params {formId: string, fromRemote:boolean(false)}
      * @param  {Function} cb     (err, formModel)
      * @return {[type]}          [description]
      */
@@ -37,7 +37,7 @@ appForm.api = (function(module) {
     function getSubmissions(params, cb) {
         appForm.models.submissions.loadLocal(cb);
     }
-    
+
     //mockup $fh apis for Addons.
     if (typeof $fh == "undefined") {
         $fh = {};

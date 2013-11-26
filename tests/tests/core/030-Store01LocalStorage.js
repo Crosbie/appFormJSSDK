@@ -38,6 +38,7 @@ describe("Local Storage store", function() {
         var model = new Model();
         model.setLocalId("unknownkey");
         appForm.stores.localStorage.read(model, function(err, res) {
+
             assert(!err);
             assert(res == null);
             done();

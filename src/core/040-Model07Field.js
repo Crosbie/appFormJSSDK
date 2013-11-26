@@ -68,6 +68,21 @@ appForm.models = (function(module) {
         }
     }
     /**
+     * Convert the submission value back to input value.
+     * @param  {[type]} submissionValue [description]
+     * @return {[type]}                 [description]
+     */
+    Field.prototype.convertSubmission=function(submissionValue){
+        var type = this.getType();
+        var processorName = "convert_" + type;
+        // try to find specified processor
+        if (this[processorName] && typeof this[processorName] == "function") {
+            return this[processorName](submissionValue);
+        } else {
+            return submissionValue;
+        }
+    }
+    /**
      * validate a input with this field.
      * @param  {[type]} inputValue [description]
      * @return true / error message

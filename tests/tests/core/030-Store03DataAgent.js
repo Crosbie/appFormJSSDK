@@ -6,7 +6,6 @@ describe("Store Data agent", function() {
                 appForm.stores.dataAgent.read(model, function(err, res, isRemote) {
                     assert(!err);
                     assert(res);
-                    assert(res == r1);
                     assert(isRemote == false);
                     done();
                 });

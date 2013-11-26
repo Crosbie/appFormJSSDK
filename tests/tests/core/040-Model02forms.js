@@ -37,4 +37,9 @@ describe("forms model",function(){
             done();
         });
     });
+    it ("how to return the full list of forms",function(){
+        var formMetaList=appForm.models.forms.getFormsList();
+        assert(formMetaList);
+        assert(formMetaList.length>0);
+    });
 });

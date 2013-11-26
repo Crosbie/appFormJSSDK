@@ -1,18 +1,31 @@
 {
-   "527d4539639f521e0a000004":{
+   "527d4539639f521e0a000004": {
       "updatedBy": "user@example.com",
       "name": "testFieldsForm",
       "lastUpdated": "2013-11-08T20:10:33.819Z",
-      "lastUpdatedTimestamp":1384800150848,
+      "lastUpdatedTimestamp": 1384800150848,
       "dateCreated": "2013-11-08T20:10:33.819Z",
       "description": "This form is for testing fields.",
       "_id": "527d4539639f521e0a000004",
       "pageRules": [{
-         "sourceField": "527d4539639f521e0a000006",
+         "type": "show",
+         "ruleConditionalOperator": "and/or",
+         "ruleConditionalStatements": [{
+            "sourceField": "45854454554545",
+            "restriction": "doesNotContain",
+            "sourceValue": "dammit"
+         }],
+         "targetField/targetPage": "564456456456445",
+         "_id":"527d4539639f521e0a000014"
+      }, {
+         "restrictions": [{
+            "sourceField": "527d4539639f521e0a000006",
+            "restriction": "contains",
+            "sourceValue": "Something"
+         }],
+         "restrictionType": "and | or",
          "targetPage": "527d4539639f521e0a000005",
          "type": "skip",
-         "restriction": "contains",
-         "sourceValue": "Something",
          "_id": "527d4539639f521e0a000015"
       }, {
          "sourceField": "527d4539639f521e0a000007",
@@ -67,7 +80,8 @@
                },
                "validation": {
                   "min": 20,
-                  "max": 100
+                  "max": 100,
+                  "unit": "char"
                }
             },
             "_id": "527d4539639f521e0a000006",
