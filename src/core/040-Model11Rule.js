@@ -87,12 +87,12 @@ appForm.models=(function(module){
     Rule.prototype.getDefinition=function(){
         return this.get("definition");
     }
-    Rule.prototype.getTarget=function(){
+    Rule.prototype.getAction=function(){
         var def=this.getDefinition();
         var target={
             "action":def.type,
-            "targetId":this.type=="page"?def.targetPage:def.targetField,
-            "targetType":this.type
+            "targetId":this.get("type")=="page"?def.targetPage:def.targetField,
+            "targetType":this.get("type")
         }
         return target;
     }

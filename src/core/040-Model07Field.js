@@ -7,13 +7,16 @@ appForm.models = (function(module) {
 
     var Model = appForm.models.Model;
 
-    function Field(opt) {
+    function Field(opt,form) {
         Model.call(this, {
             "_type": "field"
         });
         if (opt) {
             this.fromJSON(opt);
             this.genLocalId();
+        }
+        if (form){
+            this.form=form;
         }
     }
     appForm.utils.extend(Field, Model);
@@ -93,6 +96,14 @@ appForm.models = (function(module) {
 
     Field.prototype.retrieveValueFromSubmission=function(submissionModel){
         var id=this.getFieldId();
+    }
+    /**
+     * return rule array attached to this field.
+     * @return {[type]} [description]
+     */
+    Field.prototype.getRules=function(){
+        var id=this.getFieldId();
+        return this.form.getRulesByFieldId(id);
     }
     module.Field = Field;
     return module;
