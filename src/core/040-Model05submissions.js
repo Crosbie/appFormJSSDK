@@ -73,6 +73,17 @@ appForm.models=(function(module){
         }
         return rtn;
     }
+    /**
+     * Validate current submission before submit
+     * 1. Input Value
+     * 2. Field
+     * 3. Rules
+     * @return {[type]} [description]
+     */
+    Submissions.prototype.validateBeforeSubmission=function(){
+        //TODO add validation
+        return true;
+    }
     Submissions.prototype.clear=function(cb){
         var that=this;
         this.clearLocal(function(err){

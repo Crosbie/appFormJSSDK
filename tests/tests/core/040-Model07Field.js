@@ -29,6 +29,14 @@ describe("Field Model",function(){
         assert(fieldModel.getName());
         assert(fieldModel.getHelpText());
     });
+    it ("how to get rules associated to a field",function(){
+        var rules=fieldModel.getRules();
+        assert(rules);
+        assert(rules.length>0);
+        var rule=rules[0];
+        assert(rule instanceof appForm.models.Rule);
+        
+    });
     describe ("Checkbox",function(){
         it ("get checkbox options",function(){
             var checkBoxFieldModel=form.getFieldModelById("527d4539639f521e0a00000c");

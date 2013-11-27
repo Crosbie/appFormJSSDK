@@ -56,6 +56,7 @@ appForm.models = (function(module) {
     Form.prototype.initialise = function() {
         this.initialisePage();
         this.initialiseFields();
+        this.initialiseRules();
     }
     Form.prototype.initialiseFields = function() {
         var fieldsRef = this.getFieldRef();
@@ -69,12 +70,43 @@ appForm.models = (function(module) {
             }
             var fieldDef = this.getFieldDefByIndex(pageIndex, fieldIndex);
             if (fieldDef) {
-                var fieldObj = new appForm.models.Field(fieldDef);
+                var fieldObj = new appForm.models.Field(fieldDef,this);
                 this.fields[fieldId] = fieldObj;
             }else{
                 throw ("Field def is not found.");
             }
         }
+    }
+    Form.prototype.initialiseRules=function(){
+        this.rules={};
+        var pageRules=this.getPageRules();
+        var fieldRules=this.getFieldRules();
+        var constructors=[];
+        for (var i=0,pageRule;pageRule=pageRules[i];i++){
+            constructors.push({
+                "type":"page",
+                "definition":pageRule
+            });
+        }
+        for (var i=0,fieldRule;fieldRule=fieldRules[i];i++){
+            constructors.push({
+                "type":"field",
+                "definition":fieldRule
+            });
+        }
+        for (var i=0,constructor;constructor=constructors[i];i++){
+            var ruleObj=new appForm.models.Rule(constructor);
+            var fieldIds=ruleObj.getRelatedFieldId();
+            for (var j=0,fieldId;fieldId=fieldIds[j];j++){
+                if (!this.rules[fieldId]){
+                    this.rules[fieldId]=[];
+                }
+                this.rules[fieldId].push(ruleObj);
+            }
+        }
+    }
+    Form.prototype.getRulesByFieldId=function(fieldId){
+        return this.rules[fieldId];
     }
     Form.prototype.initialisePage = function() {
         var pages = this.getPagesDef();

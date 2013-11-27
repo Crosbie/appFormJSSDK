@@ -7,13 +7,16 @@ appForm.models = (function(module) {
 
     var Model = appForm.models.Model;
 
-    function Field(opt) {
+    function Field(opt,form) {
         Model.call(this, {
             "_type": "field"
         });
         if (opt) {
             this.fromJSON(opt);
             this.genLocalId();
+        }
+        if (form){
+            this.form=form;
         }
     }
     appForm.utils.extend(Field, Model);
@@ -68,6 +71,21 @@ appForm.models = (function(module) {
         }
     }
     /**
+     * Convert the submission value back to input value.
+     * @param  {[type]} submissionValue [description]
+     * @return {[type]}                 [description]
+     */
+    Field.prototype.convertSubmission=function(submissionValue){
+        var type = this.getType();
+        var processorName = "convert_" + type;
+        // try to find specified processor
+        if (this[processorName] && typeof this[processorName] == "function") {
+            return this[processorName](submissionValue);
+        } else {
+            return submissionValue;
+        }
+    }
+    /**
      * validate a input with this field.
      * @param  {[type]} inputValue [description]
      * @return true / error message
@@ -78,6 +96,14 @@ appForm.models = (function(module) {
 
     Field.prototype.retrieveValueFromSubmission=function(submissionModel){
         var id=this.getFieldId();
+    }
+    /**
+     * return rule array attached to this field.
+     * @return {[type]} [description]
+     */
+    Field.prototype.getRules=function(){
+        var id=this.getFieldId();
+        return this.form.getRulesByFieldId(id);
     }
     module.Field = Field;
     return module;

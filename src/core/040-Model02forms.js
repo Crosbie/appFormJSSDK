@@ -10,7 +10,14 @@ appForm.models=(function(module){
         });
     }
     appForm.utils.extend(Forms,Model);
+    /**
+     * remove all local forms stored.
+     * @param  {Function} cb [description]
+     * @return {[type]}      [description]
+     */
+    Forms.prototype.clearAllForms=function(cb){
 
+    }
     Forms.prototype.isFormUpdated=function(formModel){
         var id=formModel.get("_id");
         var formLastUpdate=formModel.getLastUpdate();

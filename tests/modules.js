@@ -4,6 +4,7 @@
   core:[
   "010-appForm",
   "020-utils",
+  "020-utils01fileSystem",
   "021-web",
   "021-web01ajax",
   "030-Store",
@@ -25,6 +26,9 @@
   "040-Model07FieldLatLong",
   "040-Model08Page",
   "040-Model09fieldValidate",
+  "040-Model10uploadManager",
+  "040-Model11Rule",
+  "040-Model11ruleCheckFuncs",
   "050-api"
  ],
  backbone:[
@@ -38,5 +42,5 @@
  "040-view02field01field",
  "040-view02field22field_text",
  "040-view23page"
- ]
+ ],
 };

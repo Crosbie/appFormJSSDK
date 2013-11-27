@@ -8,7 +8,7 @@ appForm.models = (function(module) {
             "_type": null, // model type
             "_ludid": null //local unique id
         };
-        
+        this.events={};
         if (typeof opt != "undefined") {
             for (var key in opt) {
                 this.props[key] = opt[key];
@@ -16,6 +16,32 @@ appForm.models = (function(module) {
         }
         this.touch();
         
+    }
+    Model.prototype.on=function(name,func){
+        if (!this.events[name]){
+            this.events[name]=[]
+        }
+        if (this.events[name].indexOf(func)<0){
+            this.events[name].push(func);
+        }
+    }
+    Model.prototype.off=function(name,func){
+        if (this.events[name]){
+            if (this.events[name].indexOf(func)>=0){
+                this.events[name].splice(this.events[name].indexOf(func),1);
+            }
+        }
+    }
+    Model.prototype.emit=function(){
+        var args=Array.prototype.slice.call(arguments,0);
+        var e=args.shift();
+        var funcs=this.events[e];
+        if (funcs && funcs.length>0){
+            for (var i=0;i<funcs.length;i++){
+                var func=funcs[i];
+                func.apply(this,args);
+            }
+        }
     }
     Model.prototype.getProps = function() {
         return this.props;

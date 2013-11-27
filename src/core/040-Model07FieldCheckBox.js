@@ -22,5 +22,12 @@ appForm.models.Field = (function(module) {
 
         return obj;
     }
+    module.prototype.convert_checkbox = function(value) {
+        var rtn=[];
+        for (var i=0;i<value.length;i++){
+            rtn.push(value[i].selections);
+        }
+        return rtn;
+    }
     return module;
 })(appForm.models.Field || {});
