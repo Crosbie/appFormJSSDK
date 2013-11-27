@@ -2,8 +2,9 @@ FieldView = Backbone.View.extend({
 
   className: 'field_container',
   templates: {
-    instructions: '<p class="instruct"><%= instructions %></p>'
+    instructions: '<p class="instruct"><%= helpText %></p>'
   },
+  template: ['<p>Test</p>'],
 
   events: {
     "change": "contentChanged"
@@ -37,7 +38,8 @@ FieldView = Backbone.View.extend({
   },
 
   dumpContent: function() {
-    $fh.logger.debug("Value changed :: " + JSON.stringify(this.value()));
+    console.log("Value changed :: " + JSON.stringify(this.value()));
+
   },
 
   getTopView: function(){
@@ -63,9 +65,9 @@ FieldView = Backbone.View.extend({
   render: function() {
     // construct field html
     this.$el.append(_.template(this.template.join(''), {
-      "id": this.model.get('ID'),
-      "title": this.model.get('Title'),
-      "defaultVal": this.model.get('DefaultVal') || ''
+      "_id": this.model.get('_id'),
+      "name": this.model.get('name'),
+      "defaultVal": this.model.get('default') || ''
     }));
 
     var instructions = this.model.get('Instructions');

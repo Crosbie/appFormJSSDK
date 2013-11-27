@@ -1,11 +1,16 @@
-PageModel = Backbone.Model.extend({
+PageModel = CoreModel.extend({
   defaults: {
+    "bridgeFuncs":[
+      "getFieldModelList","getFieldModelById","getName","getDescription","get","set"
+    ],
     "Title": "",
     "Fields": [],
     "Rules": []
   },
 
-  initialize: function () {
+  initialize: function (pageModel) {
+    PageModel.__super__.initialize.apply(this, arguments);
+
     var fields = this.get('Fields');
     this.fields = new Fields(fields);
   },
@@ -28,6 +33,6 @@ PageModel = Backbone.Model.extend({
 });
 
 // pages collection
-var Pages = Backbone.Collection.extend({
+Pages = Backbone.Collection.extend({
   model: PageModel
 });

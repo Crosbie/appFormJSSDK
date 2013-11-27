@@ -24,18 +24,19 @@
   "040-Model07FieldNorthEast",
   "040-Model07FieldLatLong",
   "040-Model08Page",
-  "040-Model09fieldValidate"
+  "040-Model09fieldValidate",
+  "050-api"
  ],
  backbone:[
  "010-app",
+ "030-model",
  // "030-model01config",
+ "030-model01form",
  "030-model02page",
  "030-model03field",
- "030-model04form",
- // "030-model06draft",
- // "030-model07pending",
- // "030-model08sent",
- "040-view01formView",
+ "040-view01form_list",
+ "040-view02field01field",
+ "040-view02field22field_text",
  "040-view23page"
  ]
 };

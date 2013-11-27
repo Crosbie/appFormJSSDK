@@ -1,4 +1,4 @@
-FormModel = Backbone.Model.extend({
+FormModel = CoreModel.extend({
   idAttribute: 'Hash',
   sync: FHBackboneDataActSyncFn,
   defaults: {
@@ -6,21 +6,50 @@ FormModel = Backbone.Model.extend({
     "Pages": [],
     "Rules": [],
     "active_page": null,
-    "page_history": []
+    "page_history": [],
+    "bridgeFuncs":["getName" ,"getDescription","getLastUpdate"]
   },
 
-  initialize: function () {
-    _.bindAll(this);
-
-    this.initPages();
+  initialize: function (formParams) {
+    // call super init also
+    FormModel.__super__.initialize.apply(this, arguments);
 
     // if model changes, re-initialise sub-collection of pages
-    this.bind('change', this.reInitPages, this);
+    this.bind('change', this.initialisPage, this);
     this.on('change:page_history', function (model, history) {
       model.set('active_page', _(history).last());
     });
   },
-
+  loadForm:function(cb){
+    var params={
+      "formId":this.get("formId"),
+      "fromRemote":this.get("fromRemote",false)
+    };
+    var that=this;
+    $fh.forms.getForm(params,function(err,form){
+      that.set("_model",form);
+      that.initialisePage()
+      cb(null,that);
+    });
+  },
+  initialisePage:function(){
+    var formModel=this.get("_model",null);
+    var pageModels=formModel.getPageModelList();
+    var backbonePageModels=[];
+    this.set("pagesModels",backbonePageModels);
+    for (var i=0, pageModel;pageModel=pageModels[i];i++){
+      backbonePageModels.push(new PageModel(pageModel));
+    }
+  },
+  getPageModelById:function(id){
+    var pageModels = this.get('pageModels',[]);
+    for(var i=0;i<pageModels.length;i++){
+      if(pageModels[i].get('_id') == id){
+        return pageModels[i];
+      }
+    }
+    return null;
+  },
   load: function (cb) {
     if(this.get("flyweight")){
       var ctor = this.model|| this.collection.model;
@@ -464,8 +493,6 @@ FormModel = Backbone.Model.extend({
   }
 
 });
-
-App.models.form = new FormModel();
 
 FormsCollection = Backbone.Collection.extend({
   model: FormModel,

@@ -1,7 +1,7 @@
 var assert = chai.assert;
 
 
-describe("Backbone - App [test placeholder]", function() {
+describe("Backbone - App", function() {
     it("check Namespace has been created", function(done) {
         assert.ok(App);
         assert.ok(App.models);

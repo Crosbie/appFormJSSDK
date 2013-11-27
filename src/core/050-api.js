@@ -42,9 +42,9 @@ appForm.api = (function(module) {
     if (typeof $fh == "undefined") {
         $fh = {};
     }
-    if ($fh.forms == undefined) {
-        $fh.forms = appForm.api;
-    }
+    
+        $fh.forms = module;
+    
 
 
     return module;

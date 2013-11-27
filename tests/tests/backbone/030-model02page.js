@@ -1,27 +1,28 @@
-var assert = chai.assert;
+// var assert = chai.assert;
+// var bbPage;
 
+// describe("Backbone - Page Model", function() {
+//     it("create model & collection", function(done) {
+//         var form=new FormModel({
+//             formId:"527d4539639f521e0a000004"
+//         });
+//         form.loadData(function(){
+//             assert.ok(form.getName());
+            
+//             done();
+//         });
+//             bbPage = new PageModel(pageModel);
+//             assert.ok(bbPage);
 
-describe("Backbone - Page Model", function() {
-    it("create model & collection", function(done) {
-        App.models.pageModel = new PageModel();
-        assert.ok(App.models.pageModel);
+//             var pages = new Pages();
+//             assert.ok(pages);
+//             done();
+//         });
+//     });
 
-        App.collections.pages = new Pages();
-        assert.ok(App.collections.pages);
-        done();
-    });
-
-    it("set page title", function(done) {
-        App.models.pageModel.set("Title", "Test Page");
-        assert.equal(App.models.pageModel.get("Title"), "Test Page");
-        done();
-    });
-
-    it("page.toJSON()", function(done) {
-        var pageJSON = App.models.pageModel.toJSON();
-        var obj ={"Title":"Test Page","Fields":[],"Rules":[]};
-        console.log(obj,pageJSON);
-        assert.equal(JSON.stringify(pageJSON), JSON.stringify(obj));
-        done();
-    });
-});
+//     it("get page name & description", function(done) {
+//         assert.ok(bbPage.getName());
+//         assert.ok(bbPage.getDescription());
+//         done();
+//     });
+// });

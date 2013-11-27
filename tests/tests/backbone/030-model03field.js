@@ -1,27 +1,37 @@
 var assert = chai.assert;
-
+var bbField;
 
 describe("Backbone - Field Model", function() {
     it("create model & collection", function(done) {
-        App.models.fieldModel = new FieldModel();
-        assert.ok(App.models.fieldModel);
 
-        App.collections.fields = new Fields();
-        assert.ok(App.collections.fields);
+        // use Sample Form/Field data
+        var Form = appForm.models.Form;
+        new Form({
+            formId: "527d4539639f521e0a000004",
+            fromRemote: true
+        }, function(err, f) {
+            form = f;
+            fieldModel = form.getFieldModelById("527d4539639f521e0a000006");
+            assert(fieldModel);
+
+            // create backbone field Model from core field model
+            bbField = new FieldModel(fieldModel);
+            assert.ok(bbField);
+
+            // create collection
+            var fields = new Fields();
+            assert.ok(fields);
+            done();
+        });
+    });
+
+    it("get field name", function(done) {
+        assert.ok(bbField.get("name"));
         done();
     });
 
-    it("set field Type", function(done) {
-        App.models.fieldModel.set("Type", "text");
-        assert.equal(App.models.fieldModel.getType(), "text");
-        done();
-    });
-
-    it("page.toJSON()", function(done) {
-        var pageJSON = App.models.pageModel.toJSON();
-        var obj ={"Title":"Test Page","Fields":[],"Rules":[]};
-        console.log(obj,pageJSON);
-        assert.equal(JSON.stringify(pageJSON), JSON.stringify(obj));
+    it("process inputValue", function(done) {
+        assert.ok(bbField.processInput("test"));
         done();
     });
 });
