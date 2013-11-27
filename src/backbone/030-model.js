@@ -20,7 +20,7 @@ CoreModel = Backbone.Model.extend({
                 };
             })(funcName);
         }
-    },
+
     loadData:function(cb){
         throw('not implemented');
     },
@@ -36,5 +36,8 @@ CoreModel = Backbone.Model.extend({
                 return def;
             }
         }
+    },
+    getCoreModel:function(){
+        return this.get("_model",null);
     }
 });

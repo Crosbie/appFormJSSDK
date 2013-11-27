@@ -23,7 +23,14 @@ appForm.models=(function(module){
             this.fieldsIds.push(fieldsDef[i]._id);
         }
     }   
-
+    Page.prototype.setVisible=function(isVisible){
+        this.set("visible",isVisible);
+        if (isVisible){
+            this.emit("visible");
+        }else{
+            this.emit("hidden");
+        }
+    }
     Page.prototype.getName=function(){
         return this.get("name","");
     }

@@ -1,5 +1,6 @@
 var assert = chai.assert;
 var fieldView;
+var fieldModel;
 
 describe("Backbone - Field View", function() {
     it("create & render FieldView", function(done) {
@@ -13,17 +14,14 @@ describe("Backbone - Field View", function() {
             fieldModel = form.getFieldModelById("527d4539639f521e0a000006");
             assert(fieldModel);
 
-            // create backbone field Model
-            var bbField = new FieldModel(fieldModel);
-            assert.ok(bbField);
+            
             
             // create backbone field View
             fieldView = new FieldView({ //required params
                 parentEl: $("<div></div>"),
                 parentView: null,
-                model: bbField
+                model: fieldModel
             });
-            window.model = bbField;
             assert.ok(fieldView);
             done();
         });

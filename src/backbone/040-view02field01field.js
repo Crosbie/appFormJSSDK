@@ -4,8 +4,7 @@ FieldView = Backbone.View.extend({
   templates: {
     instructions: '<p class="instruct"><%= helpText %></p>'
   },
-  template: ['<p>Test</p>'],
-
+  template:[],
   events: {
     "change": "contentChanged"
   },
@@ -14,22 +13,22 @@ FieldView = Backbone.View.extend({
   initialize: function() {
     _.bindAll(this, 'dumpContent', 'clearError');
 
-    var nonFhClasses = this.model.getNonFhClasses();
-    if (nonFhClasses) {
-      this.$el.addClass(nonFhClasses);
-    }
+    // var nonFhClasses = this.model.getNonFhClasses();
+    // if (nonFhClasses) {
+    //   this.$el.addClass(nonFhClasses);
+    // }
 
     this.on('visible', function () {
       //$fh.logger.debug('field visible');
     });
 
-    if(!this.model.serialize() && !_.isEmpty(this.defaultValue())) {
-      this.model.set({
-        Value: this.defaultValue()
-      });
-    }
+    // if(!this.model.serialize() && !_.isEmpty(this.defaultValue())) {
+    //   this.model.set({
+    //     Value: this.defaultValue()
+    //   });
+    // }
 
-    if (this.model.get('IsRequired') === '1') {
+    if (this.model.isRequired()) {
       this.$el.addClass('required');
     }
 
@@ -65,18 +64,18 @@ FieldView = Backbone.View.extend({
   render: function() {
     // construct field html
     this.$el.append(_.template(this.template.join(''), {
-      "_id": this.model.get('_id'),
-      "name": this.model.get('name'),
+      "_id": this.model.getFieldId(),
+      "name": this.model.getName(),
       "defaultVal": this.model.get('default') || ''
     }));
 
-    var instructions = this.model.get('Instructions');
+    // var instructions = this.model.get('Instructions');
 
-    if (instructions && instructions !== '') {
-      $('label:first', this.el).after(_.template(this.templates.instructions, {
-        instructions: this.model.get('Instructions')
-      }));
-    }
+    // if (instructions && instructions !== '') {
+    //   $('label:first', this.el).after(_.template(this.templates.instructions, {
+    //     instructions: this.model.get('Instructions')
+    //   }));
+    // }
 
     // add to dom
     this.options.parentEl.append(this.$el);
@@ -175,9 +174,9 @@ FieldView = Backbone.View.extend({
     if (!this.$el.is(':visible')) {
       this.$el.show();
       // add rules too
-      this.addRules();
+      //this.addRules();
       //set the form value from model
-      this.value(this.model.serialize());
+      //this.value(this.model.serialize());
     }
   },
 

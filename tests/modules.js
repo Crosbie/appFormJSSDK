@@ -33,14 +33,13 @@
  ],
  backbone:[
  "010-app",
- "030-model",
- // "030-model01config",
- "030-model01form",
- "030-model02page",
- "030-model03field",
+ "040-view00BaseView",
  "040-view01form_list",
+ "040-view01form_list_item",
  "040-view02field01field",
  "040-view02field22field_text",
+ "040-view03Form",
+ "040-view04Page",
  "040-view23page"
  ],
 };
