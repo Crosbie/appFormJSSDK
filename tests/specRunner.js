@@ -26,9 +26,9 @@ coreModules.forEach(function(name) {
 
 backboneModules.forEach(function(name) {
   //source file
-  requiredFiles.push("./src/backbone/js/" + name + ".js");
+  requiredFiles.push("./src/backbone/" + name + ".js");
   //test file
-  requiredFiles.push("./tests/backbone/js/" + name + ".js");
+  requiredFiles.push("./tests/backbone/" + name + ".js");
 });
 
 /*globals mocha */
