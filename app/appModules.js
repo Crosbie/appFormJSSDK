@@ -64,5 +64,6 @@
  "040-view02field26sectionBreak",
  "040-view03Page",
  "040-view04Form",
+ "router"
  ],
 };

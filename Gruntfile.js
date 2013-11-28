@@ -7,4 +7,5 @@ module.exports=function(grunt){
   });
 
   grunt.registerTask("testServer",require("./script/webServer.js"));
+  grunt.registerTask("app",require("./script/appServer.js"));
 }
