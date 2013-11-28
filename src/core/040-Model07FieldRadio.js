@@ -5,10 +5,10 @@
 appForm.models.Field=(function(module){
     module.prototype.getRadioOption=function(){
         var def=this.getFieldDefinition();
-        if (def["radioChoices"]){
-            return def["radioChoices"];
+        if (def["options"]){
+            return def["options"];
         }else{
-            throw ("Radio choice definition is not found in field definition");
+            throw ("Radio options definition is not found in field definition");
         }
     }
     return module;

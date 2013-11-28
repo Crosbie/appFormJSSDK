@@ -6,7 +6,8 @@ FieldView = Backbone.View.extend({
   },
   template:[],
   events: {
-    "change": "contentChanged"
+    "change": "contentChanged",
+    "blur input,select,textarea": "validate"
   },
 
   // TODO: cache the input element lookup?
@@ -18,7 +19,7 @@ FieldView = Backbone.View.extend({
     //   this.$el.addClass(nonFhClasses);
     // }
 
-    this.on('visible', function () {
+    this.on('visible', function() {
       //$fh.logger.debug('field visible');
     });
 
@@ -41,16 +42,31 @@ FieldView = Backbone.View.extend({
 
   },
 
-  getTopView: function(){
+  getTopView: function() {
     var view = this.options.parentView;
     var parent;
     do {
       parent = view.options.parentView;
-      if(parent) {
+      if (parent) {
         view = parent;
       }
-    }while(parent);
+    } while (parent);
     return view;
+  },
+
+  validate: function(e) {
+    if (App.config.validationOn) {
+      var target = $(e.currentTarget);
+      var val = target.val();
+
+      var result = this.model.validate(val);
+      if (result !== true) {
+        alert("Error: " + result);
+        this.$el.addClass('error');
+      } else {
+        this.clearError();
+      }
+    }
   },
 
   contentChanged: function(e) {
@@ -64,8 +80,8 @@ FieldView = Backbone.View.extend({
   render: function() {
     // construct field html
     this.$el.append(_.template(this.template.join(''), {
-      "_id": this.model.getFieldId(),
-      "name": this.model.getName(),
+      "id": this.model.getFieldId(),
+      "title": this.model.getName(),
       "defaultVal": this.model.get('default') || ''
     }));
 
@@ -202,10 +218,10 @@ FieldView = Backbone.View.extend({
       value[$(this).attr('id')] = $(this).val();
     });
     return value;
-  } ,
+  },
 
   // TODO horrible hack
-  clearError: function(){
+  clearError: function() {
     this.$el.find("label[class=error]").remove();
     this.$el.removeClass("error");
     this.$el.find(".error").removeClass("error");

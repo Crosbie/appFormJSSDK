@@ -7,21 +7,12 @@ describe("Backbone - Form List View [test placeholder]", function() {
             assert (!err);
             formListView=new FormListView({
                 "model":forms,
-                "parentEl":$("#backbone")
+                "parentEl":$("#backbone #formList")
             });
             formListView.render();
-            console.log($("#backbone ul li").length);
             assert($("#backbone ul li").length>0, "No Forms rendered");
             done();
         });
         
     });
-
-    // it("init form list", function(done){
-    //     formListView.initFormList(false,function(err,view){
-    //         assert(!err);
-    //         assert(view);
-    //         done();
-    //     })
-    // })
 });

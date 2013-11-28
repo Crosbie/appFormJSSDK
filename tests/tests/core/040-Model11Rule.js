@@ -16,14 +16,14 @@ describe("Rule model",function(){
 
     it ("how to test user input if it meets the rule", function(){
         var userInput={
-            "527d4539639f521e0a000006":"Hello World. this is dammit test"
+            "527d4539639f521e0a000006":"Hello World. this is val test"
         }
         assert(ruleModel.test(userInput));
     });
 
     it ("how to get rule action if user input meets it.",function(){
         var action=ruleModel.getAction();
-        assert(action.action=="skip");
+        assert(action.action=="show");
         assert(action.targetType=="page");
         assert(action.targetId=="527d4539639f521e0a000005");
     });

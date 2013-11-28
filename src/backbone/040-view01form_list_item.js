@@ -32,12 +32,8 @@
   show: function() {
 
     var formId=this.model._id;
-    
-    // var draft = new DraftModel(this.model.toJSON());
-    // App.views.form = new DraftView({
-    //   model: draft
-    // });
-    // App.views.form.render();
+    // this will init and render formView
+    var formView = new FormView(formId);
   },
 
   fetch: function () {

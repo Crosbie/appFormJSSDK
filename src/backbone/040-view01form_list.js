@@ -63,7 +63,7 @@ var FormListView = BaseView.extend({
   render: function() {
     
     // Empty our existing view
-    this.options.parentEl.empty();
+    // this.options.parentEl.empty();
 
     // Add list
     this.options.parentEl.append(this.templates.list);

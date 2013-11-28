@@ -3,3 +3,5 @@
 TestServer:
 grunt testServer
 
+Run App: grunt app
+
