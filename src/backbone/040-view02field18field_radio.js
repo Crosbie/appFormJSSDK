@@ -24,9 +24,9 @@ FieldRadioView = FieldView.extend({
         "id": self.model.get('_id'),
         "iteration": i,
         "choice": choice.label,
-        "value": choice.value
+        "value": choice.label
       }));
-      if (i === 0) {
+      if (choice.checked == true) {
         choice_field.attr('checked', 'checked');
       }
       self.$el.append(choice_field);

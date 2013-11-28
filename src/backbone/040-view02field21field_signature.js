@@ -27,7 +27,7 @@ FieldSignatureView = FieldView.extend({
 
     // add to dom
     this.options.parentEl.append(this.$el);
-    $fh.logger.debug("render html=" + this.$el.html());
+    console.debug("render html=" + this.$el.html());
     this.show();
   },
 
@@ -62,7 +62,7 @@ FieldSignatureView = FieldView.extend({
       "canvasHeight": canvasHeight,
       "canvasWidth": canvasWidth
     }));
-    $fh.logger.debug("showSignatureCapture html=" + this.$el.html());
+    console.debug("showSignatureCapture html=" + this.$el.html());
 
     var signaturePad = $('.sigPad', this.$el);
     signaturePad.css({
@@ -143,7 +143,7 @@ FieldSignatureView = FieldView.extend({
     if(this.fileData) {
       value[this.model.get('_id')] = this.fileData;
     }
-    $fh.logger.debug("value html=" + this.$el.html());
+    console.debug("value html=" + this.$el.html());
     return value;
   },
   dbgImage: function(msg,image) {

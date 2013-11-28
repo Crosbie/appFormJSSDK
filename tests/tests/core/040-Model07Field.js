@@ -3,6 +3,7 @@ describe("Field Model",function(){
     var form=null;
     it ("Field model is initialised when a form is initialised",function(done){
         var Form = appForm.models.Form;
+        debugger;
        new Form({formId:"527d4539639f521e0a000004",fromRemote: true}, function(err, f) {
             form=f;
             fieldModel=form.getFieldModelById("527d4539639f521e0a000006");
@@ -39,21 +40,21 @@ describe("Field Model",function(){
     });
     describe ("Checkbox",function(){
         it ("get checkbox options",function(){
-            var checkBoxFieldModel=form.getFieldModelById("527d4539639f521e0a00000c");
+            var checkBoxFieldModel=form.getFieldModelById("52974ee55e272dcb3d00009d");
             assert(checkBoxFieldModel.getCheckBoxOptions().length>0);
         });
     });
     describe ("Radio",function(){
         it ("get radio options",function(){
-            var radioFieldModel=form.getFieldModelById("527d4539639f521e0a00000a");
+            var radioFieldModel=form.getFieldModelById("52974ee55e272dcb3d00009a");
             assert(radioFieldModel.getRadioOption().length>0);
         });
     });
-    describe ("Matrix",function(){
-        it ("get matrix rows and columns",function(){
-            var matrixFieldModel=form.getFieldModelById("527d4539639f521e0a00000b");
-            assert(matrixFieldModel.getMatrixRows().length>0);
-            assert(matrixFieldModel.getMatrixCols().length>0);
-        });
-    });
+    // describe ("Matrix",function(){
+    //     it ("get matrix rows and columns",function(){
+    //         var matrixFieldModel=form.getFieldModelById("527d4539639f521e0a00000b");
+    //         assert(matrixFieldModel.getMatrixRows().length>0);
+    //         assert(matrixFieldModel.getMatrixCols().length>0);
+    //     });
+    // });
 });

@@ -1,7 +1,7 @@
 FieldCheckboxView = FieldView.extend({
   templates: {
     title: '<label><%= title %></label>',
-    choice: '<input id="<%= id %>" name="<%= mainId %>[]" type="checkbox" class="field checkbox" value="<%= value %>" tabindex="<%= iteration %>"><label class="choice" for="<%= id %>"><%= choice %></label><br/>'
+    choice: '<input id="<%= id %>" <%= checked %> name="<%= mainId %>[]" type="checkbox" class="field checkbox" value="<%= value %>" tabindex="<%= iteration %>"><label class="choice" for="<%= id %>"><%= choice %></label><br/>'
   },
 
   render: function() {
@@ -19,7 +19,8 @@ FieldCheckboxView = FieldView.extend({
         "mainId": self.model.get('_id'),
         "iteration": i,
         "choice": subfield.label,
-        "value": subfield.value
+        "value": subfield.value,
+        "checked": (subfield.selected)?"checked='checked'":""
       }));
       self.$el.append(choice_field);
     });

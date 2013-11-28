@@ -4,7 +4,7 @@ FieldSelectView = FieldView.extend({
   templates: {
     label: '<label><%= title %></label>',
     select: '<select id="<%= id %>" name="<%= id %>"></select>',
-    option: '<option value="<%= value %>"><%= value %></option>'
+    option: '<option value="<%= value %>" <%= selected %>><%= value %></option>'
   },
 
   render: function() {
@@ -20,11 +20,13 @@ FieldSelectView = FieldView.extend({
     });
     this.$el.append(select);
 
-    var choices = this.model.get('Choices');    
+    var choices = this.model.get('fieldOptions');
+    choices = choices.definition.options;    
 
     $.each(choices, function(i, choice) {
       var option = $(_.template(self.templates.option, {
-        "value": choice.Label
+        "value": choice.label,
+        "selected": (choice.checked) ? "selected='selected'" : ""
       }));
       $('select', self.el).append(option);
     });

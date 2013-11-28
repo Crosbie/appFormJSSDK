@@ -7,7 +7,7 @@ describe("Backbone - Form List View [test placeholder]", function() {
             assert (!err);
             formListView=new FormListView({
                 "model":forms,
-                "parentEl":$("#backbone")
+                "parentEl":$("#backbone #formList")
             });
             formListView.render();
             assert($("#backbone ul li").length>0, "No Forms rendered");

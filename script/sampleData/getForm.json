@@ -2,74 +2,109 @@
    "527d4539639f521e0a000004": {
       "updatedBy": "user@example.com",
       "name": "testFieldsForm",
-      "lastUpdated": "2013-11-08T20:10:33.819Z",
-      "lastUpdatedTimestamp": 1384800150848,
-      "dateCreated": "2013-11-08T20:10:33.819Z",
       "description": "This form is for testing fields.",
+      "lastUpdatedTimestamp": 1385647845865,
+      "lastUpdated": "2013-11-28T14:10:45.865Z",
+      "dateCreated": "2013-11-28T14:10:45.865Z",
       "_id": "527d4539639f521e0a000004",
       "pageRules": [{
-         "type": "skip",
-         "ruleConditionalOperator": "and",
-         "ruleConditionalStatements": [{
-            "sourceField": "527d4539639f521e0a000006",
-            "restriction": "does not contain",
-            "sourceValue": "dammit"
-         }],
-         "targetPage": "527d4539639f521e0a000005",
-         "_id": "527d4539639f521e0a007421"
-      }, {
          "type": "show",
-         "ruleConditionalOperator": "and",
-         "ruleConditionalStatements": [{
-            "sourceField": "527d4539639f521e0a000006",
-            "restriction": "does not contain",
-            "sourceValue": "dammit"
-         }],
          "targetPage": "527d4539639f521e0a000005",
-         "_id": "527d4539639f521e0a456018"
-      }, {
-         "type": "skip",
-         "ruleConditionalOperator": "and",
-         "ruleConditionalStatements": [{
-            "sourceField": "527d4539639f521e0a000006",
-            "restriction": "does not contain",
-            "sourceValue": "dammit"
-         }],
-         "targetPage": "527d4539639f521e0a000005",
-         "_id": "527d4539639f521e0a000628"
-      }],
-      "fieldRules": [{
-         "type": "hide",
-         "ruleConditionalOperator": "and",
-         "ruleConditionalStatements": [{
-            "sourceField": "527d4539639f521e0a000006",
-            "restriction": "does not contain",
-            "sourceValue": "dammit"
-         }],
-         "targetField": "527d4539639f521e0a000007",
-         "_id": "527d4539639f521e0a054321"
-      }, {
-         "type": "hide",
-         "ruleConditionalOperator": "and",
+         "_id": "52974ee55e272dcb3d0000ad",
          "ruleConditionalStatements": [{
             "sourceField": "527d4539639f521e0a000006",
             "restriction": "contains",
-            "sourceValue": "dammit"
+            "sourceValue": "val"
          }],
-         "targetField": "527d4539639f521e0a000007",
-         "_id": "527d4539639f521e0a001234"
+         "ruleConditionalOperator": "and"
       }, {
-         "type": "hide",
-         "ruleConditionalOperator": "and",
+         "type": "show",
+         "targetPage": "527d4539639f521e0a000005",
+         "_id": "52974ee55e272dcb3d0000ae",
          "ruleConditionalStatements": [{
             "sourceField": "527d4539639f521e0a000006",
-            "restriction": "does not contain",
-            "sourceValue": "dammit2"
+            "restriction": "begins with",
+            "sourceValue": "dammit"
          }],
-         "targetField": "527d4539639f521e0a000007",
-         "_id": "527d4539639f521e0a012345"
+         "ruleConditionalOperator": "and"
+      }, {
+         "type": "show",
+         "targetPage": "527d4539639f521e0a000005",
+         "_id": "52974ee55e272dcb3d0000af",
+         "ruleConditionalStatements": [{
+            "sourceField": "527d4539639f521e0a000006",
+            "restriction": "begins with",
+            "sourceValue": "begin"
+         }, {
+            "sourceField": "527d4539639f521e0a000006",
+            "restriction": "ends with",
+            "sourceValue": "dammit"
+         }],
+         "ruleConditionalOperator": "and"
+      }, {
+         "type": "show",
+         "targetPage": "527d4539639f521e0a000005",
+         "_id": "52974ee55e272dcb3d0000b0",
+         "ruleConditionalStatements": [{
+            "sourceField": "52974ee55e272dcb3d000098",
+            "restriction": "is greater than",
+            "sourceValue": "5"
+         }, {
+            "sourceField": "52974ee55e272dcb3d000098",
+            "restriction": "is less than",
+            "sourceValue": "23"
+         }],
+         "ruleConditionalOperator": "and"
       }],
-
+      "fieldRules": [{
+         "type": "hide",
+         "targetField": "52974ee55e272dcb3d0000a6",
+         "_id": "52974ee55e272dcb3d0000a9",
+         "ruleConditionalStatements": [{
+            "sourceField": "527d4539639f521e0a000006",
+            "restriction": "contains",
+            "sourceValue": "val"
+         }],
+         "ruleConditionalOperator": "and"
+      }, {
+         "type": "show",
+         "targetField": "52974ee55e272dcb3d0000a6",
+         "_id": "52974ee55e272dcb3d0000aa",
+         "ruleConditionalStatements": [{
+            "sourceField": "527d4539639f521e0a000006",
+            "restriction": "begins with",
+            "sourceValue": "dammit"
+         }],
+         "ruleConditionalOperator": "and"
+      }, {
+         "type": "show",
+         "targetField": "52974ee55e272dcb3d0000a7",
+         "_id": "52974ee55e272dcb3d0000ab",
+         "ruleConditionalStatements": [{
+            "sourceField": "527d4539639f521e0a000006",
+            "restriction": "begins with",
+            "sourceValue": "begin"
+         }, {
+            "sourceField": "527d4539639f521e0a000006",
+            "restriction": "ends with",
+            "sourceValue": "dammit"
+         }],
+         "ruleConditionalOperator": "and"
+      }, {
+         "type": "show",
+         "targetField": "52974ee55e272dcb3d0000a8",
+         "_id": "52974ee55e272dcb3d0000ac",
+         "ruleConditionalStatements": [{
+            "sourceField": "52974ee55e272dcb3d000098",
+            "restriction": "is greater than",
+            "sourceValue": "5"
+         }, {
+            "sourceField": "52974ee55e272dcb3d000098",
+            "restriction": "is less than",
+            "sourceValue": "23"
+         }],
+         "ruleConditionalOperator": "and"
+      }],
       "pages": [{
          "name": "testPage",
          "description": "This is a test page for the win.",
@@ -102,11 +137,11 @@
                   "minRepeat": 3
                },
                "validation": {
-                  "min": 50,
-                  "max": 100
+                  "min": 5,
+                  "max": 40
                }
             },
-            "_id": "527d4539639f521e0a000007",
+            "_id": "52974ee55e272dcb3d000097",
             "repeating": true
          }, {
             "name": "numberField",
@@ -119,18 +154,18 @@
                   "minRepeat": 2
                },
                "validation": {
-                  "min": 0,
+                  "min": 5,
                   "max": 100
                }
             },
-            "_id": "527d4539639f521e0a000008",
+            "_id": "52974ee55e272dcb3d000098",
             "repeating": true
          }, {
             "name": "sectionBreakField",
             "helpText": "This is a sectionBreak field",
             "type": "sectionBreak",
             "required": false,
-            "_id": "527d4539639f521e0a000013",
+            "_id": "52974ee55e272dcb3d0000a4",
             "repeating": false
          }, {
             "name": "emailField",
@@ -143,7 +178,7 @@
                   "minRepeat": 1
                }
             },
-            "_id": "527d4539639f521e0a000009",
+            "_id": "52974ee55e272dcb3d000099",
             "repeating": true
          }, {
             "name": "radioField",
@@ -154,63 +189,22 @@
                "definition": {
                   "maxRepeat": 2,
                   "minRepeat": 2,
-                  "radioChoices": [{
-                     "label":"radioVal1",
-                     "value": 20
+                  "options": [{
+                     "label": "radio1",
+                     "checked": false
                   }, {
-                     "label":"radioVal2",
-                     "value": 10
+                     "label": "radio2",
+                     "checked": false
                   }, {
-                     "label":"radioVal3",
-                     "value": 130
+                     "label": "radio3 checked",
+                     "checked": true
                   }, {
-                     "label":"radioVal4",
-                     "value": 12
+                     "label": "radio4",
+                     "checked": false
                   }]
-               },
-               "validation": {
-                  "min": 0,
-                  "max": 100
                }
             },
-            "_id": "527d4539639f521e0a00000a",
-            "repeating": true
-         }, {
-            "name": "matrixField",
-            "helpText": "This is a Matrix field",
-            "type": "matrix",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "rows": [{
-                     "matRow1": 3
-                  }, {
-                     "matRow2": 3
-                  }, {
-                     "matRow3": 3
-                  }, {
-                     "matRow4": 3
-                  }, {
-                     "matRow5": 3
-                  }, {
-                     "matRow6": 3
-                  }],
-                  "columns": [{
-                     "matCol1": 1
-                  }, {
-                     "matCol2": 2
-                  }, {
-                     "matCol3": 3
-                  }, {
-                     "matCol4": 4
-                  }, {
-                     "matCol5": 6
-                  }],
-                  "maxRepeat": 2,
-                  "minRepeat": 2
-               }
-            },
-            "_id": "527d4539639f521e0a00000b",
+            "_id": "52974ee55e272dcb3d00009a",
             "repeating": true
          }, {
             "name": "checkboxField",
@@ -220,68 +214,92 @@
             "fieldOptions": {
                "definition": {
                   "checkboxChoices": [{
-                     "label":"red",
+                     "label": "red",
                      "value": 1,
-                     "selected":true
+                     "selected": true
                   }, {
-                     "label":"blue",
+                     "label": "blue",
                      "value": 2,
-                     "selected":false
+                     "selected": true
                   }, {
-                     "label":"green",
+                     "label": "green",
                      "value": 3,
-                     "selected":false
+                     "selected": false
                   }, {
-                     "label":"purple",
+                     "label": "purple",
                      "value": 4,
-                     "selected":false
+                     "selected": false
                   }, {
-                     "label":"black",
+                     "label": "black",
                      "value": 5,
-                     "selected":true
+                     "selected": false
                   }],
                   "minRepeat": 2,
                   "maxRepeat": 3
                },
                "validation": {
-                  "minSelected": 2,
-                  "maxSelected": 3
+                  "min": 2,
+                  "max": 3
                }
             },
-            "_id": "527d4539639f521e0a00000c",
+            "_id": "52974ee55e272dcb3d00009d",
+            "repeating": true
+         }, {
+            "name": "dropdownField",
+            "helpText": "This is a dropdown field",
+            "type": "dropdown",
+            "required": false,
+            "fieldOptions": {
+               "definition": {
+                  "maxRepeat": 3,
+                  "minRepeat": 2,
+                  "options": [{
+                     "label": "dropdownVal1",
+                     "checked": false
+                  }, {
+                     "label": "dropdownVal2",
+                     "checked": false
+                  }, {
+                     "label": "dropdownVal3",
+                     "checked": true
+                  }, {
+                     "label": "dropdownVal4",
+                     "checked": false
+                  }]
+               }
+            },
+            "_id": "52974ee55e272dcb3d00009b",
             "repeating": true
          }, {
             "name": "locationLatLongField",
             "helpText": "This is a locationLatLong field",
-            "type": "locationLatLong",
+            "type": "location",
             "required": false,
             "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 4,
-                  "minRepeat": 2
-               }
+               "locationUnit": "latLong",
+               "maxRepeat": 4,
+               "minRepeat": 2
             },
-            "_id": "527d4539639f521e0a00000d",
+            "_id": "52974ee55e272dcb3d00009e",
             "repeating": true
          }, {
             "name": "sectionBreak2Field",
             "helpText": "This is another sectionBreak field",
             "type": "sectionBreak",
             "required": false,
-            "_id": "527d4539639f521e0a000014",
+            "_id": "52974ee55e272dcb3d0000a5",
             "repeating": false
          }, {
             "name": "locationNorthEastField",
             "helpText": "This is a locationNorthEast field",
-            "type": "locationNorthEast",
+            "type": "location",
             "required": false,
             "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 2,
-                  "minRepeat": 2
-               }
+               "locationUnit": "northEast",
+               "maxRepeat": 4,
+               "minRepeat": 2
             },
-            "_id": "527d4539639f521e0a00000e",
+            "_id": "52974ee55e272dcb3d00009f",
             "repeating": true
          }, {
             "name": "locationMapField",
@@ -294,33 +312,37 @@
                   "minRepeat": 1
                }
             },
-            "_id": "527d4539639f521e0a00000f",
+            "_id": "52974ee55e272dcb3d0000a0",
             "repeating": true
          }, {
             "name": "dateField",
             "helpText": "This is a date field",
-            "type": "date",
+            "type": "dateTime",
             "required": false,
             "fieldOptions": {
+               "dateTimeUnit": "date",
                "definition": {
+                  "timeAutopopulate": true,
                   "maxRepeat": 6,
                   "minRepeat": 1
                }
             },
-            "_id": "527d4539639f521e0a000010",
+            "_id": "52974ee55e272dcb3d0000a1",
             "repeating": true
          }, {
             "name": "timeField",
             "helpText": "This is a time field",
-            "type": "time",
+            "type": "dateTime",
             "required": false,
             "fieldOptions": {
+               "dateTimeUnit": "time",
                "definition": {
+                  "timeAutopopulate": false,
                   "maxRepeat": 6,
-                  "minRepeat": 3
+                  "minRepeat": 2
                }
             },
-            "_id": "527d4539639f521e0a000011",
+            "_id": "52974ee55e272dcb3d0000a2",
             "repeating": true
          }, {
             "name": "dateTimeField",
@@ -328,278 +350,57 @@
             "type": "dateTime",
             "required": false,
             "fieldOptions": {
+               "dateTimeUnit": "dateTime",
                "definition": {
+                  "timeAutopopulate": true,
                   "maxRepeat": 6,
                   "minRepeat": 1
                }
             },
-            "_id": "527d4539639f521e0a000012",
+            "_id": "52974ee55e272dcb3d0000a3",
             "repeating": true
-         }]
-      },{
-         "name": "testPage",
-         "description": "This is a test page for the win.",
-         "_id": "527d4539639f521e0a000005",
-         "fields": [{
-            "name": "textField",
-            "helpText": "This is a text field",
-            "type": "text",
+         }, {
+            "name": "fileField",
+            "helpText": "This is a file field",
+            "type": "file",
+            "required": false,
+            "fieldOptions": {
+               "definition": {
+                  "file_size": 100,
+                  "maxRepeat": 5,
+                  "minRepeat": 2
+               }
+            },
+            "_id": "52974ee55e272dcb3d0000a6",
+            "repeating": true
+         }, {
+            "name": "photoField",
+            "helpText": "This is a photo field",
+            "type": "photo",
+            "required": false,
+            "fieldOptions": {
+               "definition": {
+                  "photoHeight": 200,
+                  "photoWidth": 300,
+                  "photoQuality": 50,
+                  "maxRepeat": 5,
+                  "minRepeat": 2
+               }
+            },
+            "_id": "52974ee55e272dcb3d0000a7",
+            "repeating": true
+         }, {
+            "name": "signatureField",
+            "helpText": "This is a signature field",
+            "type": "signature",
             "required": false,
             "fieldOptions": {
                "definition": {
                   "maxRepeat": 5,
                   "minRepeat": 2
-               },
-               "validation": {
-                  "min": 20,
-                  "max": 100
                }
             },
-            "_id": "527d4539639f521e0a000006",
-            "repeating": true
-         }, {
-            "name": "textAreaField",
-            "helpText": "This is a text area field",
-            "type": "textarea",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 5,
-                  "minRepeat": 3
-               },
-               "validation": {
-                  "min": 50,
-                  "max": 100
-               }
-            },
-            "_id": "527d4539639f521e0a000007",
-            "repeating": true
-         }, {
-            "name": "numberField",
-            "helpText": "This is a number field",
-            "type": "number",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 5,
-                  "minRepeat": 2
-               },
-               "validation": {
-                  "min": 0,
-                  "max": 100
-               }
-            },
-            "_id": "527d4539639f521e0a000008",
-            "repeating": true
-         }, {
-            "name": "sectionBreakField",
-            "helpText": "This is a sectionBreak field",
-            "type": "sectionBreak",
-            "required": false,
-            "_id": "527d4539639f521e0a000013",
-            "repeating": false
-         }, {
-            "name": "emailField",
-            "helpText": "This is a Email field",
-            "type": "emailAddress",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 5,
-                  "minRepeat": 1
-               }
-            },
-            "_id": "527d4539639f521e0a000009",
-            "repeating": true
-         }, {
-            "name": "radioField",
-            "helpText": "This is a Radio field",
-            "type": "radio",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 2,
-                  "minRepeat": 2,
-                  "radioChoices": [{
-                     "label":"radioVal1",
-                     "value": 20
-                  }, {
-                     "label":"radioVal2",
-                     "value": 10
-                  }, {
-                     "label":"radioVal3",
-                     "value": 130
-                  }, {
-                     "label":"radioVal4",
-                     "value": 12
-                  }]
-               },
-               "validation": {
-                  "min": 0,
-                  "max": 100
-               }
-            },
-            "_id": "527d4539639f521e0a00000a",
-            "repeating": true
-         }, {
-            "name": "matrixField",
-            "helpText": "This is a Matrix field",
-            "type": "matrix",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "rows": [{
-                     "matRow1": 3
-                  }, {
-                     "matRow2": 3
-                  }, {
-                     "matRow3": 3
-                  }, {
-                     "matRow4": 3
-                  }, {
-                     "matRow5": 3
-                  }, {
-                     "matRow6": 3
-                  }],
-                  "columns": [{
-                     "matCol1": 1
-                  }, {
-                     "matCol2": 2
-                  }, {
-                     "matCol3": 3
-                  }, {
-                     "matCol4": 4
-                  }, {
-                     "matCol5": 6
-                  }],
-                  "maxRepeat": 2,
-                  "minRepeat": 2
-               }
-            },
-            "_id": "527d4539639f521e0a00000b",
-            "repeating": true
-         }, {
-            "name": "checkboxField",
-            "helpText": "This is a Checkbox field",
-            "type": "checkboxes",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "checkboxChoices": [{
-                     "label":"red",
-                     "value": 1,
-                     "selected":true
-                  }, {
-                     "label":"blue",
-                     "value": 2,
-                     "selected":false
-                  }, {
-                     "label":"green",
-                     "value": 3,
-                     "selected":false
-                  }, {
-                     "label":"purple",
-                     "value": 4,
-                     "selected":false
-                  }, {
-                     "label":"black",
-                     "value": 5,
-                     "selected":true
-                  }],
-                  "minRepeat": 2,
-                  "maxRepeat": 3
-               },
-               "validation": {
-                  "minSelected": 2,
-                  "maxSelected": 3
-               }
-            },
-            "_id": "527d4539639f521e0a00000c",
-            "repeating": true
-         }, {
-            "name": "locationLatLongField",
-            "helpText": "This is a locationLatLong field",
-            "type": "locationLatLong",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 4,
-                  "minRepeat": 2
-               }
-            },
-            "_id": "527d4539639f521e0a00000d",
-            "repeating": true
-         }, {
-            "name": "sectionBreak2Field",
-            "helpText": "This is another sectionBreak field",
-            "type": "sectionBreak",
-            "required": false,
-            "_id": "527d4539639f521e0a000014",
-            "repeating": false
-         }, {
-            "name": "locationNorthEastField",
-            "helpText": "This is a locationNorthEast field",
-            "type": "locationNorthEast",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 2,
-                  "minRepeat": 2
-               }
-            },
-            "_id": "527d4539639f521e0a00000e",
-            "repeating": true
-         }, {
-            "name": "locationMapField",
-            "helpText": "This is a locationMap field",
-            "type": "locationMap",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 6,
-                  "minRepeat": 1
-               }
-            },
-            "_id": "527d4539639f521e0a00000f",
-            "repeating": true
-         }, {
-            "name": "dateField",
-            "helpText": "This is a date field",
-            "type": "date",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 6,
-                  "minRepeat": 1
-               }
-            },
-            "_id": "527d4539639f521e0a000010",
-            "repeating": true
-         }, {
-            "name": "timeField",
-            "helpText": "This is a time field",
-            "type": "time",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 6,
-                  "minRepeat": 3
-               }
-            },
-            "_id": "527d4539639f521e0a000011",
-            "repeating": true
-         }, {
-            "name": "dateTimeField",
-            "helpText": "This is a dateTime field",
-            "type": "dateTime",
-            "required": false,
-            "fieldOptions": {
-               "definition": {
-                  "maxRepeat": 6,
-                  "minRepeat": 1
-               }
-            },
-            "_id": "527d4539639f521e0a000012",
+            "_id": "52974ee55e272dcb3d0000a8",
             "repeating": true
          }]
       }],
@@ -611,67 +412,79 @@
             "page": 0,
             "field": 0
          },
-         "527d4539639f521e0a000007": {
+         "52974ee55e272dcb3d000097": {
             "page": 0,
             "field": 1
          },
-         "527d4539639f521e0a000008": {
+         "52974ee55e272dcb3d000098": {
             "page": 0,
             "field": 2
          },
-         "527d4539639f521e0a000013": {
+         "52974ee55e272dcb3d0000a4": {
             "page": 0,
             "field": 3
          },
-         "527d4539639f521e0a000009": {
+         "52974ee55e272dcb3d000099": {
             "page": 0,
             "field": 4
          },
-         "527d4539639f521e0a00000a": {
+         "52974ee55e272dcb3d00009a": {
             "page": 0,
             "field": 5
          },
-         "527d4539639f521e0a00000b": {
+         "52974ee55e272dcb3d00009d": {
             "page": 0,
             "field": 6
          },
-         "527d4539639f521e0a00000c": {
+         "52974ee55e272dcb3d00009b": {
             "page": 0,
             "field": 7
          },
-         "527d4539639f521e0a00000d": {
+         "52974ee55e272dcb3d00009e": {
             "page": 0,
             "field": 8
          },
-         "527d4539639f521e0a000014": {
+         "52974ee55e272dcb3d0000a5": {
             "page": 0,
             "field": 9
          },
-         "527d4539639f521e0a00000e": {
+         "52974ee55e272dcb3d00009f": {
             "page": 0,
             "field": 10
          },
-         "527d4539639f521e0a00000f": {
+         "52974ee55e272dcb3d0000a0": {
             "page": 0,
             "field": 11
          },
-         "527d4539639f521e0a000010": {
+         "52974ee55e272dcb3d0000a1": {
             "page": 0,
             "field": 12
          },
-         "527d4539639f521e0a000011": {
+         "52974ee55e272dcb3d0000a2": {
             "page": 0,
             "field": 13
          },
-         "527d4539639f521e0a000012": {
+         "52974ee55e272dcb3d0000a3": {
             "page": 0,
             "field": 14
+         },
+         "52974ee55e272dcb3d0000a6": {
+            "page": 0,
+            "field": 15
+         },
+         "52974ee55e272dcb3d0000a7": {
+            "page": 0,
+            "field": 16
+         },
+         "52974ee55e272dcb3d0000a8": {
+            "page": 0,
+            "field": 17
          }
-      },
-      "appsUsing": 123,
-      "submissionsToday": 1234,
-      "submissionsTotal": 124125
+         },
+         "appsUsingForm": 123,
+         "submissionsToday": 1234,
+         "submissionsTotal": 124125
+      }
+
+
    }
-
-
-}

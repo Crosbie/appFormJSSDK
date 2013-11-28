@@ -145,33 +145,34 @@ FieldCameraView = FieldView.extend({
       quality: null
     };
 
-    var classNames = this.model.get('ClassNames'),
-      parts, val;
-    if (classNames !== '') {
-      var classes = classNames.split(' ');
-      _(classes).forEach(function(className) {
-        if (className.indexOf("fhdimensions") != -1) {
-          parts = className.split('=');
-          val = parts[1].split('x');
+    // TODO - review if this is needed
+    // var classNames = this.model.get('ClassNames'),
+    //   parts, val;
+    // if (classNames !== '') {
+    //   var classes = classNames.split(' ');
+    //   _(classes).forEach(function(className) {
+    //     if (className.indexOf("fhdimensions") != -1) {
+    //       parts = className.split('=');
+    //       val = parts[1].split('x');
 
-          // Retry
-          if (val.length == 2) {
-            // Validity check
-            if (val[0] < 10000 && val[1] < 10000) {
-              options.targetWidth = val[0];
-              options.targetHeight = val[1];
-            } else {
-              console.error('Invalid camera resolution, using defaults');
-            }
-          }
-        } else if (className.indexOf("fhcompression") != -1) {
-          parts = className.split('=');
-          val = parts[1].split('%');
+    //       // Retry
+    //       if (val.length == 2) {
+    //         // Validity check
+    //         if (val[0] < 10000 && val[1] < 10000) {
+    //           options.targetWidth = val[0];
+    //           options.targetHeight = val[1];
+    //         } else {
+    //           console.error('Invalid camera resolution, using defaults');
+    //         }
+    //       }
+    //     } else if (className.indexOf("fhcompression") != -1) {
+    //       parts = className.split('=');
+    //       val = parts[1].split('%');
 
-          options.quality = val[0];
-        }
-      });
-    }
+    //       options.quality = val[0];
+    //     }
+    //   });
+    // }
 
     return options;
   },

@@ -22,7 +22,13 @@
   <body>
     ...
     <div id="mocha"></div>
-    <div id="backbone"></div>
+    <div id="backbone">
+      <div id="formList"></div>
+        <div id="page">
+            <button class="prev">Prev</button>
+            <button class="next">Next</button>
+        </div>
+    </div>
     <script data-main="specRunner.js" src="./modules.js"></script>
     <script data-main="specRunner.js" src="./vendor/mocha.js"></script>
     <script data-main="specRunner.js" src="./vendor/chai.js"></script>
@@ -47,6 +53,5 @@
     <script data-main="specRunner.js" src="./vendor/ratchet.js"></script>
     <script data-main="specRunner.js" src="./vendor/advice.js"></script>
     <script data-main="specRunner.js" src="./vendor/mobiscroll.custom.min.js"></script>
-    <script data-main="specRunner.js" src="./router.js"></script>
   </body>
 </html>

@@ -9,14 +9,19 @@ function applyServer(app) {
 }
 
 function _getForms(req, res) {
+    var formsArr = [];
+    for(var id in allForms){
+        var form = allForms[id];
+        formsArr.push({
+            _id: id,
+            name: form.name,
+            description: form.description,
+            lastUpdated: form.lastUpdated,
+            lastUpdatedTimestamp: form.lastUpdatedTimestamp
+        });
+    }
     res.json({
-        "forms": [{
-            "_id": "527d4539639f521e0a000004",
-            "name": "testFieldsForm",
-            "description": "I am a form",
-            "lastUpdated":"2013-11-08T20:10:33.819Z",
-            "lastUpdatedTimestamp":1384800150848
-        }]
+        "forms": formsArr
     });
 }
 function _postForms(req, res) {
