@@ -60,7 +60,6 @@ App.Router = Backbone.Router.extend({
       }
       subsArr = res.get('submissions');
       res.getSubmissionByMeta(subsArr[0], function(err, sub) {
-        debugger;
         var fields = sub.get('formFields');
         var val = sub.getInputValueByFieldId("527d4539639f521e0a000006");
         var formView = new FormView("527d4539639f521e0a000004", sub);

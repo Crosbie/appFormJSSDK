@@ -73,10 +73,9 @@ FieldView = Backbone.View.extend({
     this.dumpContent();
     this.getTopView().trigger('change:field');
     var val = this.value();
-    debugger;
     if(this.model.validate(val[this.model.get("_id")]) === true){
-      debugger;
-      this.model.processInput(val[this.model.get("_id")]);
+      val = this.model.processInput(val[this.model.get("_id")]);
+      this.model.set("value", val);
     }
   },
 
@@ -98,7 +97,6 @@ FieldView = Backbone.View.extend({
 
     // populate field if Submission obj exists
     if(this.options.submission){
-      debugger;
       var value = this.options.submission.getInputValueByFieldId(this.model.get('_id'));
       this.value(value);
     }
