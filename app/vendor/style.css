@@ -825,3 +825,18 @@ a.settings{
   font-style: italic;
   width: 30%;
 }
+
+#buttons {
+  margin: 50px;
+  text-align: center;
+}
+#buttons button {
+  padding: 20px;
+  font-size: 20px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+hr {
+  margin: 10px 0;
+}

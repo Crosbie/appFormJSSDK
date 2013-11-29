@@ -23,14 +23,13 @@ App.Router = Backbone.Router.extend({
 
   routes: {
     "form_list": "form_list",
-    "*path": "form_list" // Default route
+    "form": "showForm",
+    "*path": "startApp" // Default route
   },
 
-  initialize: function() {
-  },
+  initialize: function() {},
 
-  form_list: function() {
-
+  startApp: function() {
     $fh.forms.getForms({
       fromRemote: false
     }, function(err, forms) {
@@ -42,6 +41,33 @@ App.Router = Backbone.Router.extend({
     });
 
     // $fh.ready({}, this.onReady);
+  },
+
+  form_list: function() {
+    $('#page').addClass('hidden');
+    $('#formList').removeClass('hidden');
+  },
+
+  showForm: function() {
+    $('#page').removeClass('hidden');
+    $('#formList').addClass('hidden');
+  },
+
+  checkSubmissions: function() {
+    $fh.forms.getSubmissions({}, function(err, res) {
+      if (err) {
+        throw (err);
+      }
+      subsArr = res.get('submissions');
+      res.getSubmissionByMeta(subsArr[0], function(err, sub) {
+        debugger;
+        var fields = sub.get('formFields');
+        var val = sub.getInputValueByFieldId("527d4539639f521e0a000006");
+        var formView = new FormView("527d4539639f521e0a000004", sub);
+        this.showForm();
+      });
+
+    })
   },
 
   // onReady: function() {

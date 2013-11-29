@@ -6,7 +6,8 @@ FieldGeoView = FieldView.extend({
   },
   initialize: function() {
     FieldView.prototype.initialize.call(this);
-    this.on('visible',this.clearError);
+    this.on('visible', this.clearError);
+    
   },
 
   render: function() {
@@ -15,9 +16,13 @@ FieldGeoView = FieldView.extend({
       "id": this.model.get('_id'),
       "title": this.model.get('name')
     }));
-
+    this.locationUnit = this.model.get('fieldOptions').locationUnit;
     // Add button
-    this.addButton(this.$el, this.extension_type, 'Capture Location (Lat/Lon)');
+    if (this.locationUnit === "latLong") {
+      this.addButton(this.$el, this.extension_type, 'Capture Location (Lat/Lon)');
+    } else if (this.locationUnit === "northEast") {
+      this.addButton(this.$el, this.extension_type, 'Capture Location (East/North)');
+    }
 
     // add to dom
     this.options.parentEl.append(this.$el);
@@ -25,7 +30,7 @@ FieldGeoView = FieldView.extend({
   },
 
   contentChanged: function(e) {
-    FieldView.prototype.contentChanged.apply(this,arguments);
+    FieldView.prototype.contentChanged.apply(this, arguments);
     this.clearError();
   },
 
@@ -35,12 +40,35 @@ FieldGeoView = FieldView.extend({
     var input = $('input', this.$el);
 
     $fh.geo(function(res) {
-      var location = '(' + res.lat + ', ' + res.lon + ')';
+      var location;
+
+      // check unit
+      if (self.locationUnit === "latLong") {
+        location = '(' + res.lat + ', ' + res.lon + ')';
+      } else if (self.locationUnit === "northEast") {
+        var en_location = self.convertLocation(res);
+        location = '(' + en_location.easting + ', ' + en_location.northing + ')';
+      }
+
       input.val(location);
       self.contentChanged();
     }, function(msg, err) {
-      input.attr('placeholder','Location could not be determined');
+      input.attr('placeholder', 'Location could not be determined');
     });
     input.blur();
-  }
+  },
+
+    convertLocation: function(location) {
+    var lat = location.lat;
+    var lon = location.lon;
+    var params = {
+      lat: function() {
+        return lat;
+      },
+      lon: function() {
+        return lon;
+      }
+    };
+    return OsGridRef.latLongToOsGrid(params);
+  },
 });

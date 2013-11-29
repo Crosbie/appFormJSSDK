@@ -72,15 +72,18 @@ FieldView = Backbone.View.extend({
   contentChanged: function(e) {
     this.dumpContent();
     this.getTopView().trigger('change:field');
-    this.model.set({
-      Value: this.value()
-    });
+    var val = this.value();
+    debugger;
+    if(this.model.validate(val[this.model.get("_id")]) === true){
+      debugger;
+      this.model.processInput(val[this.model.get("_id")]);
+    }
   },
 
   render: function() {
     // construct field html
     this.$el.append(_.template(this.template.join(''), {
-      "id": this.model.getFieldId(),
+      "id": this.model.get("_id"),
       "title": this.model.getName(),
       "defaultVal": this.model.get('default') || ''
     }));
@@ -92,6 +95,13 @@ FieldView = Backbone.View.extend({
     //     instructions: this.model.get('Instructions')
     //   }));
     // }
+
+    // populate field if Submission obj exists
+    if(this.options.submission){
+      debugger;
+      var value = this.options.submission.getInputValueByFieldId(this.model.get('_id'));
+      this.value(value);
+    }
 
     // add to dom
     this.options.parentEl.append(this.$el);
@@ -198,7 +208,7 @@ FieldView = Backbone.View.extend({
 
   defaultValue: function() {
     var defaultValue = {};
-    defaultValue[this.model.get('ID')] = this.model.get('DefaultVal');
+    defaultValue[this.model.get('_id')] = this.model.get('DefaultVal');
     return defaultValue;
   },
 
