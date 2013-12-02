@@ -72,15 +72,17 @@ FieldView = Backbone.View.extend({
   contentChanged: function(e) {
     this.dumpContent();
     this.getTopView().trigger('change:field');
-    this.model.set({
-      Value: this.value()
-    });
+    var val = this.value();
+    if(this.model.validate(val[this.model.get("_id")]) === true){
+      val = this.model.processInput(val[this.model.get("_id")]);
+      this.submission.addInputValue(this.model.get("_id"), val);
+    }
   },
 
   render: function() {
     // construct field html
     this.$el.append(_.template(this.template.join(''), {
-      "id": this.model.getFieldId(),
+      "id": this.model.get("_id"),
       "title": this.model.getName(),
       "defaultVal": this.model.get('default') || ''
     }));
@@ -100,6 +102,13 @@ FieldView = Backbone.View.extend({
     // force the element to be initially hidden
     if (this.$el.hasClass("hide")) {
       this.hide(true);
+    }
+    // populate field if Submission obj exists
+    var submission = this.options.formView.getSubmission();
+    if(submission){
+      this.submission = submission;
+      var value = this.submission.getInputValueByFieldId(this.model.get('_id'));
+      this.value(value);
     }
   },
 
@@ -198,7 +207,7 @@ FieldView = Backbone.View.extend({
 
   defaultValue: function() {
     var defaultValue = {};
-    defaultValue[this.model.get('ID')] = this.model.get('DefaultVal');
+    defaultValue[this.model.get('_id')] = this.model.get('DefaultVal');
     return defaultValue;
   },
 

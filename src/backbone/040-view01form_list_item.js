@@ -33,7 +33,10 @@
 
     var formId=this.model._id;
     // this will init and render formView
-    var formView = new FormView(formId);
+    var formView = new FormView({parentEl:"#backbone #page"});
+    formView.loadForm({formId:formId}, function(){
+      Backbone.history.navigate('form',true);  
+    })
   },
 
   fetch: function () {
