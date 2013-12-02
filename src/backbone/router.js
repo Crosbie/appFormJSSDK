@@ -24,7 +24,8 @@ App.Router = Backbone.Router.extend({
   routes: {
     "form_list": "form_list",
     "form": "showForm",
-    "*path": "startApp" // Default route
+    "json": "fromJson",
+    "": "startApp" // Default route
   },
 
   initialize: function() {},
@@ -46,14 +47,17 @@ App.Router = Backbone.Router.extend({
   form_list: function() {
     $('#page').addClass('hidden');
     $('#formList').removeClass('hidden');
+    $('#jsonPage').addClass('hidden');
   },
 
   showForm: function() {
     $('#page').removeClass('hidden');
+    $('#jsonPage').addClass('hidden');
     $('#formList').addClass('hidden');
   },
 
   checkSubmissions: function() {
+    var self=this;
     $fh.forms.getSubmissions({}, function(err, res) {
       if (err) {
         throw (err);
@@ -62,11 +66,20 @@ App.Router = Backbone.Router.extend({
       res.getSubmissionByMeta(subsArr[0], function(err, sub) {
         var fields = sub.get('formFields');
         var val = sub.getInputValueByFieldId("527d4539639f521e0a000006");
-        var formView = new FormView("527d4539639f521e0a000004", sub);
-        this.showForm();
+        self.showForm();
+        var formView = new FormView("#backbone #page");
+        formView.loadForm({formId:"527d4539639f521e0a000004",submission:sub})
       });
 
     })
+  },
+
+  fromJson: function(){
+    $('#page').addClass('hidden');
+    $('#formList').addClass('hidden');
+    $('#jsonPage').removeClass('hidden');
+    fromJson = new FromJsonView();
+    fromJson.render();
   },
 
   // onReady: function() {

@@ -65,6 +65,7 @@
  "040-view02field27dateTime",
  "040-view03Page",
  "040-view04Form",
+ "040-view05fromJson",
  "router"
  ],
 };

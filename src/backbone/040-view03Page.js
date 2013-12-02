@@ -68,7 +68,7 @@ PageView=BaseView.extend({
           parentEl: self.$el,
           parentView: self,
           model: field,
-          submission: self.options.submission
+          formView: self.options.formView
         });
       } else {
         console.warn('FIELD NOT SUPPORTED:' + fieldType);

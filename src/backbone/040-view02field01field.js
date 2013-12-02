@@ -75,7 +75,7 @@ FieldView = Backbone.View.extend({
     var val = this.value();
     if(this.model.validate(val[this.model.get("_id")]) === true){
       val = this.model.processInput(val[this.model.get("_id")]);
-      this.model.set("value", val);
+      this.submission.addInputValue(this.model.get("_id"), val);
     }
   },
 
@@ -95,12 +95,6 @@ FieldView = Backbone.View.extend({
     //   }));
     // }
 
-    // populate field if Submission obj exists
-    if(this.options.submission){
-      var value = this.options.submission.getInputValueByFieldId(this.model.get('_id'));
-      this.value(value);
-    }
-
     // add to dom
     this.options.parentEl.append(this.$el);
     this.show();
@@ -108,6 +102,13 @@ FieldView = Backbone.View.extend({
     // force the element to be initially hidden
     if (this.$el.hasClass("hide")) {
       this.hide(true);
+    }
+    // populate field if Submission obj exists
+    var submission = this.options.formView.getSubmission();
+    if(submission){
+      this.submission = submission;
+      var value = this.submission.getInputValueByFieldId(this.model.get('_id'));
+      this.value(value);
     }
   },
 
