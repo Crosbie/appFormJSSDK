@@ -151,40 +151,61 @@ describe("Submission model", function() {
             });
         });
         it("how to add user input value to submission model", function() {
-            assert(submission.addInputValue("527d4539639f521e0a000006",40)===true);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[0] == 40);
+            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[0] == 40)  ;
+            });
         });
         it("how to reset a submission to clear all user input", function() {
-            assert(submission.addInputValue("527d4539639f521e0a000006",40)===true);
+            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
             submission.reset();
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")==null);
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+                assert(!err);
+                assert(res.length==0);
+            });
         });
 
         it ("how to use transaction to input a series of user values to submission model",function(){
             submission.reset();
-            assert(submission.addInputValue("527d4539639f521e0a000006",40)===true);
+            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
             submission.startInputTransaction();
-            submission.addInputValue("527d4539639f521e0a000006",50);
-            submission.addInputValue("527d4539639f521e0a000006",60);
-            submission.addInputValue("527d4539639f521e0a000006",35);
+            submission.addInputValue("527d4539639f521e0a000006",50,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006",60,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006",35,function(err){assert(!err)});
             submission.endInputTransaction(true);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[0] == 40);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[1] == 50);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[2] == 60);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[3] == 35);
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[0] == 40)  ;
+            });
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[1] == 50)  ;
+            });
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[2] == 60)  ;
+            });
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[3] == 35)  ;
+            });
         });
         it ("how to use transaction for user input and roll back",function(){
             submission.reset();
-            assert(submission.addInputValue("527d4539639f521e0a000006",40)===true);
+            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
             submission.startInputTransaction();
-            submission.addInputValue("527d4539639f521e0a000006",50);
-            submission.addInputValue("527d4539639f521e0a000006",60);
-            submission.addInputValue("527d4539639f521e0a000006",35);
+            submission.addInputValue("527d4539639f521e0a000006",50,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006",60,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006",35,function(err){assert(!err)});
             submission.endInputTransaction(false);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[0] == 40);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[1] == undefined);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[2] == undefined);
-            assert(submission.getInputValueByFieldId("527d4539639f521e0a000006")[3] == undefined);
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[0] == 40)  ;
+            });
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[1] == undefined)  ;
+            });
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[2] == undefined)  ;
+            });
+            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+              assert(res[3] == undefined)  ;
+            });
         });
     });
 

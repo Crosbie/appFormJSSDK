@@ -5,7 +5,8 @@ appForm.utils = (function(module) {
         remove:remove,
         readAsText:readAsText,
         readAsBlob:readAsBlob,
-        readAsBase64Encoded:readAsBase64Encoded
+        readAsBase64Encoded:readAsBase64Encoded,
+        readAsFile:readAsFile
     };
 
     var fileSystemAvailable = false;
@@ -159,6 +160,9 @@ appForm.utils = (function(module) {
                 reader.readAsArrayBuffer(file);
             }
         });
+    }
+    function readAsFile(fileName,cb){
+        _getFile(fileName,cb);
     }
     /**
      * Retrieve a file object

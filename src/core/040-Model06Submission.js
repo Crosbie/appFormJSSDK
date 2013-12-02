@@ -84,7 +84,15 @@ appForm.models = (function(module) {
      */
     Submission.prototype.submit = function(cb) {
         var targetStatus = "pending";
-        throw ("not finished");
+        var validateResult=true;
+        //TODO overall validate here
+        
+        if (validateResult===true){
+            
+        }else{
+            return "";
+        }
+
     }
     Submission.prototype.submitted = function(cb) {
         var targetStatus = "submitted";
@@ -166,9 +174,11 @@ appForm.models = (function(module) {
      *
      * @param {[type]} fieldId    [description]
      * @param {[type]} inputValue [description]
+     * @param {} cb(err,res) callback function when finished
      * @return true / error message
      */
-    Submission.prototype.addInputValue = function(fieldId, inputValue) {
+    Submission.prototype.addInputValue = function(fieldId, inputValue, cb) {
+        var that=this;
         var fieldModel = this.form.getFieldModelById(fieldId);
         var validateRes = appForm.models.fieldValidate.validate(inputValue, fieldModel);
         if (validateRes === true) {
@@ -176,39 +186,33 @@ appForm.models = (function(module) {
                 if (!this.tmpFields[fieldId]){
                     this.tmpFields[fieldId]=[];
                 }
-                this.tmpFields[fieldId].push(inputValue);
-                return true;
-            } else {
-                var targetArr = this.get("formFields");
-                for (var i = 0; i < targetArr.length; i++) {
-                    if (targetArr[i].fieldId == fieldId) {
-                        targetArr[i].fieldValues.push(fieldModel.processInput(inputValue));
-                        return true;
-
+                fieldModel.processInput(inputValue,function(err,result){
+                    if (err){
+                        cb(err);
+                    }else{
+                        that.tmpFields[fieldId].push(result);
+                        cb(null,result);
                     }
-                }
-                //not found, create new entry
-                var newEntry = {
-                    "fieldId": fieldId,
-                    "fieldValues": [fieldModel.processInput(inputValue)]
-                }
-                targetArr.push(newEntry);
-                return true;
+                });
+            } else {
+                var target=this.getInputValueObjectById(fieldId);
+                fieldModel.processInput(inputValue,function(err,result){
+                    if (err){
+                        cb(err);
+                    }else{
+                        target.fieldValues.push(result);
+                        cb(null,result);
+                    }
+                });
             }
         } else {
-            return validateRes;
+            cb(validateRes);
         }
     }
-    Submission.prototype.getInputValueByFieldId = function(fieldId) {
-        var formFields = this.get("formFields", []);
+    Submission.prototype.getInputValueByFieldId = function(fieldId,cb) {
+        var values= this.getInputValueObjectById(fieldId).fieldValues;
         var fieldModel = this.form.getFieldModelById(fieldId);
-        for (var i = 0; i < formFields.length; i++) {
-            var formField = formFields[i];
-            if (formField.fieldId == fieldId) {
-                return fieldModel.convertSubmission(formField["fieldValues"]);
-            }
-        }
-        return null;
+        fieldModel.convertSubmission(values,cb);
     }
     /**
      * Reset submission
@@ -224,21 +228,58 @@ appForm.models = (function(module) {
     Submission.prototype.endInputTransaction = function(succeed) {
         this.transactionMode = false;
         if (succeed) {
+            var targetArr = this.get("formFields");
             var tmpFields = this.tmpFields;
             for (var fieldId in tmpFields){
+                var target=this.getInputValueObjectById(fieldId);
                 var valArr=tmpFields[fieldId];
                 for (var i=0;i<valArr.length;i++){
                     var val=valArr[i];
-                    this.addInputValue(fieldId,val);
+                    target.fieldValues.push(val);
                 }
             }
             this.tmpFields = {};
         } else {
             this.tmpFields = {};
         }
-
     }
-
+    /**
+     * remove an input value from submission
+     * @param  {[type]} fieldId field id
+     * @param  {[type]} index (optional) the position of the value will be removed if it is repeated field.
+     * @return {[type]}         [description]
+     */
+    Submission.prototype.removeFieldValue=function(fieldId, index){
+        var targetArr=[];
+        if (this.transactionMode){
+            targetArr=this.tmpFields["fieldId"];
+        }else{
+            targetArr=this.getInputValueObjectById(fieldId)["fieldId"];
+        }
+        if (typeof index =="undefined"){
+            targetArr.splice(0,targetArr.length);
+        }else{
+            if (targetArr.length>index){
+                targetArr.splice(index,1);
+            }
+        }
+        
+    }
+    Submission.prototype.getInputValueObjectById=function(fieldId){
+        var formFields = this.get("formFields", []);
+        for (var i = 0; i < formFields.length; i++) {
+            var formField = formFields[i];
+            if (formField.fieldId == fieldId) {
+                return formField;
+            }
+        }
+        var newField={
+            "fieldId":fieldId,
+            "fieldValues":[]
+        }
+        formFields.push(newField);
+        return newField;
+    }
     /**
      * get form model related to this submission.
      * @return {[type]} [description]

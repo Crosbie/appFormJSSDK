@@ -58,31 +58,33 @@ appForm.models = (function(module) {
     /**
      * Process an input value. convert to submission format. run field.validate before this
      * @param  {[type]} inputValue 
+     * @param {cb} cb(err,res)
      * @return {[type]}           submission json used for fieldValues for the field
      */
-    Field.prototype.processInput = function(inputValue) {
+    Field.prototype.processInput = function(inputValue, cb) {
         var type = this.getType();
         var processorName = "process_" + type;
         // try to find specified processor
         if (this[processorName] && typeof this[processorName] == "function") {
-            return this[processorName](inputValue);
+            this[processorName](inputValue,cb);
         } else {
-            return inputValue;
+            cb(null,inputValue);
         }
     }
     /**
      * Convert the submission value back to input value.
      * @param  {[type]} submissionValue [description]
+     * @param { function} cb callback
      * @return {[type]}                 [description]
      */
-    Field.prototype.convertSubmission=function(submissionValue){
+    Field.prototype.convertSubmission=function(submissionValue, cb){
         var type = this.getType();
         var processorName = "convert_" + type;
         // try to find specified processor
         if (this[processorName] && typeof this[processorName] == "function") {
-            return this[processorName](submissionValue);
+            this[processorName](submissionValue,cb);
         } else {
-            return submissionValue;
+            cb(null,submissionValue);
         }
     }
     /**
@@ -94,9 +96,6 @@ appForm.models = (function(module) {
         return appForm.models.fieldValidate.validate(inputValue,this);
     }
 
-    Field.prototype.retrieveValueFromSubmission=function(submissionModel){
-        var id=this.getFieldId();
-    }
     /**
      * return rule array attached to this field.
      * @return {[type]} [description]
@@ -104,6 +103,15 @@ appForm.models = (function(module) {
     Field.prototype.getRules=function(){
         var id=this.getFieldId();
         return this.form.getRulesByFieldId(id);
+    }
+
+    Field.prototype.setVisible=function(isVisible){
+        this.set("visible",isVisible);
+        if (isVisible){
+            this.emit("visible");
+        }else{
+            this.emit("hidden");
+        }
     }
     module.Field = Field;
     return module;
