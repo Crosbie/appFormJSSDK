@@ -4,7 +4,6 @@ FieldGeoENView = FieldView.extend({
   templates: {
     input: '<label for="<%= id %>"><%= title %></label><input id="<%= id %>" name="<%= id %>" type="text" disabled>'
   },
-
   initialize: function() {
     FieldView.prototype.initialize.call(this);
     this.on('visible',this.clearError);

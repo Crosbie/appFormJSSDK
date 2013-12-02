@@ -3,32 +3,33 @@ PageView=BaseView.extend({
   viewMap: {
     "text": FieldTextView,
     "number": FieldNumberView,
-    "date": FieldDateView,
-    "eurodate": FieldDateView,
+    // "date": FieldDateView,
+    // "eurodate": FieldDateView,
     "textarea": FieldTextareaView,
     "radio": FieldRadioView,
     "checkboxes": FieldCheckboxView,
     "dropdown": FieldSelectView,
     "file": FieldFileView,
     "emailAddress": FieldEmailView,
-    "time": FieldTimeView,
+    // "time": FieldTimeView,
     "phone": FieldPhoneView,
-    "europhone": FieldPhoneView,
-    "shortname": FieldShortnameView,
-    "address": FieldAddressView,
-    "url": FieldUrlView,
+    // "europhone": FieldPhoneView,
+    // "shortname": FieldShortnameView,
+    // "address": FieldAddressView,
+    // "url": FieldUrlView,
     // "money": FieldMoneyView,
     // "likert": FieldLikertView,
-    "locationLatLong": FieldGeoView,
+    // "locationLatLong": FieldGeoView,
     "location": FieldGeoView,
-    "locationNorthEast": FieldGeoENView,
-    "fhgeoen": FieldGeoENView,
+    // "locationNorthEast": FieldGeoENView,
+    // "fhgeoen": FieldGeoENView,
     "photo": FieldCameraView,
     "fhcamGroup": FieldCameraGroupView,
     "signature": FieldSignatureView,
     "locationMap": FieldMapView,
-    "fhtime": FieldCustomTimeView,
-    "dateTime": FieldCustomDateView,
+    // "fhtime": FieldCustomTimeView,
+    // "dateTime": FieldCustomDateView,
+    "dateTime":FieldDateTimeView,
     "sectionBreak":FieldSectionBreak
   },
 
@@ -57,15 +58,17 @@ PageView=BaseView.extend({
     this.options.parentEl.append(this.$el);
     var fieldModelList=this.model.getFieldModelList();
     
-    //TODO ->Eoin 
     fieldModelList.forEach(function (field, index) {
       var fieldType = field.getType();
       if (self.viewMap[fieldType]) {
+
         console.log("*- "+fieldType);
-        self.fieldViews[field.get('ID')] = new self.viewMap[fieldType]({
+
+        self.fieldViews[field.get('_id')] = new self.viewMap[fieldType]({
           parentEl: self.$el,
           parentView: self,
-          model: field
+          model: field,
+          formView: self.options.formView
         });
       } else {
         console.warn('FIELD NOT SUPPORTED:' + fieldType);

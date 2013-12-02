@@ -63,7 +63,9 @@
  "040-view02field24field_time",
  "040-view02field25field_url",
  "040-view02field26sectionBreak",
+ "040-view02field27dateTime",
  "040-view03Page",
  "040-view04Form",
+ "040-view05fromJson",
  ],
 };
