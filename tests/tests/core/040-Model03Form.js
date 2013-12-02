@@ -158,4 +158,21 @@ describe("Form model", function() {
         });
     });
 
+    it ("how to initialise form with raw json definition",function(done){
+        appForm.web.ajax.get("/mbaas/forms/appid/527d4539639f521e0a000004",function(err,res){
+            var formJSON=JSON.parse(res.response);
+             var Form = appForm.models.Form;
+             new Form({
+                "formId":"myformid",
+                "rawMode":true,
+                "rawData":formJSON
+             },function(err,form){
+                assert(!err);
+                assert(form);
+                assert(form.getPageModelList());
+                done();
+             });
+        });
+    });
+
 });

@@ -11,23 +11,23 @@ appForm.models.Field = (function(module) {
             throw ("checkbox choice definition is not found in field definition");
         }
     }
-    module.prototype.process_checkboxes = function(inputValue) {
+    module.prototype.process_checkboxes = function(inputValue, cb) {
 
         if (typeof inputValue != "array") {
-            throw ("the input value for processing checkbox field should be like [val1,val2]");
+            cb("the input value for processing checkbox field should be like [val1,val2]");
+        } else {
+            var obj = {
+                "selections": inputValue
+            };
+            cb(null,obj);
         }
-        var obj = {
-            "selections": inputValue
-        }
-
-        return obj;
     }
-    module.prototype.convert_checkboxes = function(value) {
-        var rtn=[];
-        for (var i=0;i<value.length;i++){
+    module.prototype.convert_checkboxes = function(value, cb) {
+        var rtn = [];
+        for (var i = 0; i < value.length; i++) {
             rtn.push(value[i].selections);
         }
-        return rtn;
+        cb(null,rtn);
     }
     return module;
 })(appForm.models.Field || {});

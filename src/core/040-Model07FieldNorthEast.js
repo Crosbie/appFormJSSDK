@@ -17,17 +17,17 @@ appForm.models.Field = (function(module) {
      * @param  {[type]} inputValues [description]
      * @return {[type]}             [description]
      */
-    module.prototype.process_locationNorthEast = function(inputValue) {
+    module.prototype.process_locationNorthEast = function(inputValue, cb) {
         if (!inputValue["zone"] || !inputValue["eastings"] || !inputValue["northings"]) {
-            throw ("the input values for northeast field is {zone: text, eastings: text, northings:text}");
+            cb("the input values for northeast field is {zone: text, eastings: text, northings:text}");
+        } else {
+            var obj = {
+                "zone": inputValue.zone,
+                "eastings": inputValue.eastings,
+                "northings": inputValue.northings
+            }
+            cb(null,obj);
         }
-        var obj = {
-            "zone": inputValue.zone,
-            "eastings": inputValue.eastings,
-            "northings": inputValue.northings
-        }
-
-        return obj;
     }
     return module;
 })(appForm.models.Field || {});
