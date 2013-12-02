@@ -21,6 +21,7 @@
   "040-Model07Field",
   "040-Model07FieldRadio",
   "040-Model07FieldCheckBox",
+  "040-Model07FieldFile",
   "040-Model07FieldMatrix",
   "040-Model07FieldNorthEast",
   "040-Model07FieldLatLong",

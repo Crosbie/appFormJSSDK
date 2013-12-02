@@ -191,6 +191,15 @@ appForm.models = (function(module) {
             delete _forms[this.getFormId()];
         }
     }
+    Form.prototype.getFileFieldsId=function(){
+        var fieldsId=[]
+        for (var i=0, field;field=this.fields[i];i++){
+            if (field.getType=="file"){
+                fieldsId.push(field.getFieldId());
+            }
+        }
+        return fieldsId;
+    }
 
     return module;
 })(appForm.models || {});

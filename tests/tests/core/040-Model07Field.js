@@ -49,6 +49,29 @@ describe("Field Model",function(){
             assert(radioFieldModel.getRadioOption().length>0);
         });
     });
+
+    describe ("FIle",function(){
+        it ("how to process a file input",function(done){
+            var fileFieldId="52974ee55e272dcb3d0000a6";
+            var fileField=form.getFieldModelById(fileFieldId);
+            appForm.utils.fileSystem.save("myTestFile.txt","hello this is a test",function(err,res){
+                assert(!err);
+                appForm.utils.fileSystem.readAsFile("myTestFile.txt",function(err,file){
+                    assert(!err);
+                    fileField.processInput(file,function(err,json){
+                        assert(!err);
+                        assert(json.fileName);
+                        assert(json.fileSize);
+                        assert(json.fileType);
+                        assert(json.fileUpdateTime);
+                        assert(json.hashName);
+
+                        done();
+                    });
+                });
+            });
+        });
+    });
     // describe ("Matrix",function(){
     //     it ("get matrix rows and columns",function(){
     //         var matrixFieldModel=form.getFieldModelById("527d4539639f521e0a00000b");

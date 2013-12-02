@@ -295,7 +295,19 @@ appForm.models = (function(module) {
             formId: formId
         }, cb);
     }
-
+    /**
+     * Retrieve all file fields related value
+     * @return {[type]} [description]
+     */
+    Submission.prototype.getFileInputValues=function(){
+        var rtn=[];
+        var fileFieldIds=this.form.getFileFieldsId();
+        for (var i=0, fieldId;fieldId=fileFieldIds[i];i++){
+            var inputValue=this.getInputValueObjectById(fieldId);
+            rtn=rtn.concat(inputValue.fieldValues);
+        }
+        return rtn;
+    }
 
     return module;
 })(appForm.models || {});
