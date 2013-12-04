@@ -1,6 +1,8 @@
 {
-  "name": "fh-appform-js-sdk",
+  "name": "appFormjs",
   "version": "0.0.1",
+  "sourceDir":"./src",
+  "distDir":"./dist",
   "devDependencies": {
     "grunt": "~0.4.1",
     "cheerio": "0.10.8",
@@ -8,9 +10,8 @@
     "async" : "0.2.6",
     "underscore" : "1.4.4",
     "grunt-contrib-copy" : "0.3.2",
-    "express":"*"
-  },
-  "scripts":{
-    
+    "express":"*",
+    "grunt-contrib-uglify":"*",
+    "grunt-contrib-concat":"*"
   }
 }
