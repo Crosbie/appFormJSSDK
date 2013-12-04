@@ -30,6 +30,14 @@ appForm.models = (function(module) {
     Field.prototype.getFieldDefinition = function() {
         return this.getFieldOptions()['definition'] || {};
     }
+    Field.prototype.getMinRepeat=function(){
+        var def=this.getFieldDefinition();
+        return def["minRepeat"] || 1;
+    }
+    Field.prototype.getMaxRepeat=function(){
+        var def=this.getFieldDefinition();
+        return def["maxRepeat"] || 1;
+    }
     Field.prototype.getFieldOptions = function() {
         return this.get("fieldOptions", {
             "validation": {},

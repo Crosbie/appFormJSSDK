@@ -55,24 +55,29 @@ FieldView = Backbone.View.extend({
   },
 
   contentChanged: function(e) {
+    var target = $(e.currentTarget);
+    var changedValue = target.val();
     var self = this;
     this.dumpContent();
-    this.getTopView().trigger('change:field');
-    var val = this.value();
-    if (this.model.validate(val[this.model.get("_id")]) === true) {
-      self.model.set('value', val[self.model.get("_id")]);
+    // this.getTopView().trigger('change:field');
+    // var val = this.value();
+    if (this.model.validate(changedValue) === true) {
+      var val = this.value();
+      this.options.formView.setInputValue(self.model.getFieldId(), val);
+      // self.model.set('value', val[self.model.get("_id")]);
     }
   },
 
   render: function() {
     var self = this;
+    var initialRepeat = 1;
+    if (this.model.isRepeating()) {
+      initialRepeat = this.model.getMinRepeat();
+    }
+    for (var i = 0; i < initialRepeat; i++) {
+      this.renderSingle(i);
+    }
 
-    // construct field html
-    this.$el.append(_.template(this.template.join(''), {
-      "id": this.model.get("_id"),
-      "title": this.model.getName(),
-      "defaultVal": this.model.get('default') || ''
-    }));
 
     // var instructions = this.model.get('Instructions');
 
@@ -99,6 +104,14 @@ FieldView = Backbone.View.extend({
         self.value(res);
       });
     }
+  },
+  renderSingle: function(index) {
+
+    this.$el.append(_.template(this.template.join(''), {
+      "id": this.model.getFieldId() + "_" + index,
+      "title": this.model.getName(),
+      "defaultVal": this.model.get('default') || ''
+    }));
   },
 
   addRules: function() {
@@ -201,25 +214,28 @@ FieldView = Backbone.View.extend({
   },
 
   // Gets or Set the value for this field
-  // value should always be the serialized form value i.e {Field1 : "Test"}
-  // field with sub fields - {{Field1 : "First Name"}, {Field2 : "Second Name"}}
-  // More complex fields such as files may have value overridden
-  // file - {Field2 : {filebase64 : "sssss", filename : "test.txt", content_type : "text/plain"}}
+  // set value should be an array which contains repeated value for this field.
   value: function(value) {
     var self = this;
     if (value && !_.isEmpty(value)) {
-      $.each(value, function(id, val) {
-        // TODO fix this to allow repeated fields
-        self.$el.find("#" + self.model.get('_id')).val(val);
-      });
+      this.valuePopulate(value);
     }
-    value = {};
+    return this.getValue();
+  },
+  getValue:function(){
+    var value = [];
     this.$el.find('input, select, textarea').each(function() {
-      value[$(this).attr('id')] = $(this).val();
+      value.push($(this).val());
     });
     return value;
   },
+  valuePopulate: function(value) {
+    var self = this;
+    for (var i = 0, v; v = value[i]; i++) {
+      self.$el.find("#" + self.model.getFieldId() + '_' + i).val(v);
+    }
 
+  },
   // TODO horrible hack
   clearError: function() {
     this.$el.find("label[class=error]").remove();

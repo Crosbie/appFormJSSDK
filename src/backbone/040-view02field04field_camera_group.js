@@ -90,7 +90,7 @@ FieldCameraGroupView = FieldCameraView.extend({
         optField.hide();
       }
     });
-    this.contentChanged(); //Call contentChanged so all image data is set on the group model
+    // this.contentChanged(); //Call contentChanged so all image data is set on the group model
   },
 
     // group fields based on required status and whether or not image data is filled
