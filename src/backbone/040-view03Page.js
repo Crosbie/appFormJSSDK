@@ -3,32 +3,17 @@ PageView=BaseView.extend({
   viewMap: {
     "text": FieldTextView,
     "number": FieldNumberView,
-    // "date": FieldDateView,
-    // "eurodate": FieldDateView,
     "textarea": FieldTextareaView,
     "radio": FieldRadioView,
     "checkboxes": FieldCheckboxView,
     "dropdown": FieldSelectView,
     "file": FieldFileView,
     "emailAddress": FieldEmailView,
-    // "time": FieldTimeView,
     "phone": FieldPhoneView,
-    // "europhone": FieldPhoneView,
-    // "shortname": FieldShortnameView,
-    // "address": FieldAddressView,
-    // "url": FieldUrlView,
-    // "money": FieldMoneyView,
-    // "likert": FieldLikertView,
-    // "locationLatLong": FieldGeoView,
     "location": FieldGeoView,
-    // "locationNorthEast": FieldGeoENView,
-    // "fhgeoen": FieldGeoENView,
-    "photo": FieldCameraView,
-    "fhcamGroup": FieldCameraGroupView,
+    "photo": FieldCameraGroupView,
     "signature": FieldSignatureView,
     "locationMap": FieldMapView,
-    // "fhtime": FieldCustomTimeView,
-    // "dateTime": FieldCustomDateView,
     "dateTime":FieldDateTimeView,
     "sectionBreak":FieldSectionBreak
   },
@@ -36,7 +21,6 @@ PageView=BaseView.extend({
   initialize: function() {
     var self = this;
     _.bindAll(this, 'render',"show","hide");
-    this.fieldViews = {};
     // Page Model will emit events if user input meets page rule to hide / show the page.
     this.model.on("visible",self.show);
     this.model.on("hidden",self.hide);
@@ -51,11 +35,12 @@ PageView=BaseView.extend({
 
   render: function() {
     var self = this;
-
+    this.fieldViews = {};
     // all pages hidden initially
     this.$el.empty().addClass('page hidden');
     // add to parent before init fields so validation can work
     this.options.parentEl.append(this.$el);
+
     var fieldModelList=this.model.getFieldModelList();
     
     fieldModelList.forEach(function (field, index) {
@@ -78,7 +63,6 @@ PageView=BaseView.extend({
 
   show: function () {
     var self = this;
-
     this.$el.removeClass('hidden');
     // see if we need to apply any validation errors got back from wufoo i.e. rules that we haven't implemented or cannot implement
     // var error = this.options.parentView.model.get('error');

@@ -12,8 +12,7 @@ appForm.models.Field = (function(module) {
         }
     }
     module.prototype.process_checkboxes = function(inputValue, cb) {
-
-        if (typeof inputValue != "array") {
+        if (!(inputValue instanceof Array)) {
             cb("the input value for processing checkbox field should be like [val1,val2]");
         } else {
             var obj = {
@@ -29,5 +28,6 @@ appForm.models.Field = (function(module) {
         }
         cb(null,rtn);
     }
+
     return module;
 })(appForm.models.Field || {});

@@ -34,6 +34,17 @@ FieldRadioView = FieldView.extend({
 
     // add to dom
     this.options.parentEl.append(this.$el);
+
+    // populate field if Submission obj exists
+    var submission = this.options.formView.getSubmission();
+    if(submission){
+      this.submission = submission;
+      this.submission.getInputValueByFieldId(this.model.get('_id'),function(err,res){
+        console.log(err,res);
+        self.value(res);
+      });
+    }
+    
     this.show();
     // ensure that the field has a value, otherwise
     // submission will fail on a required radio with the default field as the first field

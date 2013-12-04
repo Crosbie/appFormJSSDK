@@ -180,7 +180,7 @@ appForm.models = (function(module) {
     Submission.prototype.addInputValue = function(fieldId, inputValue, cb) {
         var that=this;
         var fieldModel = this.form.getFieldModelById(fieldId);
-        var validateRes = appForm.models.fieldValidate.validate(inputValue, fieldModel);
+        var validateRes = fieldModel.validate(inputValue);
         if (validateRes === true) {
             if (this.transactionMode) {
                 if (!this.tmpFields[fieldId]){

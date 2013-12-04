@@ -27,21 +27,23 @@ FieldCameraGroupView = FieldCameraView.extend({
     this.bind('imageAdded imageRemoved', this.updateFields, this);
 
     // initialilse subsequent camera views from subfields
-    var subFields = this.model.get('SubFields');
-    _(subFields).forEach(function (subField, index) {
+    var options = this.model.get("fieldOptions").definition;
+    for(var i=1;i<options.maxRepeat;i++){
       var subview = new FieldCameraView({
         parentEl: self.options.parentEl,
         parentView: self.options.parentView,
-        model: new FieldModel(subField),
-        order: index + 1,
-        initHidden: subField.IsRequired === '1' ? false: true // hide camera fields initially if they're not required
+        model: self.model,
+        order: i + 1,
+        formView: self.options.formView,
+        initHidden: self.model.IsRequired === '1' ? false: true // hide camera fields initially if they're not required
       });
       // bind event handler for whenever image is added/remove from field
       subview.bind('imageAdded imageRemoved', self.updateFields, self); // purposely pass in self here as subviews need to be iterated over no matter which field changed
       self.subviews.push(subview);
-    });
+    }
+
     //ToDo subviews should probably be added in initialize?
-    this.value(this.model.serialize());
+    // this.value(this.model.serialize());
 
     // if restoring from a draft, may need to show some additional fields
     this._optimiseVisibleFields();

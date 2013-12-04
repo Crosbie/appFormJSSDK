@@ -93,7 +93,8 @@ appForm.models = (function(module) {
      * @return true / error message
      */
     Field.prototype.validate=function(inputValue){
-        return appForm.models.fieldValidate.validate(inputValue,this);
+        return true;
+        //return appForm.models.fieldValidate.validate(inputValue,this);
     }
 
     /**

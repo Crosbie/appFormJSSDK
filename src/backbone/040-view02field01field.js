@@ -4,7 +4,7 @@ FieldView = Backbone.View.extend({
   templates: {
     instructions: '<p class="instruct"><%= helpText %></p>'
   },
-  template:[],
+  template: [],
   events: {
     "change": "contentChanged",
     "blur input,select,textarea": "validate"
@@ -13,21 +13,6 @@ FieldView = Backbone.View.extend({
   // TODO: cache the input element lookup?
   initialize: function() {
     _.bindAll(this, 'dumpContent', 'clearError');
-
-    // var nonFhClasses = this.model.getNonFhClasses();
-    // if (nonFhClasses) {
-    //   this.$el.addClass(nonFhClasses);
-    // }
-
-    this.on('visible', function() {
-      //$fh.logger.debug('field visible');
-    });
-
-    // if(!this.model.serialize() && !_.isEmpty(this.defaultValue())) {
-    //   this.model.set({
-    //     Value: this.defaultValue()
-    //   });
-    // }
 
     if (this.model.isRequired()) {
       this.$el.addClass('required');
@@ -70,16 +55,18 @@ FieldView = Backbone.View.extend({
   },
 
   contentChanged: function(e) {
+    var self = this;
     this.dumpContent();
     this.getTopView().trigger('change:field');
     var val = this.value();
-    if(this.model.validate(val[this.model.get("_id")]) === true){
-      val = this.model.processInput(val[this.model.get("_id")]);
-      this.submission.addInputValue(this.model.get("_id"), val);
+    if (this.model.validate(val[this.model.get("_id")]) === true) {
+      self.model.set('value', val[self.model.get("_id")]);
     }
   },
 
   render: function() {
+    var self = this;
+
     // construct field html
     this.$el.append(_.template(this.template.join(''), {
       "id": this.model.get("_id"),
@@ -105,10 +92,12 @@ FieldView = Backbone.View.extend({
     }
     // populate field if Submission obj exists
     var submission = this.options.formView.getSubmission();
-    if(submission){
+    if (submission) {
       this.submission = submission;
-      var value = this.submission.getInputValueByFieldId(this.model.get('_id'));
-      this.value(value);
+      this.submission.getInputValueByFieldId(this.model.get('_id'), function(err, res) {
+        console.log(err, res);
+        self.value(res);
+      });
     }
   },
 
@@ -217,9 +206,11 @@ FieldView = Backbone.View.extend({
   // More complex fields such as files may have value overridden
   // file - {Field2 : {filebase64 : "sssss", filename : "test.txt", content_type : "text/plain"}}
   value: function(value) {
+    var self = this;
     if (value && !_.isEmpty(value)) {
       $.each(value, function(id, val) {
-        $("#" + id).val(val);
+        // TODO fix this to allow repeated fields
+        self.$el.find("#" + self.model.get('_id')).val(val);
       });
     }
     value = {};

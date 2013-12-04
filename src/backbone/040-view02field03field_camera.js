@@ -15,6 +15,7 @@ FieldCameraView = FieldView.extend({
   },
 
   render: function() {
+    var self = this;
     // construct field html
     this.$el.append(_.template(this.template.join(''), {
       "id": this.model.get('_id'),
@@ -30,6 +31,16 @@ FieldCameraView = FieldView.extend({
     // add to dom hidden
     this.$el.hide();
     this.options.parentEl.append(this.$el);
+
+    // populate field if Submission obj exists
+    var submission = this.options.formView.getSubmission();
+    if(submission){
+      this.submission = submission;
+      this.submission.getInputValueByFieldId(this.model.get('_id'),function(err,res){
+        console.log(err,res);
+        self.value(res);
+      });
+    }
 
     this.show();
   },

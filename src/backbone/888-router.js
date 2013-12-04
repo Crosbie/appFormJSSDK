@@ -25,6 +25,7 @@ App.Router = Backbone.Router.extend({
     "form_list": "form_list",
     "form": "showForm",
     "json": "fromJson",
+    "submission": "checkSubmissions",
     "": "startApp" // Default route
   },
 
@@ -51,9 +52,9 @@ App.Router = Backbone.Router.extend({
   },
 
   showForm: function() {
-    $('#page').removeClass('hidden');
     $('#jsonPage').addClass('hidden');
     $('#formList').addClass('hidden');
+    $('#page').removeClass('hidden');
   },
 
   checkSubmissions: function() {
@@ -65,10 +66,11 @@ App.Router = Backbone.Router.extend({
       subsArr = res.get('submissions');
       res.getSubmissionByMeta(subsArr[0], function(err, sub) {
         var fields = sub.get('formFields');
-        var val = sub.getInputValueByFieldId("527d4539639f521e0a000006");
         self.showForm();
-        var formView = new FormView("#backbone #page");
-        formView.loadForm({formId:"527d4539639f521e0a000004",submission:sub})
+        var formView = new FormView({parentEl:"#backbone #page"});
+        formView.loadForm({formId:"527d4539639f521e0a000004",submission:sub},function(){
+          formView.render();
+        });
       });
 
     })
