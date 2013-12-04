@@ -53,6 +53,6 @@ function recursiveLoad() {
 
   setTimeout(function() {
     recursiveLoad();
-  }, 40);
+  }, 5);
 }
 recursiveLoad();

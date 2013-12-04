@@ -193,9 +193,10 @@ appForm.models = (function(module) {
     }
     Form.prototype.getFileFieldsId=function(){
         var fieldsId=[]
-        for (var i=0, field;field=this.fields[i];i++){
-            if (field.getType=="file"){
-                fieldsId.push(field.getFieldId());
+        for (var fieldId in this.fields){
+            var field=this.fields[fieldId];
+            if (field.getType()=="file"){
+                fieldsId.push(fieldId);
             }
         }
         return fieldsId;

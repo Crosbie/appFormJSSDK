@@ -15,7 +15,8 @@
   "040-Model01config",
   "040-Model02forms",
   "040-Model03Form",
-  "040-Model04File",
+  "040-Model04FileSubmission",
+  "040-Model04FormSubmission",
   "040-Model05submissions",
   "040-Model06Submission",
   "040-Model07Field",
@@ -30,6 +31,7 @@
   "040-Model10uploadManager",
   "040-Model11Rule",
   "040-Model11ruleCheckFuncs",
+  "040-Model12UploadTask",
   "050-api"
  ],
  backbone:[

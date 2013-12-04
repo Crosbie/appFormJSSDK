@@ -67,12 +67,12 @@ appForm.stores = (function(module) {
     }
     LocalStorage.prototype.defaultStorage = function() {
         _fileSystemAvailable = function() {
-            return fileSystem.isFileSystemAvailable;
+            return fileSystem.isFileSystemAvailable();
         }
     }
 
     _fileSystemAvailable = function() {
-        return fileSystem.isFileSystemAvailable;
+        return fileSystem.isFileSystemAvailable();
     }
 
     //use different local storage model according to environment

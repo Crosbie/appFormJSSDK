@@ -37,7 +37,9 @@ appForm.models=(function(module){
         this.set("formUrls",{
             "forms":"/forms/"+appId,
             "form":"/forms/"+appId+"/:formId",
-            "theme":"/forms/"+appId+"/theme"
+            "theme":"/forms/"+appId+"/theme",
+            "formSubmission":"/forms/:formId/submitFormData",
+            "fileSubmission":"/:submissionId/:fieldId/:hashName/submitFormFile"
             //TODO complete the list. 
         })
     }

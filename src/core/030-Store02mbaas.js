@@ -8,17 +8,13 @@ appForm.stores=(function(module){
     }
     appForm.utils.extend(MBaaS,Store);
     MBaaS.prototype.create=function(model,cb){
+        var url=_getUrl(model);
+        appForm.web.ajax.post(url,model.getProps(),cb);
 
     }
     MBaaS.prototype.read=function(model,cb){
         var url=_getUrl(model);
-        appForm.web.ajax.get(url,function(err,res){
-            if (err){
-                cb(err);
-            }else{
-                cb(null,res.response);
-            }
-        });
+        appForm.web.ajax.get(url,cb);
     }
     MBaaS.prototype.update=function(model,cb){
         
@@ -39,10 +35,23 @@ appForm.stores=(function(module){
         }   
         
         var url= host+mBaaSBaseUrl+relativeUrl;
+        var props={};
 
         switch (type){
             case "form":
-                url=url.replace(":formId",model.get("_id"));
+                props.formId=model.get("_id");
+                break;
+            case "formSubmission":
+                props.formId=model.getFormId();
+                break;
+            case "fileSubmission":
+                props.submissionId=model.getSubmissionId();
+                props.hashName=model.getHashName();
+                props.fieldId=model.getFieldId();
+                break
+        }
+        for (var key in props){
+            url=url.replace(":"+key,props[key]);
         }
         return url;
     }
