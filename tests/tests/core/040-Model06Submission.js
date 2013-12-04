@@ -79,8 +79,8 @@ describe("Submission model", function() {
                 var meta = appForm.models.submissions.findMetaByLocalId(localId);
                 assert(meta._ludid == localId);
                 assert(meta.formId == submission.get("formId"));
-                appForm.models.submissions.getSubmissionByMeta(meta,function(err,sub1){
-                    assert(submission===sub1);
+                appForm.models.submissions.getSubmissionByMeta(meta, function(err, sub1) {
+                    assert(submission === sub1);
                     done();
                 });
             });
@@ -134,7 +134,7 @@ describe("Submission model", function() {
     });
 
     describe("User input", function() {
-        var submission=null;
+        var submission = null;
         before(function(done) {
             var Form = appForm.models.Form;
             //load form
@@ -151,62 +151,120 @@ describe("Submission model", function() {
             });
         });
         it("how to add user input value to submission model", function() {
-            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[0] == 40)  ;
+            submission.addInputValue("527d4539639f521e0a000006", 40, function(err) {
+                assert(!err)
+            });
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[0] == 40);
             });
         });
         it("how to reset a submission to clear all user input", function() {
-            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006", 40, function(err) {
+                assert(!err)
+            });
             submission.reset();
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
                 assert(!err);
-                assert(res.length==0);
+                assert(res.length == 0);
             });
         });
 
-        it ("how to use transaction to input a series of user values to submission model",function(){
+        it("how to use transaction to input a series of user values to submission model", function() {
             submission.reset();
-            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006", 40, function(err) {
+                assert(!err)
+            });
             submission.startInputTransaction();
-            submission.addInputValue("527d4539639f521e0a000006",50,function(err){assert(!err)});
-            submission.addInputValue("527d4539639f521e0a000006",60,function(err){assert(!err)});
-            submission.addInputValue("527d4539639f521e0a000006",35,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006", 50, function(err) {
+                assert(!err)
+            });
+            submission.addInputValue("527d4539639f521e0a000006", 60, function(err) {
+                assert(!err)
+            });
+            submission.addInputValue("527d4539639f521e0a000006", 35, function(err) {
+                assert(!err)
+            });
             submission.endInputTransaction(true);
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[0] == 40)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[0] == 40);
             });
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[1] == 50)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[1] == 50);
             });
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[2] == 60)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[2] == 60);
             });
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[3] == 35)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[3] == 35);
             });
         });
-        it ("how to use transaction for user input and roll back",function(){
+        it("how to use transaction for user input and roll back", function() {
             submission.reset();
-            submission.addInputValue("527d4539639f521e0a000006",40,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006", 40, function(err) {
+                assert(!err)
+            });
             submission.startInputTransaction();
-            submission.addInputValue("527d4539639f521e0a000006",50,function(err){assert(!err)});
-            submission.addInputValue("527d4539639f521e0a000006",60,function(err){assert(!err)});
-            submission.addInputValue("527d4539639f521e0a000006",35,function(err){assert(!err)});
+            submission.addInputValue("527d4539639f521e0a000006", 50, function(err) {
+                assert(!err)
+            });
+            submission.addInputValue("527d4539639f521e0a000006", 60, function(err) {
+                assert(!err)
+            });
+            submission.addInputValue("527d4539639f521e0a000006", 35, function(err) {
+                assert(!err)
+            });
             submission.endInputTransaction(false);
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[0] == 40)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[0] == 40);
             });
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[1] == undefined)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[1] == undefined);
             });
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[2] == undefined)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[2] == undefined);
             });
-            submission.getInputValueByFieldId("527d4539639f521e0a000006",function(err,res){
-              assert(res[3] == undefined)  ;
+            submission.getInputValueByFieldId("527d4539639f521e0a000006", function(err, res) {
+                assert(res[3] == undefined);
             });
         });
     });
 
+    describe("upload submission with upload manager", function() {
+        var form = null;
+        before(function(done) {
+            var Form = appForm.models.Form;
+            new Form({
+                formId: "527d4539639f521e0a000004",
+                fromRemote: true
+            }, function(err, _form) {
+                form = _form;
+                done();
+            });
+        });
+        it("how to queue a submission", function(done) {
+            var submission = form.newSubmission();
+            submission.submit(function(err) { //this will call uploadManager.queueSubmission(submissionModel)
+                assert(!err);
+                assert(appForm.models.uploadManager.timer);
+                submission.getUploadTask(function(err, task) {
+                    assert(!err);
+                    assert(task);
+                    done();
+                });
+            });
+            assert(appForm.models.uploadManager.hasTask());
+        });
+        it("how to monitor if a submission is submmited", function(done){
+            var submission = form.newSubmission();
+            this.timeout(10000);
+            submission.on("submitted",function(err){
+                assert(!err);
+                done();
+            });
+            submission.submit(function(err) { //this will call uploadManager.queueSubmission(submissionModel)
+                assert(!err);
+            });
+        })
+
+    });
 });

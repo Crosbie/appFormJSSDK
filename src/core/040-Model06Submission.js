@@ -74,6 +74,7 @@ appForm.models = (function(module) {
      */
     Submission.prototype.saveDraft = function(cb) {
         var targetStatus = "draft";
+        this.set("timezoneOffset",new Date().getTimezoneOffset());
         this.changeStatus(targetStatus, cb);
 
     }
@@ -85,18 +86,37 @@ appForm.models = (function(module) {
     Submission.prototype.submit = function(cb) {
         var targetStatus = "pending";
         var validateResult=true;
+        var that=this;
+        this.set("timezoneOffset",new Date().getTimezoneOffset());
         //TODO overall validate here
         
         if (validateResult===true){
-            
+            appForm.models.uploadManager.queueSubmission(this,function(err,ut){
+                that.changeStatus(targetStatus, cb);
+            });
         }else{
-            return "";
+            return "This should not happen!!";
         }
+    }
 
+    Submission.prototype.getUploadTask=function(cb){
+        var taskId=this.getUploadTaskId();
+        if (taskId){
+            appForm.models.uploadManager.getTaskById(taskId,cb);
+        }else{
+            cb(null,null);
+        }
+    }
+    Submission.prototype.getUploadTaskId=function(){
+        return this.get("uploadTaskId");
+    }
+    Submission.prototype.setUploadTaskId=function(utId){
+        this.set("uploadTaskId",utId);
     }
     Submission.prototype.submitted = function(cb) {
         var targetStatus = "submitted";
         this.changeStatus(targetStatus, cb);
+        this.emit("submitted");
 
     }
     //joint form id and submissions timestamp.
@@ -113,6 +133,7 @@ appForm.models = (function(module) {
         if (this.isStatusValid(status)) {
             var that = this;
             this.set("status", status);
+
             this.saveLocal(function(err, res) {
                 that.saveToList(function() {
                     cb(err, res);
@@ -124,6 +145,12 @@ appForm.models = (function(module) {
     }
     Submission.prototype.saveToList = function(cb) {
         appForm.models.submissions.saveSubmission(this, cb);
+    }
+    Submission.prototype.error=function(errorMsg,cb){
+        this.set("errorMessage",errorMsg);
+        var targetStatus="error";
+        this.changeStatus(targetStatus,cb);
+        this.emit("submitted",errorMsg);
     }
     Submission.prototype.getStatus = function() {
         return this.get("status");
@@ -295,7 +322,23 @@ appForm.models = (function(module) {
             formId: formId
         }, cb);
     }
-
+    /**
+     * Retrieve all file fields related value
+     * @return {[type]} [description]
+     */
+    Submission.prototype.getFileInputValues=function(){
+        var rtn=[];
+        var fileFieldIds=this.form.getFileFieldsId();
+        for (var i=0, fieldId;fieldId=fileFieldIds[i];i++){
+            var inputValue=this.getInputValueObjectById(fieldId);
+            var tmp;
+            for (var j=0, tmp; tmp=inputValue.fieldValues[j];j++){
+                tmp.fieldId=fieldId;
+                rtn.push(tmp);
+            }
+        }
+        return rtn;
+    }
 
     return module;
 })(appForm.models || {});
